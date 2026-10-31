@@ -35,6 +35,7 @@ h2{margin:0 0 4px;font-size:20px}
 .cv{position:relative;display:inline-block;line-height:0;max-width:100%}
 .cv #o1{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
 .seg button.alt{flex:none}
+.att{margin-top:8px;color:var(--ok);font-weight:700;font-size:14px;word-break:break-all}
 .stage{margin:14px auto;border-radius:12px;overflow:hidden;display:flex;justify-content:center;border:1px solid var(--bd)}
 .ck{background:repeating-conic-gradient(var(--k1) 0 25%,var(--k2) 0 50%) 0 0/16px 16px}
 canvas{max-width:100%;height:auto;display:block}
@@ -76,14 +77,15 @@ footer{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
 
 <section class="panel on" id="p-bg">
 <h2>إزالة الخلفية</h2>
-<p class="hint">حدّد بالفرشاة ما تريد إبقاءه، والباقي يُحذف.</p>
+<p class="hint">إزالة تلقائية بالذكاء الاصطناعي مع فرشاة للتصحيح.</p>
 <label class="drop" id="d1"><input type="file" accept="image/*"><b>اسحب الصورة هنا أو اضغط للاختيار</b><small>PNG · JPG · WEBP</small></label>
 <div id="w1" hidden>
+<p class="hint" id="st1"></p>
 <div class="seg"><button class="btn on" data-md="keep">🟢 احتفظ</button><button class="btn" data-md="remove">🔴 أزل</button><button class="btn alt" id="clr">مسح العلامات</button></div>
 <div class="stage ck"><div class="cv"><canvas id="c1"></canvas><canvas id="o1"></canvas></div></div>
-<p class="hint">ارسم بالأخضر 🟢 فوق كل شيء تريد إبقاءه (الوجه، الشعر، الملابس... كل جزء بلون مختلف يحتاج خطاً)، وكل الباقي يُزال تلقائياً. إذا بقي شيء بالخطأ فاستخدم الأحمر 🔴 فوقه.</p>
+<p class="hint">تُزال الخلفية تلقائياً بالذكاء الاصطناعي. لتصحيح النتيجة ارسم بالأخضر 🟢 على ما تريد استعادته، وبالأحمر 🔴 على ما تريد إزالته.</p>
 <div class="ctl">
-<label>التسامح مع الألوان<input type="range" id="tol" min="1" max="100" value="50"><output></output></label>
+<label>التسامح مع الألوان (للوضع اليدوي)<input type="range" id="tol" min="1" max="100" value="50"><output></output></label>
 <label>نعومة الحواف<input type="range" id="fea" min="0" max="6" value="1"><output></output></label>
 <label>حجم الفرشاة<input type="range" id="br" min="1" max="10" value="4"><output></output></label>
 </div>
@@ -178,11 +180,12 @@ async function saveBlob(name,b){
 $$("input[type=range]").forEach(r=>{const o=r.nextElementSibling,u=()=>o.textContent=r.value+(r.dataset.u||"");r.addEventListener("input",u);u()});
 $$("nav button").forEach(b=>b.onclick=()=>{$$("nav button").forEach(x=>x.classList.toggle("on",x===b));$$(".panel").forEach(p=>p.classList.toggle("on",p.id==="p-"+b.dataset.t))});
 function drop(el,multi,cb){
-  const inp=el.querySelector("input");inp.multiple=multi;
-  inp.onchange=()=>{const f=[...inp.files];inp.value="";if(f.length)cb(f)};
+  const inp=el.querySelector("input"),note=document.createElement("div");inp.multiple=multi;note.className="att";note.hidden=true;el.append(note);
+  const go=f=>{note.hidden=false;note.textContent="✅ تم إرفاق: "+(f.length===1?f[0].name+" ("+fmt(f[0].size)+")":f.length+" ملفات ("+fmt(f.reduce((a,b)=>a+b.size,0))+")");toast("تم إرفاق الملف ✓");cb(f)};
+  inp.onchange=()=>{const f=[...inp.files];inp.value="";if(f.length)go(f)};
   ["dragover","dragenter"].forEach(e=>el.addEventListener(e,v=>{v.preventDefault();el.classList.add("hov")}));
   ["dragleave","drop"].forEach(e=>el.addEventListener(e,v=>{v.preventDefault();el.classList.remove("hov")}));
-  el.addEventListener("drop",v=>{const f=[...v.dataTransfer.files];if(f.length)cb(multi?f:[f[0]])});
+  el.addEventListener("drop",v=>{const f=[...v.dataTransfer.files];if(f.length)go(multi?f:[f[0]])});
 }
 function results(box,items){
   box.innerHTML="";
@@ -244,6 +247,7 @@ function flood(m,v,starts){
 }
 function runBg(){
   const {w,h,src,U}=bg,d=src.data,n=w*h,SF=[],SB=[],ctx=$("#c1").getContext("2d");
+  if(bg.ai){const A0=Float32Array.from(bg.ai);for(let p=0;p<n;p++)if(U[p])A0[p]=U[p]===1?1:0;const A=blur(A0,w,h,+$("#fea").value),out=new ImageData(new Uint8ClampedArray(d),w,h);for(let p=0;p<n;p++)out.data[p*4+3]=Math.round(d[p*4+3]*A[p]);ctx.putImageData(out,0,0);return}
   for(let p=0;p<n;p++){if(U[p]===1)SF.push(p);else if(U[p]===2)SB.push(p)}
   if(!SF.length){ctx.putImageData(src,0,0);return}
   const pick=L=>{const st=Math.max(1,Math.floor(L.length/4000)),o=[];for(let i=0;i<L.length;i+=st){const q=L[i]*4;o.push([d[q],d[q+1],d[q+2]])}return o};
@@ -274,14 +278,35 @@ function runBg(){
   for(let p=0;p<n;p++)od[p*4+3]=Math.round(d[p*4+3]*A[p]);
   ctx.putImageData(out,0,0);
 }
+const st1=m=>{$("#st1").textContent=m};
+let AIM=null;
+async function aiRemove(f,seq){
+  const urls=["https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm","https://esm.sh/@imgly/background-removal@1.5.5"];
+  if(!AIM){for(const u of urls){try{AIM=await import(u);break}catch(e){}}}
+  const fn=AIM&&(AIM.removeBackground||(AIM.default&&AIM.default.removeBackground)||AIM.default);
+  if(typeof fn!=="function")throw 0;
+  const out=await fn(f,{output:{format:"image/png"},progress:(k,c,t)=>{if(seq===bg.seq&&t)st1((String(k).startsWith("fetch")?"جاري تحميل النموذج (أول مرة فقط)... ":"جاري إزالة الخلفية... ")+Math.round(100*c/t)+"%")}});
+  const im=await loadImg(out),c=document.createElement("canvas");c.width=bg.w;c.height=bg.h;
+  const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(im,0,0,bg.w,bg.h);
+  const d=x.getImageData(0,0,bg.w,bg.h).data,A=new Float32Array(bg.w*bg.h);
+  for(let p=0;p<A.length;p++)A[p]=d[p*4+3]/255;
+  return A;
+}
 drop($("#d1"),false,async([f])=>{
   try{
-    const i=await loadImg(f),s=Math.min(1,1280/Math.max(i.naturalWidth,i.naturalHeight)),w=Math.round(i.naturalWidth*s),h=Math.round(i.naturalHeight*s),c=document.createElement("canvas");
+    const i=await loadImg(f),s=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),w=Math.round(i.naturalWidth*s),h=Math.round(i.naturalHeight*s),c=document.createElement("canvas");
     c.width=w;c.height=h;const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(i,0,0,w,h);
-    Object.assign(bg,{w,h,src:x.getImageData(0,0,w,h),name:base(f.name),U:new Uint8Array(w*h)});
+    Object.assign(bg,{w,h,src:x.getImageData(0,0,w,h),name:base(f.name),U:new Uint8Array(w*h),ai:null,seq:(bg.seq||0)+1});
     for(const id of ["#c1","#o1"]){$(id).width=w;$(id).height=h}
-    $("#w1").hidden=false;runBg();
-  }catch(e){toast("تعذر فتح الصورة")}
+    $("#o1").getContext("2d").clearRect(0,0,w,h);$("#w1").hidden=false;runBg();
+  }catch(e){return toast("تعذر فتح الصورة")}
+  const q=bg.seq;st1("جاري تجهيز الذكاء الاصطناعي...");
+  try{
+    const A=await aiRemove(f,q);if(q!==bg.seq)return;
+    bg.ai=A;runBg();st1("تمت إزالة الخلفية تلقائياً ✓ يمكنك تصحيح النتيجة بالفرشاة.");
+  }catch(e){
+    if(q===bg.seq)st1("تعذر تشغيل الذكاء الاصطناعي (يحتاج اتصالاً بالإنترنت وموقعاً على https). استخدم الفرشاة الخضراء لتحديد ما تريد إبقاءه والباقي يُحذف.");
+  }
 });
 let tm;const rerun=()=>{if(!bg.src)return;clearTimeout(tm);tm=setTimeout(runBg,100)};
 ["#tol","#fea"].forEach(s=>$(s).addEventListener("input",rerun));
