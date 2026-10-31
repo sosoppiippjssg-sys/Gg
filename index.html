@@ -22,3 +22,342 @@ h1{margin:0;font-size:26px;letter-spacing:.3px}
 .sub{color:var(--mut);margin:0 0 18px;font-size:14px}
 nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
 nav button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:600 14px Cairo,Tahoma,sans-serif;padding:9px 14px;border-radius:999px;cursor:pointer}
+nav button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.panel{display:none;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px}
+.panel.on{display:block}
+h2{margin:0 0 4px;font-size:20px}
+.hint{color:var(--mut);font-size:13px;margin:4px 0 12px}
+.drop{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:2px dashed var(--bd);border-radius:14px;padding:26px 12px;cursor:pointer;transition:.15s}
+.drop:hover,.drop.hov{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,transparent)}
+.drop small{color:var(--mut)}
+.stage{margin:14px auto;border-radius:12px;overflow:hidden;display:flex;justify-content:center;border:1px solid var(--bd)}
+.ck{background:repeating-conic-gradient(var(--k1) 0 25%,var(--k2) 0 50%) 0 0/16px 16px}
+canvas{max-width:100%;height:auto;display:block}
+#c1{cursor:crosshair}#c4{cursor:grab;touch-action:none;width:100%;max-width:360px}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.ctl label{display:flex;flex-direction:column;gap:4px;font-size:14px;font-weight:600}
+.ctl label.chk{flex-direction:row;align-items:center;gap:8px}
+.ctl output{color:var(--mut);font-weight:400;font-size:12px}
+input[type=range]{width:100%;accent-color:var(--ac)}
+select,input[type=text]{width:100%;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
+input[type=color]{width:100%;height:38px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);padding:2px}
+.btn{border:0;background:var(--ac);color:#fff;font:700 15px Cairo,Tahoma,sans-serif;padding:11px 20px;border-radius:12px;cursor:pointer}
+.btn.sm{padding:5px 12px;font-size:13px;border-radius:9px}
+.btn.alt{background:transparent;color:var(--ac);border:1px solid var(--ac)}
+.btn:hover{filter:brightness(1.08)}
+.seg{display:flex;gap:8px;margin:12px 0}
+.seg button{flex:1}.seg button:not(.on){background:transparent;color:var(--tx);border:1px solid var(--bd)}
+.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:14px}
+.row .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:right}
+.row .sz{color:var(--mut);direction:ltr;font-size:12px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+.res{margin-top:14px}.res .btn.alt{margin-top:12px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9;max-width:90%}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+footer{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo"><i></i><i></i><i></i><i></i></div><h1>Pixel Tool</h1></header>
+<p class="sub">أدوات صور سريعة تعمل داخل متصفحك فقط، صورك لا تُرفع لأي خادم.</p>
+<nav>
+<button class="on" data-t="bg">إزالة الخلفية</button>
+<button data-t="cmp">ضغط الحجم</button>
+<button data-t="cnv">تحويل الصيغ</button>
+<button data-t="crp">قص مربع / دائري</button>
+<button data-t="wm">علامة مائية</button>
+</nav>
+
+<section class="panel on" id="p-bg">
+<h2>إزالة الخلفية</h2>
+<p class="hint">تعتمد على لون الخلفية، وتعمل بشكل ممتاز مع الخلفيات الموحدة (استوديو، أبيض، سماء...).</p>
+<label class="drop" id="d1"><input type="file" accept="image/*" hidden><b>اسحب الصورة هنا أو اضغط للاختيار</b><small>PNG · JPG · WEBP</small></label>
+<div id="w1" hidden>
+<div class="stage ck"><canvas id="c1"></canvas></div>
+<p class="hint">اضغط على الصورة لاختيار لون الخلفية المراد إزالته (الافتراضي: لون الأطراف).</p>
+<div class="ctl">
+<label>الحساسية<input type="range" id="tol" min="1" max="100" value="30"><output></output></label>
+<label>نعومة الحواف<input type="range" id="fea" min="0" max="6" value="1"><output></output></label>
+<label class="chk"><input type="checkbox" id="all"> إزالة اللون من كل الصورة (حتى الداخل)</label>
+</div>
+<button class="btn" id="dl1">تحميل PNG شفاف</button>
+</div>
+</section>
+
+<section class="panel" id="p-cmp">
+<h2>ضغط الحجم</h2>
+<p class="hint">الصور تُضغط بجودة تختارها، وأي ملف آخر يُضغط داخل ZIP.</p>
+<label class="drop" id="d2"><input type="file" hidden><b>اسحب الملفات هنا أو اضغط للاختيار</b><small>صور أو أي ملفات، عدة ملفات دفعة واحدة</small></label>
+<p class="hint" id="i2"></p>
+<div class="ctl">
+<label>صيغة الصور<select id="f2"><option value="image/webp">WEBP (أصغر حجماً)</option><option value="image/jpeg">JPG</option></select></label>
+<label>الجودة<input type="range" id="q2" min="10" max="100" value="75" data-u="%"><output></output></label>
+<label>أقصى عرض<select id="m2"><option value="0">الأصلي</option><option value="3840">3840 px</option><option value="1920">1920 px</option><option value="1280">1280 px</option><option value="800">800 px</option></select></label>
+</div>
+<button class="btn" id="go2">ضغط</button>
+<div class="res" id="r2"></div>
+</section>
+
+<section class="panel" id="p-cnv">
+<h2>تحويل صيغ الصور</h2>
+<p class="hint">حوّل بين PNG وJPG وWEBP. يقبل أيضاً GIF وBMP وSVG كمدخلات.</p>
+<label class="drop" id="d3"><input type="file" accept="image/*" hidden><b>اسحب الصور هنا أو اضغط للاختيار</b><small>يمكن اختيار عدة صور</small></label>
+<p class="hint" id="i3"></p>
+<div class="ctl">
+<label>التحويل إلى<select id="f3"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WEBP</option></select></label>
+<label>الجودة<input type="range" id="q3" min="10" max="100" value="92" data-u="%"><output></output></label>
+</div>
+<button class="btn" id="go3">تحويل</button>
+<div class="res" id="r3"></div>
+</section>
+
+<section class="panel" id="p-crp">
+<h2>قص الصورة</h2>
+<p class="hint">اسحب الصورة داخل الإطار لتحديد الجزء المطلوب، وكبّر بالشريط.</p>
+<label class="drop" id="d4"><input type="file" accept="image/*" hidden><b>اسحب الصورة هنا أو اضغط للاختيار</b></label>
+<div id="w4" hidden>
+<div class="seg"><button class="btn on" data-sh="circle">دائري</button><button class="btn" data-sh="square">مربع</button></div>
+<div class="stage ck"><canvas id="c4" width="640" height="640"></canvas></div>
+<div class="ctl">
+<label>التكبير<input type="range" id="zm" min="100" max="300" value="100" data-u="%"><output></output></label>
+<label>الحجم<select id="z4"><option value="512">512 px</option><option value="1024" selected>1024 px</option><option value="2048">2048 px</option></select></label>
+<label>الصيغة<select id="f4"><option value="image/png">PNG (شفاف للدائري)</option><option value="image/jpeg">JPG</option></select></label>
+</div>
+<button class="btn" id="dl4">تحميل الصورة</button>
+</div>
+</section>
+
+<section class="panel" id="p-wm">
+<h2>العلامة المائية</h2>
+<p class="hint">أضف نصاً أو شعاراً فوق صورتك بالموضع والشفافية التي تريد.</p>
+<label class="drop" id="d5"><input type="file" accept="image/*" hidden><b>اسحب الصورة هنا أو اضغط للاختيار</b></label>
+<div id="w5" hidden>
+<div class="stage ck"><canvas id="c5"></canvas></div>
+<div class="ctl">
+<label>نص العلامة<input type="text" id="t5" value="Pixel Tool"></label>
+<label>أو شعار (صورة)<input type="file" id="l5" accept="image/*"></label>
+<label>اللون<input type="color" id="k5" value="#ffffff"></label>
+<label>الحجم<input type="range" id="s5" min="5" max="80" value="28" data-u="%"><output></output></label>
+<label>الشفافية<input type="range" id="o5" min="5" max="100" value="55" data-u="%"><output></output></label>
+<label>الدوران<input type="range" id="a5" min="-90" max="90" value="0" data-u="°"><output></output></label>
+<label>الموضع<select id="p5"><option value="br">أسفل اليمين</option><option value="bl">أسفل اليسار</option><option value="bc">أسفل المنتصف</option><option value="mc">المنتصف</option><option value="tr">أعلى اليمين</option><option value="tl">أعلى اليسار</option><option value="tc">أعلى المنتصف</option><option value="tile">تكرار على كل الصورة</option></select></label>
+<label>الصيغة<select id="f5"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option></select></label>
+</div>
+<button class="btn" id="dl5">تحميل الصورة</button> <button class="btn alt" id="rl5" hidden>إزالة الشعار</button>
+</div>
+</section>
+<footer>Pixel Tool · كل المعالجة تتم على جهازك</footer>
+</div>
+<div id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(2)+" MB";
+const base=n=>n.replace(/\.[^.]+$/,"");
+const blob=(c,t,q)=>new Promise(r=>c.toBlob(r,t,q));
+const ext=b=>({"image/jpeg":"jpg","image/webp":"webp"})[b.type]||"png";
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),2800)}
+function loadImg(f){return new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=URL.createObjectURL(f)})}
+let DL=null;
+(async()=>{try{if(window.claude&&claude.use)DL=await claude.use("downloads")}catch(e){}})();
+async function saveBlob(name,b){
+  try{
+    if(DL){await DL.save({filename:name,data:b})}
+    else{const a=document.createElement("a"),u=URL.createObjectURL(b);a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+    toast("تم الحفظ ✓");
+  }catch(e){if(!e||e.code!=="declined")toast("تعذر حفظ الملف")}
+}
+$$("input[type=range]").forEach(r=>{const o=r.nextElementSibling,u=()=>o.textContent=r.value+(r.dataset.u||"");r.addEventListener("input",u);u()});
+$$("nav button").forEach(b=>b.onclick=()=>{$$("nav button").forEach(x=>x.classList.toggle("on",x===b));$$(".panel").forEach(p=>p.classList.toggle("on",p.id==="p-"+b.dataset.t))});
+function drop(el,multi,cb){
+  const inp=el.querySelector("input");inp.multiple=multi;
+  inp.onchange=()=>{const f=[...inp.files];inp.value="";if(f.length)cb(f)};
+  ["dragover","dragenter"].forEach(e=>el.addEventListener(e,v=>{v.preventDefault();el.classList.add("hov")}));
+  ["dragleave","drop"].forEach(e=>el.addEventListener(e,v=>{v.preventDefault();el.classList.remove("hov")}));
+  el.addEventListener("drop",v=>{const f=[...v.dataTransfer.files];if(f.length)cb(multi?f:[f[0]])});
+}
+function results(box,items){
+  box.innerHTML="";
+  items.forEach(it=>{
+    const r=document.createElement("div");r.className="row";
+    const sv=it.orig?Math.round((1-it.blob.size/it.orig)*100):null;
+    r.innerHTML='<span class="nm"></span><span class="sz">'+(it.orig?fmt(it.orig)+" → ":"")+fmt(it.blob.size)+"</span>"+(sv!==null?'<b class="'+(sv>=0?"ok":"bad")+'">'+(sv>=0?"-"+sv:"+"+(-sv))+"%</b>":"")+'<button class="btn sm">تحميل</button>';
+    r.querySelector(".nm").textContent=it.name;
+    r.querySelector("button").onclick=()=>saveBlob(it.name,it.blob);
+    box.append(r);
+  });
+  if(items.length>1){
+    const z=document.createElement("button");z.className="btn alt";z.textContent="تحميل الكل (ZIP)";
+    z.onclick=async()=>{const zip=new JSZip();items.forEach(it=>zip.file(it.name,it.blob));saveBlob("pixel-tool.zip",await zip.generateAsync({type:"blob"}))};
+    box.append(z);
+  }
+}
+async function enc(f,o){
+  const i=await loadImg(f);let w=i.naturalWidth,h=i.naturalHeight;
+  if(o.maxW&&w>o.maxW){h=Math.round(h*o.maxW/w);w=o.maxW}
+  const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");
+  if(o.type==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,w,h)}
+  x.drawImage(i,0,0,w,h);
+  return blob(c,o.type,o.q);
+}
+
+/* 1 — إزالة الخلفية */
+const bg={};
+drop($("#d1"),false,async([f])=>{
+  try{
+    const i=await loadImg(f),s=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight));
+    bg.w=Math.round(i.naturalWidth*s);bg.h=Math.round(i.naturalHeight*s);
+    const c=document.createElement("canvas");c.width=bg.w;c.height=bg.h;
+    const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(i,0,0,bg.w,bg.h);
+    bg.src=x.getImageData(0,0,bg.w,bg.h);bg.name=base(f.name);bg.pick=null;
+    $("#w1").hidden=false;runBg();
+  }catch(e){toast("تعذر فتح الصورة")}
+});
+function blur(a,w,h,r){
+  if(!r)return a;
+  const t=new Float32Array(a.length),o=new Float32Array(a.length),k=2*r+1,cl=(v,m)=>Math.min(m,Math.max(0,v));
+  for(let y=0;y<h;y++){let s=0;for(let x=-r;x<=r;x++)s+=a[y*w+cl(x,w-1)];for(let x=0;x<w;x++){t[y*w+x]=s/k;s+=a[y*w+cl(x+r+1,w-1)]-a[y*w+cl(x-r,w-1)]}}
+  for(let x=0;x<w;x++){let s=0;for(let y=-r;y<=r;y++)s+=t[cl(y,h-1)*w+x];for(let y=0;y<h;y++){o[y*w+x]=s/k;s+=t[cl(y+r+1,h-1)*w+x]-t[cl(y-r,h-1)*w+x]}}
+  return o;
+}
+function runBg(){
+  const {w,h,src}=bg,d=src.data,n=w*h;
+  let col=bg.pick;
+  if(!col){const P=(x,y)=>{const i=(y*w+x)*4;return[d[i],d[i+1],d[i+2]]},cs=[P(0,0),P(w-1,0),P(0,h-1),P(w-1,h-1)];col=[0,1,2].map(k=>cs.reduce((a,c)=>a+c[k],0)/4)}
+  const T=+$("#tol").value*2.5,T2=T*T,m=new Uint8Array(n);
+  const near=p=>{const i=p*4,a=d[i]-col[0],b=d[i+1]-col[1],c=d[i+2]-col[2];return a*a+b*b+c*c<=T2};
+  if($("#all").checked){for(let p=0;p<n;p++)m[p]=near(p)?1:0}
+  else{
+    const st=new Int32Array(n);let sp=0;
+    const push=p=>{if(!m[p]&&near(p)){m[p]=1;st[sp++]=p}};
+    for(let x=0;x<w;x++){push(x);push((h-1)*w+x)}
+    for(let y=0;y<h;y++){push(y*w);push(y*w+w-1)}
+    while(sp){const p=st[--sp],x=p%w,y=(p/w)|0;if(x>0)push(p-1);if(x<w-1)push(p+1);if(y>0)push(p-w);if(y<h-1)push(p+w)}
+  }
+  const al=blur(Float32Array.from(m),w,h,+$("#fea").value),out=new ImageData(new Uint8ClampedArray(d),w,h);
+  for(let p=0;p<n;p++)out.data[p*4+3]=Math.round(d[p*4+3]*(1-al[p]));
+  const c=$("#c1");c.width=w;c.height=h;c.getContext("2d").putImageData(out,0,0);
+}
+let tm;const rerun=()=>{if(!bg.src)return;clearTimeout(tm);tm=setTimeout(runBg,120)};
+["#tol","#fea","#all"].forEach(s=>$(s).addEventListener("input",rerun));
+$("#c1").onclick=e=>{
+  if(!bg.src)return;const r=e.target.getBoundingClientRect();
+  const x=Math.min(bg.w-1,Math.max(0,Math.floor((e.clientX-r.left)/r.width*bg.w))),y=Math.min(bg.h-1,Math.max(0,Math.floor((e.clientY-r.top)/r.height*bg.h))),i=(y*bg.w+x)*4;
+  bg.pick=[bg.src.data[i],bg.src.data[i+1],bg.src.data[i+2]];runBg();
+};
+$("#dl1").onclick=async()=>{if(bg.src)saveBlob(bg.name+"-nobg.png",await blob($("#c1"),"image/png"))};
+
+/* 2 — ضغط */
+let F2=[];
+drop($("#d2"),true,f=>{F2=f;$("#i2").textContent=f.length+" ملف · "+fmt(f.reduce((a,b)=>a+b.size,0));$("#r2").innerHTML=""});
+$("#go2").onclick=async()=>{
+  if(!F2.length)return toast("اختر ملفات أولاً");
+  const btn=$("#go2");btn.disabled=true;btn.textContent="جاري الضغط...";const out=[];
+  for(const f of F2){
+    try{
+      if(/^image\/(png|jpeg|webp|bmp)$/.test(f.type)){
+        const b=await enc(f,{type:$("#f2").value,q:+$("#q2").value/100,maxW:+$("#m2").value});
+        out.push({name:base(f.name)+"."+ext(b),blob:b,orig:f.size});
+      }else{
+        const z=new JSZip();z.file(f.name,f);
+        out.push({name:f.name+".zip",blob:await z.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:9}}),orig:f.size});
+      }
+    }catch(e){toast("فشل ضغط: "+f.name)}
+  }
+  btn.disabled=false;btn.textContent="ضغط";results($("#r2"),out);
+};
+
+/* 3 — تحويل */
+let F3=[];
+drop($("#d3"),true,f=>{F3=f;$("#i3").textContent=f.length+" صورة جاهزة للتحويل";$("#r3").innerHTML=""});
+$("#f3").onchange=()=>{$("#q3").disabled=$("#f3").value==="image/png"};
+$("#go3").onclick=async()=>{
+  if(!F3.length)return toast("اختر صوراً أولاً");
+  const btn=$("#go3");btn.disabled=true;btn.textContent="جاري التحويل...";const out=[];
+  for(const f of F3){
+    try{const b=await enc(f,{type:$("#f3").value,q:+$("#q3").value/100,maxW:0});out.push({name:base(f.name)+"."+ext(b),blob:b,orig:f.size})}
+    catch(e){toast("تعذر تحويل: "+f.name)}
+  }
+  btn.disabled=false;btn.textContent="تحويل";results($("#r3"),out);
+};
+
+/* 4 — قص */
+const cr={img:null,z:1,x:0,y:0,shape:"circle"};
+function r4(x,S,ov){
+  const k=S/640,i=cr.img,s0=Math.max(640/i.naturalWidth,640/i.naturalHeight)*cr.z;
+  const mx=(i.naturalWidth*s0-640)/2,my=(i.naturalHeight*s0-640)/2;
+  cr.x=Math.min(mx,Math.max(-mx,cr.x));cr.y=Math.min(my,Math.max(-my,cr.y));
+  const w=i.naturalWidth*s0*k,h=i.naturalHeight*s0*k;
+  if(ov){
+    x.clearRect(0,0,S,S);x.drawImage(i,S/2-w/2+cr.x*k,S/2-h/2+cr.y*k,w,h);
+    x.beginPath();x.rect(0,0,S,S);
+    if(cr.shape==="circle")x.arc(S/2,S/2,S/2-6,0,7);else x.rect(6,6,S-12,S-12);
+    x.fillStyle="rgba(0,0,0,.55)";x.fill("evenodd");
+    x.beginPath();if(cr.shape==="circle")x.arc(S/2,S/2,S/2-6,0,7);else x.rect(6,6,S-12,S-12);
+    x.strokeStyle="#fff";x.lineWidth=3;x.stroke();
+  }else{
+    x.save();x.beginPath();if(cr.shape==="circle")x.arc(S/2,S/2,S/2,0,7);else x.rect(0,0,S,S);x.clip();
+    x.drawImage(i,S/2-w/2+cr.x*k,S/2-h/2+cr.y*k,w,h);x.restore();
+  }
+}
+const d4=()=>r4($("#c4").getContext("2d"),640,true);
+drop($("#d4"),false,async([f])=>{
+  try{cr.img=await loadImg(f);cr.x=cr.y=0;cr.z=1;$("#zm").value=100;$("#zm").dispatchEvent(new Event("input"));$("#w4").hidden=false;d4()}
+  catch(e){toast("تعذر فتح الصورة")}
+});
+$("#zm").addEventListener("input",()=>{cr.z=$("#zm").value/100;if(cr.img)d4()});
+$$("[data-sh]").forEach(b=>b.onclick=()=>{cr.shape=b.dataset.sh;$$("[data-sh]").forEach(y=>y.classList.toggle("on",y===b));if(cr.img)d4()});
+let dr=null;const c4=$("#c4");
+c4.onpointerdown=e=>{dr=[e.clientX,e.clientY];c4.setPointerCapture(e.pointerId)};
+c4.onpointermove=e=>{if(!dr||!cr.img)return;const k=640/c4.getBoundingClientRect().width;cr.x+=(e.clientX-dr[0])*k;cr.y+=(e.clientY-dr[1])*k;dr=[e.clientX,e.clientY];d4()};
+c4.onpointerup=c4.onpointercancel=()=>dr=null;
+$("#dl4").onclick=async()=>{
+  if(!cr.img)return;const S=+$("#z4").value,t=$("#f4").value,c=document.createElement("canvas");c.width=c.height=S;
+  const x=c.getContext("2d");if(t==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,S,S)}
+  r4(x,S,false);const b=await blob(c,t,.95);saveBlob("pixel-"+cr.shape+"."+ext(b),b);
+};
+
+/* 5 — علامة مائية */
+const wm={img:null,logo:null};
+function mark(w){
+  const W=Math.max(20,Math.round(w*(+$("#s5").value)/100)),c=document.createElement("canvas");
+  if(wm.logo){c.width=W;c.height=Math.max(1,Math.round(W*wm.logo.naturalHeight/wm.logo.naturalWidth));c.getContext("2d").drawImage(wm.logo,0,0,c.width,c.height);return c}
+  const t=$("#t5").value||"Pixel Tool",x=c.getContext("2d");
+  x.font="700 100px Cairo,Tahoma,sans-serif";const fs=100*W/Math.max(1,x.measureText(t).width);
+  c.width=W;c.height=Math.ceil(fs*1.4);
+  x.font="700 "+fs+"px Cairo,Tahoma,sans-serif";x.fillStyle=$("#k5").value;x.textAlign="center";x.textBaseline="middle";
+  x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=fs*.05;x.fillText(t,W/2,c.height/2);
+  return c;
+}
+function r5(x,w,h){
+  x.drawImage(wm.img,0,0,w,h);
+  const m=mark(w),p=$("#p5").value,rot=+$("#a5").value*Math.PI/180,g=w*.03;
+  x.globalAlpha=+$("#o5").value/100;
+  const put=(cx,cy)=>{x.save();x.translate(cx,cy);x.rotate(rot);x.drawImage(m,-m.width/2,-m.height/2);x.restore()};
+  if(p==="tile"){
+    const sx=m.width*1.6,sy=m.height*3;
+    for(let r=0,y=sy/2;y<h+sy;y+=sy,r++)for(let xx=r%2?sx/2:0;xx<w+sx;xx+=sx)put(xx,y);
+  }else{
+    const v=p[0],hh=p[1];
+    put(hh==="l"?m.width/2+g:hh==="r"?w-m.width/2-g:w/2,v==="t"?m.height/2+g:v==="b"?h-m.height/2-g:h/2);
+  }
+  x.globalAlpha=1;
+}
+function d5(){
+  if(!wm.img)return;const w=Math.min(wm.img.naturalWidth,900),h=Math.round(w*wm.img.naturalHeight/wm.img.naturalWidth),c=$("#c5");
+  c.width=w;c.height=h;r5(c.getContext("2d"),w,h);
+}
+drop($("#d5"),false,async([f])=>{try{wm.img=await loadImg(f);$("#w5").hidden=false;d5()}catch(e){toast("تعذر فتح الصورة")}});
+["#t5","#k5","#s5","#o5","#a5","#p5"].forEach(s=>$(s).addEventListener("input",d5));
+$("#l5").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{wm.logo=await loadImg(f);$("#rl5").hidden=false;d5()}catch(x){toast("تعذر فتح الشعار")}};
+$("#rl5").onclick=()=>{wm.logo=null;$("#l5").value="";$("#rl5").hidden=true;d5()};
+$("#dl5").onclick=async()=>{
+  if(!wm.img)return;const t=$("#f5").value,w=wm.img.naturalWidth,h=wm.img.naturalHeight,c=document.createElement("canvas");
+  c.width=w;c.height=h;const x=c.getContext("2d");if(t==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,w,h)}
+  r5(x,w,h);const b=await blob(c,t,.95);saveBlob("pixel-watermark."+ext(b),b);
+};
+</script>
+</body>
+</html>
