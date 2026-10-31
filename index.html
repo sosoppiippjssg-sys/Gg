@@ -1,27 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- اسم الموقع الجديد -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixel Tools - استوديو الصور الذكي</title>
     
-    <meta name="description" content="مجموعة أدوات متكاملة فائقة السرعة لمعالجة الصور محلياً داخل المتصفح 100%: إزالة الخلفية بالذكاء الاصطناعي، ضغط الحجم، تحويل الصيغ، القص والتأطير بالأشكال، وحماية الحقوق بالعلامة المائية." />
-    <meta property="og:title" content="Pixel Tools - استوديو الصور الذكي" />
-    <meta property="og:description" content="مجموعة أدوات متكاملة فائقة السرعة لمعالجة الصور محلياً داخل المتصفح 100%: إزالة الخلفية بالذكاء الاصطناعي، ضغط الحجم، تحويل الصيغ، القص والتأطير بالأشكال، وحماية الحقوق بالعلامة المائية." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <!-- كود إثبات ملكية جوجل سيرش كونسول -->
+    <!-- وصف الموقع وميتا تاتجز -->
+    <meta name="description" content="مجموعة أدوات متكاملة فائقة السرعة لمعالجة الصور محلياً داخل المتصفح 100%: إزالة الخلفية، ضغط الحجم، تحويل الصيغ، والقص والتأطير." />
+    
+    <!-- كود إثبات ملكية Google Search Console -->
     <meta name="google-site-verification" content="Md2tc493Laa5qpvwHf5J_AsHgpDsAb6NYVPiDnurBbA" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+    <!-- خط Tajawal الاحترافي -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- مكتبة الأيقونات والستايل الحديث (Tailwind CSS) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-600 selection:text-white">
+
+    <!-- شريط التنقل العلوي -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2 rounded-xl text-white font-black text-xl shadow-lg shadow-indigo-500/30">PT</div>
+                <span class="text-xl font-black tracking-wide bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent">Pixel Tools</span>
+            </div>
+            <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full font-medium">النسخة الذكية</span>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full text-center">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-tight">
+                منصة <span class="text-indigo-500">Pixel Tools</span> المتقدمة لمعالجة الصور
+            </h1>
+            <p class="text-slate-400 text-lg leading-relaxed">
+                أدوات احترافية سريعة وآمنة لمعالجة صورك بالكامل داخل متصفحك دون الحاجة لرفعها لأي خادم خارجي.
+            </p>
+
+            <!-- شبكة الأدوات -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-8 text-right">
+                <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl hover:border-indigo-500/50 transition-all duration-300">
+                    <h3 class="font-bold text-lg text-indigo-400 mb-2">إزالة الخلفية بالذكاء الاصطناعي</h3>
+                    <p class="text-sm text-slate-400">عزل خلفية الصور بدقة عالية وبنقرة زر واحدة.</p>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl hover:border-indigo-500/50 transition-all duration-300">
+                    <h3 class="font-bold text-lg text-indigo-400 mb-2">ضغط وحجم الصور</h3>
+                    <p class="text-sm text-slate-400">تقليل حجم الصور مع الحفاظ الكامل على الجودة.</p>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl hover:border-indigo-500/50 transition-all duration-300">
+                    <h3 class="font-bold text-lg text-indigo-400 mb-2">تحويل الصيغ</h3>
+                    <p class="text-sm text-slate-400">التحويل السريع بين صيغ (JPG, PNG, WebP).</p>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl hover:border-indigo-500/50 transition-all duration-300">
+                    <h3 class="font-bold text-lg text-indigo-400 mb-2">القص والعلامة المائية</h3>
+                    <p class="text-sm text-slate-400">تأطير الصور وحماية حقوقك بعلامة مائية خاصة.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="border-t border-slate-800 py-6 text-center text-sm text-slate-500">
+        <p>© 2026 Pixel Tools. جميع الحقوق محفوظة.</p>
+    </footer>
+
+</body>
+  </html>
