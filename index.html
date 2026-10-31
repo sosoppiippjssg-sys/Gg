@@ -1,2713 +1,1321 @@
 ```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Pixel Tool - ط£ط¯ظˆط§طھ ط§ظ„طµظˆط±</title>
-
-<meta name="description"
-content="Pixel Tool - ط£ط¯ظˆط§طھ ظ…ط¬ط§ظ†ظٹط© ظ„ظ…ط¹ط§ظ„ط¬ط© ط§ظ„طµظˆط±">
-
-<!--
-====================================================
-Pixel Tool
-ظƒظ„ ط§ظ„ظ…ظˆظ‚ط¹ ظپظٹ ظ…ظ„ظپ ظˆط§ط­ط¯
-====================================================
--->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Tool - أدوات الصور</title>
+<meta name="description" content="Pixel Tool - أدوات مجانية وسهلة للصور">
 
 <style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Tahoma,Arial,"Noto Sans Arabic",sans-serif;
+  background:#080b14;
+  color:#fff;
+  min-height:100vh;
+  direction:rtl;
+  text-align:right;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
 
-/* ================================
-   ط§ظ„ط¥ط¹ط¯ط§ط¯ط§طھ ط§ظ„ط¹ط§ظ…ط©
-================================ */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+.header{
+  position:sticky;top:0;z-index:20;
+  background:rgba(8,11,20,.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid #20263a;
+  padding:18px 6%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
 }
 
-html {
-    scroll-behavior: smooth;
+.logo{
+  font-size:27px;
+  font-weight:900;
+  direction:ltr;
+  unicode-bidi:isolate;
 }
 
-body {
+.logo span{color:#8b5cf6}
+.header small{color:#aab1c5}
 
-    font-family:
-        Arial,
-        Tahoma,
-        sans-serif;
-
-    background:
-        radial-gradient(
-            circle at 15% 10%,
-            rgba(124,92,255,.18),
-            transparent 30%
-        ),
-
-        radial-gradient(
-            circle at 85% 15%,
-            rgba(40,180,255,.10),
-            transparent 30%
-        ),
-
-        #080a10;
-
-    color: #ffffff;
-
-    min-height: 100vh;
+.hero{
+  text-align:center;
+  padding:65px 20px 40px
 }
 
-
-/* ================================
-   Header
-================================ */
-
-header {
-
-    height: 75px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding:
-        0 6%;
-
-    border-bottom:
-        1px solid rgba(255,255,255,.08);
-
-    background:
-        rgba(8,10,16,.88);
-
-    backdrop-filter:
-        blur(15px);
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 999;
+.badge{
+  display:inline-block;
+  padding:9px 18px;
+  border:1px solid #5843a8;
+  border-radius:999px;
+  color:#c9bcff;
+  background:#17132d;
+  margin-bottom:20px
 }
 
-
-.logo {
-
-    font-size: 25px;
-
-    font-weight: 900;
-
-    letter-spacing: -1px;
+.hero h1{
+  font-size:clamp(38px,8vw,70px);
+  line-height:1.15;
+  margin-bottom:18px
 }
 
-
-.logo span {
-
-    color: #8565ff;
+.gradient{
+  direction:ltr;
+  unicode-bidi:isolate;
+  display:inline-block;
+  background:linear-gradient(90deg,#9b6cff,#35c6f4);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent
 }
 
-
-.header-text {
-
-    color: #999fb1;
-
-    font-size: 13px;
+.hero p{
+  max-width:760px;
+  margin:auto;
+  color:#aeb5c7;
+  line-height:2;
+  font-size:17px
 }
 
-
-/* ================================
-   Hero
-================================ */
-
-.hero {
-
-    text-align: center;
-
-    padding:
-        80px 20px 55px;
+.container{
+  width:min(1100px,92%);
+  margin:auto
 }
 
-
-.hero-badge {
-
-    display: inline-block;
-
-    padding:
-        8px 17px;
-
-    border-radius: 50px;
-
-    color: #b9aaff;
-
-    background:
-        rgba(124,92,255,.12);
-
-    border:
-        1px solid
-        rgba(124,92,255,.30);
-
-    font-size: 13px;
-
-    margin-bottom: 20px;
+.tools{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+  margin:35px auto 25px
 }
 
-
-.hero h1 {
-
-    font-size:
-        clamp(42px, 8vw, 75px);
-
-    line-height: 1;
-
-    letter-spacing: -3px;
-
-    margin-bottom: 25px;
+.tool{
+  background:#111625;
+  border:1px solid #252d45;
+  border-radius:18px;
+  padding:20px 14px;
+  text-align:center;
+  transition:.2s
 }
 
-
-.gradient {
-
-    background:
-        linear-gradient(
-            90deg,
-            #9b7cff,
-            #55d7ff
-        );
-
-    -webkit-background-clip: text;
-
-    background-clip: text;
-
-    color: transparent;
+.tool:hover,
+.tool.active{
+  border-color:#7657e8;
+  transform:translateY(-2px)
 }
 
-
-.hero p {
-
-    max-width: 650px;
-
-    margin: auto;
-
-    color: #959bad;
-
-    line-height: 1.9;
-
-    font-size: 16px;
+.tool-icon{
+  font-size:30px;
+  margin-bottom:10px
 }
 
-
-/* ================================
-   Tools
-================================ */
-
-.tools {
-
-    max-width: 1200px;
-
-    margin:
-        10px auto 60px;
-
-    padding:
-        0 20px;
+.tool h3{
+  font-size:16px;
+  margin-bottom:7px
 }
 
-
-.tools-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(5,1fr);
-
-    gap: 15px;
+.tool p{
+  font-size:12px;
+  color:#8992aa;
+  line-height:1.7
 }
 
-
-.tool {
-
-    position: relative;
-
-    overflow: hidden;
-
-    min-height: 185px;
-
-    padding: 22px;
-
-    border-radius: 20px;
-
-    cursor: pointer;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.055),
-            rgba(255,255,255,.018)
-        );
-
-    transition:
-        .25s ease;
+.panel{
+  background:#101523;
+  border:1px solid #252d45;
+  border-radius:24px;
+  padding:24px;
+  margin:20px auto 50px;
+  min-height:280px
 }
 
-
-.tool:hover {
-
-    transform:
-        translateY(-6px);
-
-    border-color:
-        rgba(124,92,255,.55);
-
-    background:
-        rgba(124,92,255,.10);
+.panel h2{
+  text-align:center;
+  margin-bottom:8px
 }
 
-
-.tool.active {
-
-    border-color:
-        #8565ff;
-
-    box-shadow:
-        0 0 0 1px
-        rgba(133,101,255,.25);
+.panel-desc{
+  text-align:center;
+  color:#9ba4ba;
+  margin-bottom:22px
 }
 
-
-.tool-icon {
-
-    width: 52px;
-
-    height: 52px;
-
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 15px;
-
-    background:
-        rgba(124,92,255,.15);
-
-    font-size: 25px;
-
-    margin-bottom: 18px;
+.drop{
+  border:2px dashed #39435f;
+  border-radius:20px;
+  padding:38px 18px;
+  text-align:center;
+  background:#0b0f1b;
+  transition:.2s
 }
 
-
-.tool h3 {
-
-    font-size: 16px;
-
-    margin-bottom: 8px;
+.drop.drag{
+  border-color:#8b5cf6;
+  background:#17132d
 }
 
-
-.tool p {
-
-    color: #8f96a8;
-
-    font-size: 12px;
-
-    line-height: 1.7;
+.drop strong{
+  display:block;
+  font-size:20px;
+  margin-bottom:8px
 }
 
-
-/* ================================
-   Editor
-================================ */
-
-.workspace {
-
-    max-width: 900px;
-
-    margin:
-        auto;
-
-    padding:
-        0 20px 100px;
+.drop span{
+  color:#8f98ae;
+  font-size:14px;
+  display:block;
+  margin-bottom:18px
 }
 
-
-.editor {
-
-    background:
-        rgba(17,21,34,.90);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    border-radius: 28px;
-
-    padding: 30px;
-
-    box-shadow:
-        0 30px 90px
-        rgba(0,0,0,.30);
+.primary,
+.secondary,
+.danger{
+  border:0;
+  border-radius:12px;
+  padding:12px 20px;
+  color:#fff;
+  font-weight:700
 }
 
+.primary{background:#7657e8}
+.secondary{background:#252d42}
+.danger{background:#9f3048}
 
-.editor-top {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 25px;
+.actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:18px
 }
 
+.hidden{display:none!important}
 
-.editor-title {
-
-    font-size: 22px;
-
-    font-weight: bold;
+.preview{
+  margin-top:20px;
+  text-align:center;
+  background:#0b0f1b;
+  border-radius:18px;
+  padding:15px
 }
 
-
-.reset {
-
-    width: 38px;
-
-    height: 38px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255,255,255,.07);
-
-    color: white;
-
-    cursor: pointer;
-
-    font-size: 20px;
+.preview img,
+.preview canvas{
+  max-width:100%;
+  max-height:420px;
+  border-radius:12px
 }
 
-
-/* ================================
-   Upload
-================================ */
-
-.dropzone {
-
-    min-height: 270px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    border:
-        2px dashed
-        rgba(255,255,255,.13);
-
-    border-radius: 20px;
-
-    cursor: pointer;
-
-    transition: .2s;
+.info{
+  margin-top:15px;
+  color:#aeb5c7;
+  text-align:center;
+  line-height:1.9;
+  white-space:pre-line
 }
 
-
-.dropzone:hover,
-.dropzone.drag {
-
-    border-color:
-        #8565ff;
-
-    background:
-        rgba(124,92,255,.06);
+.row{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin:18px 0
 }
 
-
-.upload-icon {
-
-    font-size: 55px;
-
-    margin-bottom: 15px;
+.field{
+  background:#0b0f1b;
+  border:1px solid #28314a;
+  border-radius:14px;
+  padding:14px;
+  min-width:190px
 }
 
-
-.dropzone h3 {
-
-    margin-bottom: 8px;
+.field label{
+  display:block;
+  color:#aeb5c7;
+  font-size:13px;
+  margin-bottom:8px
 }
 
-
-.dropzone p {
-
-    color: #8e95a7;
-
-    font-size: 13px;
-
-    margin-bottom: 20px;
+.field input,
+.field select{
+  width:100%;
+  background:#12182a;
+  color:#fff;
+  border:1px solid #303a56;
+  border-radius:9px;
+  padding:9px;
+  outline:none
 }
 
-
-input[type="file"] {
-
-    display: none;
+.status{
+  margin:15px auto;
+  padding:12px 15px;
+  border-radius:12px;
+  background:#171d2d;
+  color:#c6cee0;
+  text-align:center;
+  white-space:pre-line
 }
 
-
-.upload-button {
-
-    display: inline-block;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7353ff,
-            #9a7bff
-        );
-
-    color: white;
-
-    padding:
-        12px 22px;
-
-    border-radius: 12px;
-
-    font-weight: bold;
-
-    cursor: pointer;
+.status.ok{
+  background:#11291f;
+  color:#9af0c2
 }
 
-
-/* ================================
-   Preview
-================================ */
-
-.preview {
-
-    display: none;
-
-    margin-top: 25px;
-
-    text-align: center;
+.status.err{
+  background:#35151d;
+  color:#ffb0bd
 }
 
-
-.preview img {
-
-    max-width: 100%;
-
-    max-height: 450px;
-
-    border-radius: 15px;
-
-    object-fit: contain;
-
-    background-color: white;
-
-    background-image:
-        linear-gradient(45deg,#ddd 25%,transparent 25%),
-        linear-gradient(-45deg,#ddd 25%,transparent 25%),
-        linear-gradient(45deg,transparent 75%,#ddd 75%),
-        linear-gradient(-45deg,transparent 75%,#ddd 75%);
-
-    background-size:
-        20px 20px;
-
-    background-position:
-        0 0,
-        0 10px,
-        10px -10px,
-        -10px 0;
+footer{
+  text-align:center;
+  color:#667087;
+  padding:25px;
+  border-top:1px solid #20263a
 }
 
-
-/* ================================
-   Controls
-================================ */
-
-.controls {
-
-    display: none;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap: 15px;
-
-    margin-top: 25px;
+@media(max-width:900px){
+  .tools{grid-template-columns:repeat(3,1fr)}
 }
 
-
-.control {
-
-    display: none;
+@media(max-width:600px){
+  .header{padding:15px 4%}
+  .header small{font-size:11px}
+  .tools{grid-template-columns:repeat(2,1fr)}
+  .hero{padding-top:45px}
+  .panel{padding:16px}
 }
 
-
-.control label {
-
-    display: block;
-
-    color: #9ca2b2;
-
-    font-size: 12px;
-
-    margin-bottom: 8px;
+@media(max-width:380px){
+  .tools{grid-template-columns:1fr}
 }
-
-
-.control input,
-.control select {
-
-    width: 100%;
-
-    height: 45px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    background:
-        #171c2b;
-
-    color: white;
-
-    border-radius: 10px;
-
-    padding:
-        0 12px;
-
-    outline: none;
-}
-
-
-.control input[type="range"] {
-
-    padding: 0;
-
-    accent-color:
-        #8565ff;
-}
-
-
-.value {
-
-    color:
-        #a794ff;
-
-    text-align: center;
-
-    font-size: 12px;
-
-    margin-top: 5px;
-}
-
-
-/* ================================
-   Action
-================================ */
-
-.action {
-
-    width: 100%;
-
-    height: 52px;
-
-    margin-top: 22px;
-
-    border: none;
-
-    border-radius: 13px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7353ff,
-            #997aff
-        );
-
-    color: white;
-
-    font-size: 15px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: .2s;
-}
-
-
-.action:hover {
-
-    transform:
-        translateY(-2px);
-}
-
-
-.action:disabled {
-
-    opacity: .45;
-
-    cursor:
-        not-allowed;
-
-    transform:
-        none;
-}
-
-
-/* ================================
-   Progress
-================================ */
-
-.progress {
-
-    display: none;
-
-    margin-top: 20px;
-
-    padding: 15px;
-
-    border-radius: 13px;
-
-    background:
-        rgba(124,92,255,.08);
-
-    border:
-        1px solid
-        rgba(124,92,255,.20);
-
-    text-align: center;
-}
-
-
-.progress-text {
-
-    color:
-        #b4a7ff;
-
-    font-size: 13px;
-
-    margin-bottom: 10px;
-}
-
-
-.progress-bar {
-
-    height: 8px;
-
-    border-radius: 20px;
-
-    overflow: hidden;
-
-    background:
-        rgba(255,255,255,.08);
-}
-
-
-.progress-fill {
-
-    width: 0%;
-
-    height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #7353ff,
-            #55d7ff
-        );
-
-    transition:
-        width .3s;
-}
-
-
-/* ================================
-   Result
-================================ */
-
-.result {
-
-    display: none;
-
-    margin-top: 25px;
-
-    padding: 20px;
-
-    border-radius: 15px;
-
-    background:
-        rgba(54,211,153,.07);
-
-    border:
-        1px solid
-        rgba(54,211,153,.22);
-
-    text-align: center;
-}
-
-
-.result-text {
-
-    color:
-        #72e7b2;
-
-    margin-bottom: 12px;
-}
-
-
-.download {
-
-    display: inline-block;
-
-    text-decoration: none;
-
-    color: white;
-
-    background:
-        #20b978;
-
-    padding:
-        12px 22px;
-
-    border-radius: 10px;
-
-    font-weight: bold;
-}
-
-
-/* ================================
-   Footer
-================================ */
-
-footer {
-
-    text-align: center;
-
-    padding:
-        30px 20px;
-
-    color:
-        #747b8d;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.07);
-
-    font-size: 13px;
-}
-
-
-/* ================================
-   Mobile
-================================ */
-
-@media(max-width:900px) {
-
-    .tools-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-}
-
-
-@media(max-width:600px) {
-
-    header {
-
-        padding:
-            0 20px;
-    }
-
-    .header-text {
-
-        display: none;
-    }
-
-    .hero {
-
-        padding:
-            60px 20px 40px;
-    }
-
-    .hero h1 {
-
-        font-size: 45px;
-    }
-
-    .tools-grid {
-
-        grid-template-columns:
-            1fr;
-    }
-
-    .editor {
-
-        padding:
-            20px;
-    }
-
-    .controls {
-
-        grid-template-columns:
-            1fr;
-    }
-}
-
 </style>
-
-
 </head>
-
 
 <body>
 
-
-<!-- ================================
-     Header
-================================ -->
-
-<header>
-
-    <div class="logo">
-        Pixel <span>Tool</span>
-    </div>
-
-    <div class="header-text">
-        ط£ط¯ظˆط§طھ ط§ظ„طµظˆط± ط§ظ„ط³ط±ظٹط¹ط© ظˆط§ظ„ظ…ط¬ط§ظ†ظٹط© âڑ،
-    </div>
-
+<header class="header">
+  <div class="logo">Pixel <span>Tool</span></div>
+  <small>أدوات الصور السريعة والمجانية</small>
 </header>
 
-
-
-<!-- ================================
-     Hero
-================================ -->
-
 <section class="hero">
+  <div class="badge">كل أدوات الصور في مكان واحد</div>
 
-    <div class="hero-badge">
-        ط£ط¯ظˆط§طھ ط§ظ„طµظˆط± ظپظٹ ظ…ظƒط§ظ† ظˆط§ط­ط¯
-    </div>
+  <h1>
+    عدّل صورك مع
+    <span class="gradient">Pixel Tool</span>
+  </h1>
 
-    <h1>
-
-        ط¹ط¯ظ‘ظ„ طµظˆط±ظƒ ظ…ط¹
-
-        <span class="gradient">
-            Pixel Tool
-        </span>
-
-    </h1>
-
-    <p>
-
-        ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©طŒ ط¶ط؛ط· ط§ظ„طµظˆط±طŒ
-        طھط­ظˆظٹظ„ ط§ظ„طµظٹط؛طŒ ط§ظ„ظ‚طµ ظˆط¥ط¶ط§ظپط© ط§ظ„ط¹ظ„ط§ظ…ط§طھ
-        ط§ظ„ظ…ط§ط¦ظٹط© â€” ط¨ط³ظ‡ظˆظ„ط© ظˆط³ط±ط¹ط©.
-
-    </p>
-
+  <p>
+    إزالة الخلفية، ضغط الصور، تحويل الصيغ،
+    قص الصورة، وإضافة علامة مائية بسهولة من المتصفح.
+  </p>
 </section>
 
-
-
-<!-- ================================
-     Tools
-================================ -->
+<main class="container">
 
 <section class="tools">
 
-    <div class="tools-grid">
+<div class="tool active"
+     data-tool="background"
+     onclick="selectTool('background',this)">
+  <div class="tool-icon">🪄</div>
+  <h3>إزالة الخلفية</h3>
+  <p>إزالة خلفية الصورة بالذكاء الاصطناعي.</p>
+</div>
 
+<div class="tool"
+     data-tool="compress"
+     onclick="selectTool('compress',this)">
+  <div class="tool-icon">📦</div>
+  <h3>ضغط الصورة</h3>
+  <p>تقليل حجم الصورة مع التحكم بالجودة.</p>
+</div>
 
-        <!-- ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط© -->
+<div class="tool"
+     data-tool="convert"
+     onclick="selectTool('convert',this)">
+  <div class="tool-icon">🔄</div>
+  <h3>تحويل الصيغة</h3>
+  <p>PNG و JPG و WEBP بسهولة.</p>
+</div>
 
-        <div
-            class="tool"
-            onclick="selectTool('background',this)"
-        >
+<div class="tool"
+     data-tool="crop"
+     onclick="selectTool('crop',this)">
+  <div class="tool-icon">✂️</div>
+  <h3>قص الصورة</h3>
+  <p>قص مربّع أو دائري.</p>
+</div>
 
-            <div class="tool-icon">
-                ًںھ„
-            </div>
-
-            <h3>
-                ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©
-            </h3>
-
-            <p>
-                ط¥ط²ط§ظ„ط© ط®ظ„ظپظٹط© ط§ظ„طµظˆط±ط©
-                ط¨ط§ظ„ط°ظƒط§ط، ط§ظ„ط§طµط·ظ†ط§ط¹ظٹ.
-            </p>
-
-        </div>
-
-
-
-        <!-- ط§ظ„ط¶ط؛ط· -->
-
-        <div
-            class="tool"
-            onclick="selectTool('compress',this)"
-        >
-
-            <div class="tool-icon">
-                ًں“¦
-            </div>
-
-            <h3>
-                ط¶ط؛ط· ط§ظ„طµظˆط±ط©
-            </h3>
-
-            <p>
-                طھظ‚ظ„ظٹظ„ ط­ط¬ظ… ط§ظ„طµظˆط±ط©
-                ظ…ط¹ ط§ظ„ط­ظپط§ط¸ ط¹ظ„ظ‰ ط§ظ„ط¬ظˆط¯ط©.
-            </p>
-
-        </div>
-
-
-
-        <!-- ط§ظ„طھط­ظˆظٹظ„ -->
-
-        <div
-            class="tool"
-            onclick="selectTool('convert',this)"
-        >
-
-            <div class="tool-icon">
-                ًں”„
-            </div>
-
-            <h3>
-                طھط­ظˆظٹظ„ ط§ظ„طµظٹط؛
-            </h3>
-
-            <p>
-                طھط­ظˆظٹظ„ JPG ظˆ PNG
-                ظˆ WEBP.
-            </p>
-
-        </div>
-
-
-
-        <!-- ط§ظ„ظ‚طµ -->
-
-        <div
-            class="tool"
-            onclick="selectTool('crop',this)"
-        >
-
-            <div class="tool-icon">
-                â­•
-            </div>
-
-            <h3>
-                ظ‚طµ ط§ظ„طµظˆط±ط©
-            </h3>
-
-            <p>
-                طھط­ظˆظٹظ„ ط§ظ„طµظˆط±ط© ط¥ظ„ظ‰
-                ظ…ط±ط¨ط¹ ط£ظˆ ط¯ط§ط¦ط±ط©.
-            </p>
-
-        </div>
-
-
-
-        <!-- ط§ظ„ط¹ظ„ط§ظ…ط© ط§ظ„ظ…ط§ط¦ظٹط© -->
-
-        <div
-            class="tool"
-            onclick="selectTool('watermark',this)"
-        >
-
-            <div class="tool-icon">
-                ًں’§
-            </div>
-
-            <h3>
-                ط§ظ„ط¹ظ„ط§ظ…ط© ط§ظ„ظ…ط§ط¦ظٹط©
-            </h3>
-
-            <p>
-                ط¥ط¶ط§ظپط© ظ†طµ ظƒط¹ظ„ط§ظ…ط©
-                ظ…ط§ط¦ظٹط© ط¹ظ„ظ‰ ط§ظ„طµظˆط±ط©.
-            </p>
-
-        </div>
-
-
-    </div>
+<div class="tool"
+     data-tool="watermark"
+     onclick="selectTool('watermark',this)">
+  <div class="tool-icon">©️</div>
+  <h3>علامة مائية</h3>
+  <p>أضف نصًا كعلامة مائية على الصورة.</p>
+</div>
 
 </section>
 
+<section class="panel">
 
+<h2 id="panelTitle">إزالة الخلفية</h2>
 
-<!-- ================================
-     Workspace
-================================ -->
+<p class="panel-desc" id="panelDesc">
+  اختر صورة ثم انتظر حتى تكتمل المعالجة.
+</p>
 
-<section
-    class="workspace"
-    id="workspace"
->
+<div class="drop" id="drop">
 
-<div class="editor">
+<strong id="dropTitle">اختر صورة</strong>
 
+<span id="dropHint">
+PNG أو JPG أو WEBP
+</span>
 
-    <div class="editor-top">
+<input
+  id="fileInput"
+  type="file"
+  accept="image/*"
+  class="hidden">
 
-        <div
-            class="editor-title"
-            id="toolTitle"
-        >
-            ط§ط®طھط± ط£ط¯ط§ط© ظ„ظ„ط¨ط¯ط،
-        </div>
+<button
+  class="primary"
+  onclick="document.getElementById('fileInput').click()">
+  اختيار صورة
+</button>
 
-        <button
-            class="reset"
-            onclick="resetTool()"
-        >
-            أ—
-        </button>
+</div>
 
-    </div>
+<div id="controls"></div>
 
+<div id="status"
+     class="status hidden"></div>
 
+<div id="preview"
+     class="preview hidden"></div>
 
-    <!-- ============================
-         Upload
-    ============================= -->
+<div class="actions">
 
-    <div
-        class="dropzone"
-        id="dropzone"
-    >
+<button
+  id="runBtn"
+  class="primary hidden"
+  onclick="runTool()">
+  تنفيذ
+</button>
 
-        <div>
+<button
+  id="downloadBtn"
+  class="secondary hidden"
+  onclick="downloadResult()">
+  تحميل النتيجة
+</button>
 
-            <div class="upload-icon">
-                âکپï¸ڈ
-            </div>
-
-            <h3>
-                ط§ط³ط­ط¨ ط§ظ„طµظˆط±ط© ظ‡ظ†ط§
-            </h3>
-
-            <p>
-                ط£ظˆ ط§ط®طھط± طµظˆط±ط© ظ…ظ† ط¬ظ‡ط§ط²ظƒ
-            </p>
-
-
-            <label class="upload-button">
-
-                ط§ط®طھظٹط§ط± ط§ظ„طµظˆط±ط©
-
-                <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/*"
-                >
-
-            </label>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ============================
-         Preview
-    ============================= -->
-
-    <div
-        class="preview"
-        id="previewBox"
-    >
-
-        <img
-            id="preview"
-            alt="ظ…ط¹ط§ظٹظ†ط© ط§ظ„طµظˆط±ط©"
-        >
-
-    </div>
-
-
-
-    <!-- ============================
-         Controls
-    ============================= -->
-
-    <div
-        class="controls"
-        id="controls"
-    >
-
-
-        <!-- ط¬ظˆط¯ط© ط§ظ„ط¶ط؛ط· -->
-
-        <div
-            class="control"
-            id="compressControl"
-        >
-
-            <label>
-                ط¬ظˆط¯ط© ط§ظ„طµظˆط±ط©
-            </label>
-
-            <input
-                type="range"
-                id="quality"
-                min="10"
-                max="100"
-                value="70"
-            >
-
-            <div
-                class="value"
-                id="qualityValue"
-            >
-                70%
-            </div>
-
-        </div>
-
-
-
-        <!-- ط§ظ„طµظٹط؛ط© -->
-
-        <div
-            class="control"
-            id="formatControl"
-        >
-
-            <label>
-                ط§ظ„طµظٹط؛ط© ط§ظ„ط¬ط¯ظٹط¯ط©
-            </label>
-
-            <select id="format">
-
-                <option value="image/jpeg">
-                    JPG
-                </option>
-
-                <option value="image/png">
-                    PNG
-                </option>
-
-                <option value="image/webp">
-                    WEBP
-                </option>
-
-            </select>
-
-        </div>
-
-
-
-        <!-- ط§ظ„ظ‚طµ -->
-
-        <div
-            class="control"
-            id="cropControl"
-        >
-
-            <label>
-                ط´ظƒظ„ ط§ظ„طµظˆط±ط©
-            </label>
-
-            <select id="cropShape">
-
-                <option value="square">
-                    ظ…ط±ط¨ط¹
-                </option>
-
-                <option value="circle">
-                    ط¯ط§ط¦ط±ط©
-                </option>
-
-            </select>
-
-        </div>
-
-
-
-        <!-- ظ†طµ ط§ظ„ط¹ظ„ط§ظ…ط© -->
-
-        <div
-            class="control"
-            id="watermarkTextControl"
-        >
-
-            <label>
-                ظ†طµ ط§ظ„ط¹ظ„ط§ظ…ط© ط§ظ„ظ…ط§ط¦ظٹط©
-            </label>
-
-            <input
-                type="text"
-                id="watermarkText"
-                placeholder="Pixel Tool"
-            >
-
-        </div>
-
-
-
-        <!-- ط´ظپط§ظپظٹط© ط§ظ„ط¹ظ„ط§ظ…ط© -->
-
-        <div
-            class="control"
-            id="watermarkOpacityControl"
-        >
-
-            <label>
-                ط´ظپط§ظپظٹط© ط§ظ„ط¹ظ„ط§ظ…ط©
-            </label>
-
-            <input
-                type="range"
-                id="watermarkOpacity"
-                min="10"
-                max="100"
-                value="50"
-            >
-
-            <div
-                class="value"
-                id="opacityValue"
-            >
-                50%
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- ============================
-         Progress
-    ============================= -->
-
-    <div
-        class="progress"
-        id="progress"
-    >
-
-        <div
-            class="progress-text"
-            id="progressText"
-        >
-            ط¬ط§ط±ظٹ ط§ظ„ظ…ط¹ط§ظ„ط¬ط©...
-        </div>
-
-        <div class="progress-bar">
-
-            <div
-                class="progress-fill"
-                id="progressFill"
-            ></div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ============================
-         Action
-    ============================= -->
-
-    <button
-        class="action"
-        id="actionButton"
-        disabled
-    >
-        ط§ط±ظپط¹ طµظˆط±ط© ط£ظˆظ„ط§ظ‹
-    </button>
-
-
-
-    <!-- ============================
-         Result
-    ============================= -->
-
-    <div
-        class="result"
-        id="result"
-    >
-
-        <div class="result-text">
-            طھظ…طھ ظ…ط¹ط§ظ„ط¬ط© ط§ظ„طµظˆط±ط© ط¨ظ†ط¬ط§ط­ âœ…
-        </div>
-
-        <a
-            id="downloadButton"
-            class="download"
-            download="pixel-tool-result.png"
-        >
-            طھط­ظ…ظٹظ„ ط§ظ„طµظˆط±ط©
-        </a>
-
-    </div>
-
+<button
+  id="resetBtn"
+  class="secondary"
+  onclick="resetTool()">
+  إعادة ضبط
+</button>
 
 </div>
 
 </section>
 
-
-
-<!-- ================================
-     Footer
-================================ -->
+</main>
 
 <footer>
-
-    آ© 2026 Pixel Tool
-    â€” ط¬ظ…ظٹط¹ ط§ظ„ط­ظ‚ظˆظ‚ ظ…ط­ظپظˆط¸ط©
-
+© 2026 Pixel Tool — جميع الحقوق محفوظة
 </footer>
-
-
 
 <script>
 
-/* =================================================
-   ط§ظ„ظ…طھط؛ظٹط±ط§طھ
-================================================= */
-
-let currentTool = null;
-
+let currentTool = "background";
 let selectedFile = null;
-
-let originalImage = null;
-
 let resultURL = null;
-
-
-/* =================================================
-   ط§ظ„ط¹ظ†ط§طµط±
-================================================= */
+let resultBlob = null;
+let sourceImage = null;
+let bgRemovePromise = null;
 
 const fileInput =
-    document.getElementById("fileInput");
+  document.getElementById("fileInput");
 
-const dropzone =
-    document.getElementById("dropzone");
-
-const previewBox =
-    document.getElementById("previewBox");
-
-const preview =
-    document.getElementById("preview");
+const drop =
+  document.getElementById("drop");
 
 const controls =
-    document.getElementById("controls");
+  document.getElementById("controls");
 
-const actionButton =
-    document.getElementById("actionButton");
+const statusBox =
+  document.getElementById("status");
 
-const result =
-    document.getElementById("result");
+const preview =
+  document.getElementById("preview");
 
-const downloadButton =
-    document.getElementById("downloadButton");
+const runBtn =
+  document.getElementById("runBtn");
 
-const progress =
-    document.getElementById("progress");
+const downloadBtn =
+  document.getElementById("downloadBtn");
 
-const progressText =
-    document.getElementById("progressText");
+const configs = {
 
-const progressFill =
-    document.getElementById("progressFill");
+background:{
+  title:"إزالة الخلفية",
+  desc:"اختر صورة لإزالة خلفيتها بالذكاء الاصطناعي.",
+  hint:"قد يستغرق أول تشغيل بعض الوقت لتحميل نموذج الذكاء الاصطناعي."
+},
 
+compress:{
+  title:"ضغط الصورة",
+  desc:"قلّل حجم الصورة مع اختيار الجودة.",
+  hint:"الصورة ستبقى على جهازك ويتم ضغطها داخل المتصفح."
+},
 
-/* =================================================
-   ط£ط³ظ…ط§ط، ط§ظ„ط£ط¯ظˆط§طھ
-================================================= */
+convert:{
+  title:"تحويل صيغ الصور",
+  desc:"حوّل الصورة إلى JPG أو PNG أو WEBP.",
+  hint:"اختر الصيغة المطلوبة ثم اضغط تنفيذ."
+},
 
-const toolNames = {
+crop:{
+  title:"قص الصورة",
+  desc:"قص الصورة إلى مربع أو دائرة.",
+  hint:"سيتم استخدام مركز الصورة للقص."
+},
 
-    background:
-        "ًںھ„ ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©",
-
-    compress:
-        "ًں“¦ ط¶ط؛ط· ط§ظ„طµظˆط±ط©",
-
-    convert:
-        "ًں”„ طھط­ظˆظٹظ„ ط§ظ„طµظٹط؛ط©",
-
-    crop:
-        "â­• ظ‚طµ ط§ظ„طµظˆط±ط©",
-
-    watermark:
-        "ًں’§ ط§ظ„ط¹ظ„ط§ظ…ط© ط§ظ„ظ…ط§ط¦ظٹط©"
+watermark:{
+  title:"العلامة المائية",
+  desc:"أضف نصًا كعلامة مائية على الصورة.",
+  hint:"اكتب النص ثم اختر الحجم والشفافية."
+}
 
 };
 
+function setStatus(text,type=""){
 
-/* =================================================
-   ط§ط®طھظٹط§ط± ط£ط¯ط§ط©
-================================================= */
+  statusBox.textContent = text;
 
-function selectTool(tool, element) {
+  statusBox.className =
+    "status" + (type ? " " + type : "");
 
-    currentTool = tool;
-
-
-    document
-        .querySelectorAll(".tool")
-        .forEach(item => {
-
-            item.classList.remove("active");
-
-        });
-
-
-    element.classList.add("active");
-
-
-    document
-        .getElementById("toolTitle")
-        .textContent =
-        toolNames[tool];
-
-
-    controls.style.display =
-        "grid";
-
-
-    /*
-    ط¥ط®ظپط§ط، ط¬ظ…ظٹط¹ ط§ظ„ط®ظٹط§ط±ط§طھ
-    */
-
-    document
-        .querySelectorAll(".control")
-        .forEach(control => {
-
-            control.style.display =
-                "none";
-
-        });
-
-
-    /*
-    ط¥ط¸ظ‡ط§ط± ط®ظٹط§ط±ط§طھ ط§ظ„ط£ط¯ط§ط©
-    */
-
-    if (tool === "compress") {
-
-        document
-            .getElementById("compressControl")
-            .style.display =
-            "block";
-
-    }
-
-
-    if (tool === "convert") {
-
-        document
-            .getElementById("formatControl")
-            .style.display =
-            "block";
-
-    }
-
-
-    if (tool === "crop") {
-
-        document
-            .getElementById("cropControl")
-            .style.display =
-            "block";
-
-    }
-
-
-    if (tool === "watermark") {
-
-        document
-            .getElementById("watermarkTextControl")
-            .style.display =
-            "block";
-
-
-        document
-            .getElementById("watermarkOpacityControl")
-            .style.display =
-            "block";
-
-    }
-
-
-    if (selectedFile) {
-
-        actionButton.disabled =
-            false;
-
-        actionButton.textContent =
-            getActionText();
-
-    } else {
-
-        actionButton.disabled =
-            true;
-
-        actionButton.textContent =
-            "ط§ط±ظپط¹ طµظˆط±ط© ط£ظˆظ„ط§ظ‹";
-
-    }
-
-
-    document
-        .getElementById("workspace")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
+  statusBox.classList.remove("hidden");
 }
 
+function clearStatus(){
 
-/* =================================================
-   ظ†طµ ط²ط± ط§ظ„ظ…ط¹ط§ظ„ط¬ط©
-================================================= */
+  statusBox.classList.add("hidden");
+  statusBox.textContent = "";
 
-function getActionText() {
-
-    if (currentTool === "background")
-        return "ًںھ„ ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©";
-
-    if (currentTool === "compress")
-        return "ًں“¦ ط¶ط؛ط· ط§ظ„طµظˆط±ط©";
-
-    if (currentTool === "convert")
-        return "ًں”„ طھط­ظˆظٹظ„ ط§ظ„طµظˆط±ط©";
-
-    if (currentTool === "crop")
-        return "â­• ظ‚طµ ط§ظ„طµظˆط±ط©";
-
-    if (currentTool === "watermark")
-        return "ًں’§ ط¥ط¶ط§ظپط© ط§ظ„ط¹ظ„ط§ظ…ط© ط§ظ„ظ…ط§ط¦ظٹط©";
-
-    return "ظ…ط¹ط§ظ„ط¬ط© ط§ظ„طµظˆط±ط©";
 }
 
+function selectTool(name,el){
 
-/* =================================================
-   ط§ط®طھظٹط§ط± ط§ظ„ظ…ظ„ظپ
-================================================= */
+  currentTool = name;
 
-fileInput.addEventListener(
-    "change",
-    function() {
+  document
+    .querySelectorAll(".tool")
+    .forEach(x => x.classList.remove("active"));
 
-        if (this.files.length > 0) {
+  if(el)
+    el.classList.add("active");
 
-            loadImage(
-                this.files[0]
-            );
+  document.getElementById("panelTitle")
+    .textContent = configs[name].title;
 
-        }
+  document.getElementById("panelDesc")
+    .textContent = configs[name].desc;
 
-    }
-);
+  document.getElementById("dropHint")
+    .textContent = configs[name].hint;
 
+  resetTool(false);
 
-/* =================================================
-   Drag & Drop
-================================================= */
+  buildControls();
 
-dropzone.addEventListener(
-    "dragover",
-    function(event) {
-
-        event.preventDefault();
-
-        dropzone.classList.add(
-            "drag"
-        );
-
-    }
-);
-
-
-dropzone.addEventListener(
-    "dragleave",
-    function() {
-
-        dropzone.classList.remove(
-            "drag"
-        );
-
-    }
-);
-
-
-dropzone.addEventListener(
-    "drop",
-    function(event) {
-
-        event.preventDefault();
-
-        dropzone.classList.remove(
-            "drag"
-        );
-
-
-        if (
-            event.dataTransfer.files.length
-        ) {
-
-            loadImage(
-                event.dataTransfer.files[0]
-            );
-
-        }
-
-    }
-);
-
-
-/* =================================================
-   طھط­ظ…ظٹظ„ ط§ظ„طµظˆط±ط©
-================================================= */
-
-function loadImage(file) {
-
-    if (
-        !file.type.startsWith("image/")
-    ) {
-
-        alert(
-            "ظٹط±ط¬ظ‰ ط§ط®طھظٹط§ط± طµظˆط±ط© ظپظ‚ط·."
-        );
-
-        return;
-    }
-
-
-    selectedFile = file;
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload =
-        function(event) {
-
-            preview.src =
-                event.target.result;
-
-            previewBox.style.display =
-                "block";
-
-
-            originalImage =
-                new Image();
-
-
-            originalImage.onload =
-                function() {
-
-                    if (currentTool) {
-
-                        actionButton.disabled =
-                            false;
-
-                        actionButton.textContent =
-                            getActionText();
-
-                    }
-
-                };
-
-
-            originalImage.src =
-                event.target.result;
-
-        };
-
-
-    reader.readAsDataURL(file);
-
-
-    result.style.display =
-        "none";
 }
 
+function buildControls(){
 
-/* =================================================
-   ط¬ظˆط¯ط© ط§ظ„ط¶ط؛ط·
-================================================= */
+  controls.innerHTML = "";
 
-document
-    .getElementById("quality")
-    .addEventListener(
-        "input",
-        function() {
+  if(currentTool === "compress"){
 
-            document
-                .getElementById("qualityValue")
-                .textContent =
-                this.value + "%";
+    controls.innerHTML = `
+      <div class="row">
 
-        }
+        <div class="field">
+
+          <label>
+            الجودة:
+            <span id="qualityValue">80%</span>
+          </label>
+
+          <input
+            id="quality"
+            type="range"
+            min="10"
+            max="100"
+            value="80"
+            oninput="qualityValue.textContent=this.value+'%'">
+
+        </div>
+
+      </div>
+    `;
+
+  }
+
+  if(currentTool === "convert"){
+
+    controls.innerHTML = `
+      <div class="row">
+
+        <div class="field">
+
+          <label>الصيغة الجديدة</label>
+
+          <select id="format">
+
+            <option value="image/png">
+              PNG
+            </option>
+
+            <option value="image/jpeg">
+              JPG
+            </option>
+
+            <option value="image/webp">
+              WEBP
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+    `;
+
+  }
+
+  if(currentTool === "crop"){
+
+    controls.innerHTML = `
+      <div class="row">
+
+        <div class="field">
+
+          <label>نوع القص</label>
+
+          <select id="cropShape">
+
+            <option value="square">
+              مربع
+            </option>
+
+            <option value="circle">
+              دائرة
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+    `;
+
+  }
+
+  if(currentTool === "watermark"){
+
+    controls.innerHTML = `
+      <div class="row">
+
+        <div class="field">
+
+          <label>النص</label>
+
+          <input
+            id="wmText"
+            value="Pixel Tool"
+            maxlength="60">
+
+        </div>
+
+        <div class="field">
+
+          <label>حجم الخط</label>
+
+          <input
+            id="wmSize"
+            type="number"
+            min="10"
+            max="200"
+            value="42">
+
+        </div>
+
+        <div class="field">
+
+          <label>الشفافية</label>
+
+          <input
+            id="wmOpacity"
+            type="range"
+            min="10"
+            max="100"
+            value="45">
+
+        </div>
+
+      </div>
+    `;
+
+  }
+
+}
+
+fileInput.addEventListener("change",e=>{
+
+  if(e.target.files[0])
+    loadFile(e.target.files[0]);
+
+});
+
+["dragenter","dragover"].forEach(ev=>{
+
+  drop.addEventListener(ev,e=>{
+
+    e.preventDefault();
+
+    drop.classList.add("drag");
+
+  });
+
+});
+
+["dragleave","drop"].forEach(ev=>{
+
+  drop.addEventListener(ev,e=>{
+
+    e.preventDefault();
+
+    drop.classList.remove("drag");
+
+  });
+
+});
+
+drop.addEventListener("drop",e=>{
+
+  if(e.dataTransfer.files[0])
+    loadFile(e.dataTransfer.files[0]);
+
+});
+
+async function loadFile(file){
+
+  if(!file.type.startsWith("image/")){
+
+    setStatus(
+      "يرجى اختيار صورة فقط.",
+      "err"
     );
 
+    return;
 
-/* =================================================
-   ط´ظپط§ظپظٹط© ط§ظ„ط¹ظ„ط§ظ…ط©
-================================================= */
+  }
 
-document
-    .getElementById("watermarkOpacity")
-    .addEventListener(
-        "input",
-        function() {
+  selectedFile = file;
 
-            document
-                .getElementById("opacityValue")
-                .textContent =
-                this.value + "%";
+  resultURL = null;
+  resultBlob = null;
 
-        }
-    );
+  downloadBtn.classList.add("hidden");
 
+  runBtn.classList.remove("hidden");
 
-/* =================================================
-   ط²ط± ط§ظ„ظ…ط¹ط§ظ„ط¬ط©
-================================================= */
+  setStatus(
+    "تم اختيار الصورة: " + file.name
+  );
 
-actionButton.addEventListener(
-    "click",
-    processImage
-);
+  const url =
+    URL.createObjectURL(file);
 
+  sourceImage = new Image();
 
-async function processImage() {
+  sourceImage.onload = ()=>{
 
-    if (
-        !selectedFile ||
-        !originalImage ||
-        !currentTool
-    ) {
+    preview.innerHTML =
+      `<img src="${url}" alt="معاينة الصورة">`;
 
-        return;
-    }
+    preview.classList.remove("hidden");
 
+  };
 
-    actionButton.disabled =
-        true;
+  sourceImage.src = url;
 
-
-    showProgress(
-        10,
-        "ط¬ط§ط±ظٹ طھط¬ظ‡ظٹط² ط§ظ„طµظˆط±ط©..."
-    );
-
-
-    try {
-
-        if (
-            currentTool ===
-            "background"
-        ) {
-
-            await removeBackgroundAI();
-
-        }
-
-
-        else if (
-            currentTool ===
-            "compress"
-        ) {
-
-            compressImage();
-
-        }
-
-
-        else if (
-            currentTool ===
-            "convert"
-        ) {
-
-            convertImage();
-
-        }
-
-
-        else if (
-            currentTool ===
-            "crop"
-        ) {
-
-            cropImage();
-
-        }
-
-
-        else if (
-            currentTool ===
-            "watermark"
-        ) {
-
-            watermarkImage();
-
-        }
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        const message =
-            error && error.message
-                ? error.message
-                : "ط®ط·ط£ ط؛ظٹط± ظ…ط¹ط±ظˆظپ";
-
-        showProgress(
-            100,
-            "طھط¹ط°ط± ط¥ظƒظ…ط§ظ„ ط§ظ„ط¹ظ…ظ„ظٹط©: " + message
-        );
-
-        setTimeout(
-            hideProgress,
-            5000
-        );
-
-        alert(
-            "طھط¹ط°ط± ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©.\n\n" +
-            message +
-            "\n\nط¥ط°ط§ ظƒط§ظ†طھ ظ‡ط°ظ‡ ط£ظˆظ„ ظ…ط±ط©طŒ ط§ظ†طھط¸ط± ط­طھظ‰ ظٹظƒطھظ…ظ„ طھط­ظ…ظٹظ„ ط§ظ„ط°ظƒط§ط، ط§ظ„ط§طµط·ظ†ط§ط¹ظٹ ط«ظ… ط£ط¹ط¯ ط§ظ„ظ…ط­ط§ظˆظ„ط©."
-        );
-
-    }
-
-
-    actionButton.disabled =
-        false;
-
-    actionButton.textContent =
-        getActionText();
 }
 
+async function getBackgroundRemover(){
 
-/* =================================================
-   ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط© ط¨ط§ظ„ط°ظƒط§ط، ط§ظ„ط§طµط·ظ†ط§ط¹ظٹ
-   ================================================= */
+  if(!bgRemovePromise){
 
-let bgRemovePromise = null;
+    setStatus(
+      "جاري تحميل أداة إزالة الخلفية لأول مرة... قد يستغرق ذلك بعض الوقت."
+    );
 
-async function loadBackgroundRemover() {
-    if (bgRemovePromise) return bgRemovePromise;
+    bgRemovePromise =
+      import(
+        "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm?v=4"
+      )
+      .then(mod => mod.removeBackground)
+      .catch(err=>{
 
-    bgRemovePromise = import(
-        "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm?v=3"
-    ).then(function(module) {
-        if (!module || typeof module.removeBackground !== "function") {
-            throw new Error("ظ„ظ… ظٹطھظ… ط§ظ„ط¹ط«ظˆط± ط¹ظ„ظ‰ ط¯ط§ظ„ط© ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©.");
-        }
-        return module.removeBackground;
-    }).catch(function(error) {
         bgRemovePromise = null;
-        throw error;
-    });
 
-    return bgRemovePromise;
+        throw err;
+
+      });
+
+  }
+
+  return bgRemovePromise;
+
 }
 
-async function removeBackgroundAI() {
+function fileBase(){
 
-    showProgress(
-        5,
-        "ط¬ط§ط±ظٹ طھط­ظ…ظٹظ„ ط£ط¯ط§ط© ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©... ط£ظˆظ„ ظ…ط±ط© ظ‚ط¯ طھط³طھط؛ط±ظ‚ ط¹ط¯ط© ط¯ظ‚ط§ط¦ظ‚."
+  return (
+    selectedFile?.name || "image"
+  ).replace(/\.[^.]+$/,"");
+
+}
+
+async function runTool(){
+
+  if(!selectedFile){
+
+    setStatus(
+      "اختر صورة أولًا.",
+      "err"
     );
 
-    const removeBackground = await loadBackgroundRemover();
+    return;
 
-    showProgress(
-        20,
-        "طھظ… طھط­ظ…ظٹظ„ ط§ظ„ط£ط¯ط§ط©. ط¬ط§ط±ظٹ طھط¬ظ‡ظٹط² ط§ظ„ط°ظƒط§ط، ط§ظ„ط§طµط·ظ†ط§ط¹ظٹ..."
+  }
+
+  runBtn.disabled = true;
+
+  downloadBtn.classList.add("hidden");
+
+  try{
+
+    if(currentTool === "background")
+      await removeBackground();
+
+    if(currentTool === "compress")
+      await compressImage();
+
+    if(currentTool === "convert")
+      await convertImage();
+
+    if(currentTool === "crop")
+      await cropImage();
+
+    if(currentTool === "watermark")
+      await watermarkImage();
+
+  }catch(err){
+
+    console.error(err);
+
+    setStatus(
+      "حدث خطأ: " +
+      (err?.message || "تعذر تنفيذ العملية."),
+      "err"
     );
 
-    /*
-      ظ„ط§ ظ†ظپط±ط¶ GPU ظˆظ„ط§ model ظ…ط­ط¯ط¯ظ‹ط§.
-      ظ‡ط°ط§ ظٹط¬ط¹ظ„ظ‡ط§ ط£ظƒط«ط± طھظˆط§ظپظ‚ظ‹ط§ ظ…ط¹ ط§ظ„ظ‡ظˆط§طھظپ ظˆط§ظ„ظ…طھطµظپط­ط§طھ ط§ظ„ظ…ط®طھظ„ظپط©.
-    */
-    const blob = await removeBackground(
-        selectedFile,
-        {
-            output: {
-                format: "image/png"
-            },
+  }finally{
 
-            progress: function(key, current, total) {
-                if (total > 0) {
-                    const percent =
-                        20 + (current / total) * 70;
+    runBtn.disabled = false;
 
-                    showProgress(
-                        Math.min(percent, 90),
-                        "ط¬ط§ط±ظٹ ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©..."
-                    );
-                } else {
-                    showProgress(
-                        50,
-                        "ط¬ط§ط±ظٹ ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط©..."
-                    );
-                }
-            }
+  }
+
+}
+
+async function removeBackground(){
+
+  const removeBg =
+    await getBackgroundRemover();
+
+  setStatus(
+    "جاري إزالة الخلفية... لا تغلق الصفحة."
+  );
+
+  const blob =
+    await removeBg(
+      selectedFile,
+      {
+        output:{
+          format:"image/png"
+        },
+
+        progress:(key,cur,total)=>{
+
+          if(total){
+
+            const p =
+              Math.round(
+                cur / total * 100
+              );
+
+            setStatus(
+              "جاري معالجة الصورة... " +
+              p + "%"
+            );
+
+          }
+
         }
+
+      }
     );
 
-    if (!blob) {
-        throw new Error("ظ„ظ… ظٹطھظ… ط¥ظ†ط´ط§ط، طµظˆط±ط© ط§ظ„ظ†طھظٹط¬ط©.");
-    }
+  resultBlob = blob;
 
-    showProgress(
-        95,
-        "ط¬ط§ط±ظٹ طھط¬ظ‡ظٹط² ط§ظ„ظ†طھظٹط¬ط©..."
-    );
+  resultURL =
+    URL.createObjectURL(blob);
 
-    if (resultURL) {
-        URL.revokeObjectURL(resultURL);
-    }
+  preview.innerHTML =
+    `<img src="${resultURL}" alt="النتيجة">`;
 
-    resultURL = URL.createObjectURL(blob);
+  setStatus(
+    "تمت إزالة الخلفية بنجاح ✅",
+    "ok"
+  );
 
-    preview.src = resultURL;
+  downloadBtn.classList.remove("hidden");
 
-    showResult(
-        resultURL,
-        "pixel-tool-no-background.png"
-    );
-
-    showProgress(
-        100,
-        "طھظ…طھ ط¥ط²ط§ظ„ط© ط§ظ„ط®ظ„ظپظٹط© ط¨ظ†ط¬ط§ط­ âœ…"
-    );
-
-    setTimeout(
-        hideProgress,
-        1000
-    );
 }
 
+function loadImageForCanvas(){
 
-/* =================================================
-   ط¶ط؛ط· ط§ظ„طµظˆط±ط©
-================================================= */
+  return new Promise((resolve,reject)=>{
 
-function compressImage() {
+    const img = new Image();
 
-    showProgress(
-        30,
-        "ط¬ط§ط±ظٹ ط¶ط؛ط· ط§ظ„طµظˆط±ط©..."
-    );
+    img.onload = () =>
+      resolve(img);
 
+    img.onerror = () =>
+      reject(
+        new Error("تعذر قراءة الصورة")
+      );
 
-    const quality =
-        Number(
-            document
-                .getElementById("quality")
-                .value
-        ) / 100;
+    img.src =
+      URL.createObjectURL(
+        selectedFile
+      );
 
+  });
 
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        originalImage.width;
-
-    canvas.height =
-        originalImage.height;
-
-
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
-
-    ctx.drawImage(
-        originalImage,
-        0,
-        0
-    );
-
-
-    canvas.toBlob(
-        function(blob) {
-
-            resultURL =
-                URL.createObjectURL(
-                    blob
-                );
-
-
-            preview.src =
-                resultURL;
-
-
-            showProgress(
-                100,
-                "طھظ… ط¶ط؛ط· ط§ظ„طµظˆط±ط© ط¨ظ†ط¬ط§ط­ âœ…"
-            );
-
-
-            showResult(
-                resultURL,
-                "pixel-tool-compressed.jpg"
-            );
-
-
-            setTimeout(
-                hideProgress,
-                800
-            );
-
-        },
-
-        "image/jpeg",
-
-        quality
-    );
 }
 
+async function canvasResult(
+  type="image/png",
+  quality=0.8
+){
 
-/* =================================================
-   طھط­ظˆظٹظ„ ط§ظ„طµظٹط؛ط©
-================================================= */
+  const img =
+    await loadImageForCanvas();
 
-function convertImage() {
+  const canvas =
+    document.createElement("canvas");
 
-    showProgress(
-        30,
-        "ط¬ط§ط±ظٹ طھط­ظˆظٹظ„ ط§ظ„طµظˆط±ط©..."
+  canvas.width =
+    img.naturalWidth;
+
+  canvas.height =
+    img.naturalHeight;
+
+  const ctx =
+    canvas.getContext("2d");
+
+  if(type === "image/jpeg"){
+
+    ctx.fillStyle = "#fff";
+
+    ctx.fillRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
     );
 
+  }
 
-    const format =
-        document
-            .getElementById("format")
-            .value;
+  ctx.drawImage(
+    img,
+    0,
+    0
+  );
 
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        originalImage.width;
-
-    canvas.height =
-        originalImage.height;
-
-
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
-
-    /*
-    ط¥ط°ط§ ظƒط§ظ†طھ ط§ظ„طµظٹط؛ط© JPG
-    ظ†ط¶ط¹ ط®ظ„ظپظٹط© ط¨ظٹط¶ط§ط،
-    */
-
-    if (
-        format === "image/jpeg"
-    ) {
-
-        ctx.fillStyle =
-            "#ffffff";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-    }
-
-
-    ctx.drawImage(
-        originalImage,
-        0,
-        0
-    );
-
+  return new Promise(resolve =>
 
     canvas.toBlob(
-        function(blob) {
+      resolve,
+      type,
+      quality
+    )
 
-            resultURL =
-                URL.createObjectURL(
-                    blob
-                );
+  );
 
-
-            preview.src =
-                resultURL;
-
-
-            let extension =
-                "png";
-
-
-            if (
-                format ===
-                "image/jpeg"
-            ) {
-
-                extension =
-                    "jpg";
-
-            }
-
-
-            if (
-                format ===
-                "image/webp"
-            ) {
-
-                extension =
-                    "webp";
-
-            }
-
-
-            showProgress(
-                100,
-                "طھظ… طھط­ظˆظٹظ„ ط§ظ„طµظˆط±ط© ط¨ظ†ط¬ط§ط­ âœ…"
-            );
-
-
-            showResult(
-                resultURL,
-                "pixel-tool-converted." +
-                extension
-            );
-
-
-            setTimeout(
-                hideProgress,
-                800
-            );
-
-        },
-
-        format,
-
-        .92
-    );
 }
 
+async function compressImage(){
 
-/* =================================================
-   ظ‚طµ ظ…ط±ط¨ط¹ ط£ظˆ ط¯ط§ط¦ط±ط©
-================================================= */
+  const q =
+    Number(
+      document.getElementById("quality").value
+    ) / 100;
 
-function cropImage() {
+  setStatus(
+    "جاري ضغط الصورة..."
+  );
 
-    showProgress(
-        30,
-        "ط¬ط§ط±ظٹ ظ‚طµ ط§ظ„طµظˆط±ط©..."
+  resultBlob =
+    await canvasResult(
+      "image/jpeg",
+      q
     );
 
-
-    const shape =
-        document
-            .getElementById("cropShape")
-            .value;
-
-
-    const size =
-        Math.min(
-            originalImage.width,
-            originalImage.height
-        );
-
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        size;
-
-    canvas.height =
-        size;
-
-
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
-
-    /*
-    ظ‚طµ ط¯ط§ط¦ط±ظٹ
-    */
-
-    if (shape === "circle") {
-
-        ctx.beginPath();
-
-        ctx.arc(
-            size / 2,
-            size / 2,
-            size / 2,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.closePath();
-
-        ctx.clip();
-
-    }
-
-
-    const sx =
-        (
-            originalImage.width -
-            size
-        ) / 2;
-
-
-    const sy =
-        (
-            originalImage.height -
-            size
-        ) / 2;
-
-
-    ctx.drawImage(
-
-        originalImage,
-
-        sx,
-        sy,
-
-        size,
-        size,
-
-        0,
-        0,
-
-        size,
-        size
-
+  resultURL =
+    URL.createObjectURL(
+      resultBlob
     );
 
+  preview.innerHTML =
+    `<img src="${resultURL}" alt="الصورة المضغوطة">`;
 
-    canvas.toBlob(
-        function(blob) {
+  const oldSize =
+    (selectedFile.size / 1024).toFixed(1);
 
-            resultURL =
-                URL.createObjectURL(
-                    blob
-                );
+  const newSize =
+    (resultBlob.size / 1024).toFixed(1);
 
+  setStatus(
+    `تم الضغط بنجاح ✅
+الحجم الأصلي: ${oldSize} KB
+الحجم الجديد: ${newSize} KB`,
+    "ok"
+  );
 
-            preview.src =
-                resultURL;
+  downloadBtn.classList.remove("hidden");
 
+}
 
-            showProgress(
-                100,
-                "طھظ… ظ‚طµ ط§ظ„طµظˆط±ط© ط¨ظ†ط¬ط§ط­ âœ…"
-            );
+async function convertImage(){
 
+  const type =
+    document.getElementById("format").value;
 
-            showResult(
+  setStatus(
+    "جاري تحويل الصيغة..."
+  );
 
-                resultURL,
+  resultBlob =
+    await canvasResult(
+      type,
+      0.92
+    );
 
-                shape === "circle"
+  resultURL =
+    URL.createObjectURL(
+      resultBlob
+    );
 
-                    ? "pixel-tool-circle.png"
+  preview.innerHTML =
+    `<img src="${resultURL}" alt="الصورة بعد التحويل">`;
 
-                    : "pixel-tool-square.png"
+  setStatus(
+    "تم تحويل الصورة بنجاح ✅",
+    "ok"
+  );
 
-            );
+  downloadBtn.classList.remove("hidden");
 
+}
 
-            setTimeout(
-                hideProgress,
-                800
-            );
+async function cropImage(){
 
-        },
+  const img =
+    await loadImageForCanvas();
 
+  const side =
+    Math.min(
+      img.naturalWidth,
+      img.naturalHeight
+    );
+
+  const sx =
+    (img.naturalWidth - side) / 2;
+
+  const sy =
+    (img.naturalHeight - side) / 2;
+
+  const canvas =
+    document.createElement("canvas");
+
+  canvas.width = side;
+  canvas.height = side;
+
+  const ctx =
+    canvas.getContext("2d");
+
+  if(
+    document.getElementById("cropShape").value
+    === "circle"
+  ){
+
+    ctx.beginPath();
+
+    ctx.arc(
+      side / 2,
+      side / 2,
+      side / 2,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.clip();
+
+  }
+
+  ctx.drawImage(
+    img,
+    sx,
+    sy,
+    side,
+    side,
+    0,
+    0,
+    side,
+    side
+  );
+
+  resultBlob =
+    await new Promise(resolve =>
+      canvas.toBlob(
+        resolve,
         "image/png"
+      )
     );
+
+  resultURL =
+    URL.createObjectURL(
+      resultBlob
+    );
+
+  preview.innerHTML =
+    `<img src="${resultURL}" alt="الصورة بعد القص">`;
+
+  setStatus(
+    "تم قص الصورة بنجاح ✅",
+    "ok"
+  );
+
+  downloadBtn.classList.remove("hidden");
+
 }
 
+async function watermarkImage(){
 
-/* =================================================
-   ط§ظ„ط¹ظ„ط§ظ…ط© ط§ظ„ظ…ط§ط¦ظٹط©
-================================================= */
+  const text =
+    document.getElementById("wmText")
+      .value.trim();
 
-function watermarkImage() {
+  if(!text){
 
-    showProgress(
-        30,
-        "ط¬ط§ط±ظٹ ط¥ط¶ط§ظپط© ط§ظ„ط¹ظ„ط§ظ…ط© ط§ظ„ظ…ط§ط¦ظٹط©..."
+    setStatus(
+      "اكتب نص العلامة المائية أولًا.",
+      "err"
     );
 
+    return;
 
-    const text =
-        document
-            .getElementById(
-                "watermarkText"
-            )
-            .value
-            .trim()
-        ||
-        "Pixel Tool";
+  }
 
+  const img =
+    await loadImageForCanvas();
 
-    const opacity =
-        Number(
-            document
-                .getElementById(
-                    "watermarkOpacity"
-                )
-                .value
-        ) / 100;
+  const canvas =
+    document.createElement("canvas");
 
+  canvas.width =
+    img.naturalWidth;
 
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
+  canvas.height =
+    img.naturalHeight;
 
+  const ctx =
+    canvas.getContext("2d");
 
-    canvas.width =
-        originalImage.width;
+  ctx.drawImage(
+    img,
+    0,
+    0
+  );
 
-    canvas.height =
-        originalImage.height;
-
-
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
-
-    ctx.drawImage(
-        originalImage,
-        0,
-        0
+  const size =
+    Math.max(
+      10,
+      Number(
+        document.getElementById("wmSize").value
+      ) || 42
     );
 
+  const opacity =
+    Number(
+      document.getElementById("wmOpacity").value
+    ) / 100;
 
-    const fontSize =
-        Math.max(
-            24,
-            Math.floor(
-                canvas.width *
-                .045
-            )
-        );
+  ctx.font =
+    `700 ${size}px Tahoma, Arial, sans-serif`;
 
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
 
-    ctx.font =
-        "bold " +
-        fontSize +
-        "px Arial";
+  ctx.fillStyle =
+    `rgba(255,255,255,${opacity})`;
 
+  ctx.strokeStyle =
+    `rgba(0,0,0,${Math.min(.45,opacity)})`;
 
-    ctx.textAlign =
-        "right";
-
-
-    ctx.textBaseline =
-        "bottom";
-
-
-    ctx.globalAlpha =
-        opacity;
-
-
-    ctx.fillStyle =
-        "#ffffff";
-
-
-    ctx.shadowColor =
-        "#000000";
-
-
-    ctx.shadowBlur =
-        7;
-
-
-    ctx.fillText(
-
-        text,
-
-        canvas.width - 30,
-
-        canvas.height - 30
-
+  ctx.lineWidth =
+    Math.max(
+      2,
+      size / 12
     );
 
+  ctx.strokeText(
+    text,
+    canvas.width / 2,
+    canvas.height / 2
+  );
 
-    ctx.globalAlpha =
-        1;
+  ctx.fillText(
+    text,
+    canvas.width / 2,
+    canvas.height / 2
+  );
 
-
-    canvas.toBlob(
-        function(blob) {
-
-            resultURL =
-                URL.createObjectURL(
-                    blob
-                );
-
-
-            preview.src =
-                resultURL;
-
-
-            showProgress(
-                100,
-                "طھظ…طھ ط¥ط¶ط§ظپط© ط§ظ„ط¹ظ„ط§ظ…ط© ط§ظ„ظ…ط§ط¦ظٹط© âœ…"
-            );
-
-
-            showResult(
-                resultURL,
-                "pixel-tool-watermark.png"
-            );
-
-
-            setTimeout(
-                hideProgress,
-                800
-            );
-
-        },
-
+  resultBlob =
+    await new Promise(resolve =>
+      canvas.toBlob(
+        resolve,
         "image/png"
-    );
-}
-
-
-/* =================================================
-   ط¹ط±ط¶ ط§ظ„ظ†طھظٹط¬ط©
-================================================= */
-
-function showResult(
-    url,
-    filename
-) {
-
-    result.style.display =
-        "block";
-
-
-    downloadButton.href =
-        url;
-
-
-    downloadButton.download =
-        filename;
-
-
-    downloadButton.textContent =
-        "â¬‡ï¸ڈ طھط­ظ…ظٹظ„ ط§ظ„ظ†طھظٹط¬ط©";
-
-
-    result.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
-}
-
-
-/* =================================================
-   Progress
-================================================= */
-
-function showProgress(
-    percent,
-    text
-) {
-
-    progress.style.display =
-        "block";
-
-
-    progressText.textContent =
-        text;
-
-
-    progressFill.style.width =
-        percent + "%";
-}
-
-
-function hideProgress() {
-
-    progress.style.display =
-        "none";
-
-    progressFill.style.width =
-        "0%";
-}
-
-
-/* =================================================
-   ط§ظ„ط§ظ†طھط¸ط§ط±
-================================================= */
-
-function wait(ms) {
-
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                ms
-            )
+      )
     );
 
-}
+  resultURL =
+    URL.createObjectURL(
+      resultBlob
+    );
 
+  preview.innerHTML =
+    `<img src="${resultURL}" alt="الصورة مع العلامة المائية">`;
 
-/* =================================================
-   ط¥ط¹ط§ط¯ط© ط¶ط¨ط· ط§ظ„ط£ط¯ط§ط©
-================================================= */
+  setStatus(
+    "تمت إضافة العلامة المائية بنجاح ✅",
+    "ok"
+  );
 
-function resetTool() {
-
-    if (resultURL) {
-        URL.revokeObjectURL(resultURL);
-        resultURL = null;
-    }
-
-    currentTool =
-        null;
-
-    selectedFile =
-        null;
-
-    originalImage =
-        null;
-
-
-    previewBox.style.display =
-        "none";
-
-
-    controls.style.display =
-        "none";
-
-
-    result.style.display =
-        "none";
-
-
-    hideProgress();
-
-
-    actionButton.disabled =
-        true;
-
-
-    actionButton.textContent =
-        "ط§ط±ظپط¹ طµظˆط±ط© ط£ظˆظ„ط§ظ‹";
-
-
-    document
-        .getElementById(
-            "toolTitle"
-        )
-        .textContent =
-        "ط§ط®طھط± ط£ط¯ط§ط© ظ„ظ„ط¨ط¯ط،";
-
-
-    document
-        .querySelectorAll(".tool")
-        .forEach(item => {
-
-            item.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    fileInput.value =
-        "";
+  downloadBtn.classList.remove("hidden");
 
 }
 
+function downloadResult(){
 
-/* =================================================
-   ظ…ظ†ط¹ ط³ظ„ظˆظƒ ظپطھط­ ط§ظ„طµظˆط±ط© ط¹ظ†ط¯ ط§ظ„ط³ط­ط¨
-================================================= */
+  if(!resultURL)
+    return;
 
-window.addEventListener(
-    "dragover",
-    function(event) {
+  const a =
+    document.createElement("a");
 
-        event.preventDefault();
+  a.href = resultURL;
 
-    }
-);
+  let ext = "png";
 
+  if(currentTool === "compress")
+    ext = "jpg";
 
-window.addEventListener(
-    "drop",
-    function(event) {
+  if(currentTool === "convert"){
 
-        event.preventDefault();
+    const f =
+      document.getElementById("format").value;
 
-    }
-);
+    ext =
+      f === "image/jpeg"
+      ? "jpg"
+      : f.split("/")[1];
+
+  }
+
+  a.download =
+    `${fileBase()}-pixel-tool.${ext}`;
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
+}
+
+function resetTool(clearFile=true){
+
+  if(resultURL)
+    URL.revokeObjectURL(resultURL);
+
+  resultURL = null;
+  resultBlob = null;
+
+  if(clearFile){
+
+    selectedFile = null;
+    sourceImage = null;
+
+    fileInput.value = "";
+
+    drop.querySelector("strong")
+      .textContent = "اختر صورة";
+
+  }
+
+  preview.innerHTML = "";
+
+  preview.classList.add("hidden");
+
+  downloadBtn.classList.add("hidden");
+
+  runBtn.classList.add("hidden");
+
+  clearStatus();
+
+  buildControls();
+
+}
+
+buildControls();
 
 </script>
 
