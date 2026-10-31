@@ -21,84 +21,163 @@
     <!-- Navbar -->
     <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="resetToHome()">
                 <div class="bg-indigo-600 p-2 rounded-xl text-white font-black text-xl shadow-lg shadow-indigo-500/30">PT</div>
                 <span class="text-xl font-black tracking-wide bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent">Pixel Tools</span>
             </div>
-            <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full font-medium">معالجة فورية وآمنة 100%</span>
+            <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full font-medium">معالجة فورية آمنة 100%</span>
         </div>
     </header>
 
     <!-- Main Workspace -->
     <main class="flex-grow max-w-5xl mx-auto px-4 py-8 w-full space-y-8">
-        <div class="text-center space-y-3">
-            <h1 class="text-3xl sm:text-4xl font-black tracking-tight">اختر الأداة أولاً للبدء</h1>
-            <p class="text-slate-400 text-sm">اضغط على أي أداة أدناه ثم اختر الصورة لتطبيق التعديل عليها مباشرة</p>
+        
+        <!-- SECTION 1: TOOL SELECTION PAGE (Home Page) -->
+        <div id="homeSection" class="space-y-8">
+            <div class="text-center space-y-3">
+                <h1 class="text-3xl sm:text-4xl font-black tracking-tight">اختر الأداة المطلوبة للبدء</h1>
+                <p class="text-slate-400 text-sm">اضغط على أي أداة للانتقال لصفحة معالجة الصورة وتحميلها مباشرة</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Tool 1: BG Remove -->
+                <button onclick="openTool('bg-remove', 'إزالة الخلفية الذكية', 'عزل خلفية الصور بدقة عالية ونقرة واحدة')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
+                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">✨</div>
+                    <div class="text-lg font-bold text-slate-100">إزالة الخلفية</div>
+                    <div class="text-xs text-slate-400 mt-1">عزل العناصر وحذف الخلفيات تلقائياً</div>
+                </button>
+
+                <!-- Tool 2: Format Convert (Unified) -->
+                <button onclick="openTool('convert', 'تحويل صيغ الصور', 'تحويل بين صيغ PNG, JPG, WEBP بنقرة زر')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
+                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">🔄</div>
+                    <div class="text-lg font-bold text-slate-100">تحويل الصيغ</div>
+                    <div class="text-xs text-slate-400 mt-1">التحويل بين (PNG, JPG, WEBP) في مكان واحد</div>
+                </button>
+
+                <!-- Tool 3: Compress -->
+                <button onclick="openTool('compress', 'ضغط حجم الصور', 'تقليل حجم الصور مع الحفاظ الكامل على الجودة')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
+                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">📦</div>
+                    <div class="text-lg font-bold text-slate-100">ضغط الحجم</div>
+                    <div class="text-xs text-slate-400 mt-1">تقليص المساحة لتسهيل المشاركة</div>
+                </button>
+
+                <!-- Tool 4: Crop & Frame -->
+                <button onclick="openTool('crop', 'القص والتأطير', 'تأطير وقص أبعاد الصور حسب الرغبة')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
+                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">✂️</div>
+                    <div class="text-lg font-bold text-slate-100">القص والتأطير</div>
+                    <div class="text-xs text-slate-400 mt-1">تحديد وقص الأبعاد بأشكال مميزة</div>
+                </button>
+
+                <!-- Tool 5: Watermark -->
+                <button onclick="openTool('watermark', 'العلامة المائية', 'حماية حقوق صورك بشعار أو نص خاص')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
+                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">🔒</div>
+                    <div class="text-lg font-bold text-slate-100">العلامة المائية</div>
+                    <div class="text-xs text-slate-400 mt-1">إضافة نص وحماية الحقوق الملكية</div>
+                </button>
+            </div>
         </div>
 
-        <!-- Hidden Global File Input -->
-        <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
-
-        <!-- Step 1: Select Tool Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <button onclick="selectTool('png')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-5 rounded-3xl text-center transition-all group">
-                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🔄</div>
-                <div class="text-sm font-bold text-slate-200">تحويل إلى PNG</div>
-                <div class="text-xs text-slate-500 mt-1">حفظ بجودة عالية</div>
-            </button>
-            <button onclick="selectTool('jpg')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-5 rounded-3xl text-center transition-all group">
-                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🖼️</div>
-                <div class="text-sm font-bold text-slate-200">تحويل إلى JPG</div>
-                <div class="text-xs text-slate-500 mt-1">صيغة قياسية خفيفة</div>
-            </button>
-            <button onclick="selectTool('resize')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-5 rounded-3xl text-center transition-all group">
-                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">📦</div>
-                <div class="text-sm font-bold text-slate-200">ضغط الحجم (50%)</div>
-                <div class="text-xs text-slate-500 mt-1">تنسيق مساحة التخزين</div>
-            </button>
-            <button onclick="selectTool('grayscale')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-5 rounded-3xl text-center transition-all group">
-                <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">🎨</div>
-                <div class="text-sm font-bold text-slate-200">أبيض وأسود</div>
-                <div class="text-xs text-slate-500 mt-1">تطبيق فلتر كلاسيكي</div>
-            </button>
-        </div>
-
-        <!-- Step 2: Workspace Result (Shows after uploading image) -->
-        <div id="editorSection" class="hidden space-y-6 pt-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-900/60 p-6 border border-slate-800 rounded-3xl">
-                <div class="space-y-2 text-center">
-                    <span class="text-xs text-slate-400 font-bold">الصورة الأصلية</span>
-                    <div class="bg-slate-950 p-2 rounded-2xl border border-slate-800 h-64 flex items-center justify-center overflow-hidden">
-                        <img id="originalPreview" class="max-h-full max-w-full object-contain rounded-xl" />
-                    </div>
+        <!-- SECTION 2: DEDICATED TOOL PAGE & UPLOAD SECTION (Hidden by default) -->
+        <div id="toolSection" class="hidden space-y-6">
+            <!-- Top Navigation / Back Button -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <h2 id="currentToolTitle" class="text-2xl font-black text-indigo-400">اسم الأداة</h2>
+                    <p id="currentToolDesc" class="text-xs text-slate-400">وصف الأداة</p>
                 </div>
-                <div class="space-y-2 text-center">
-                    <span class="text-xs text-indigo-400 font-bold">النتيجة المعدلة</span>
-                    <div class="bg-slate-950 p-2 rounded-2xl border border-slate-800 h-64 flex items-center justify-center overflow-hidden">
-                        <canvas id="outputCanvas" class="max-h-full max-w-full object-contain rounded-xl"></canvas>
-                    </div>
+                <button onclick="resetToHome()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold border border-slate-800">العودة للأدوات 🔙</button>
+            </div>
+
+            <!-- Upload Area -->
+            <div id="uploadBox" class="bg-slate-900/80 border-2 border-dashed border-slate-700 hover:border-indigo-500 transition-all rounded-3xl p-10 text-center cursor-pointer" onclick="document.getElementById('imageInput').click()">
+                <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                <div class="space-y-3">
+                    <div class="w-16 h-16 bg-indigo-600/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto text-3xl">📁</div>
+                    <p class="text-lg font-bold text-slate-200">اضغط هنا لتحميل الصورة</p>
+                    <p class="text-xs text-slate-500">قم بتحديد الصورة من جهازك لتطبيق الأداة فوراً</p>
                 </div>
             </div>
 
-            <!-- Action Options -->
-            <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
-                <button onclick="document.getElementById('imageInput').click()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-5 py-3 rounded-2xl transition-all">اختر صورة أخرى 🔄</button>
-                <button id="downloadBtn" onclick="downloadResult()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm px-8 py-3 rounded-2xl shadow-lg shadow-indigo-600/30 transition-all">تحميل الصورة المعدلة ⬇️</button>
+            <!-- Options Controls (For Format Conversion Tool) -->
+            <div id="formatOptions" class="hidden bg-slate-900/60 p-4 border border-slate-800 rounded-2xl flex items-center justify-center gap-3">
+                <span class="text-xs font-bold text-slate-400">اختر صيغة التحويل:</span>
+                <button onclick="changeFormat('png')" id="btn-png" class="bg-indigo-600 px-4 py-2 rounded-xl text-xs font-bold">PNG</button>
+                <button onclick="changeFormat('jpg')" id="btn-jpg" class="bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold">JPG</button>
+                <button onclick="changeFormat('webp')" id="btn-webp" class="bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold">WEBP</button>
+            </div>
+
+            <!-- Editor Result Workspace -->
+            <div id="resultWorkspace" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-900/60 p-6 border border-slate-800 rounded-3xl">
+                    <div class="space-y-2 text-center">
+                        <span class="text-xs text-slate-400 font-bold">الصورة الأصلية</span>
+                        <div class="bg-slate-950 p-2 rounded-2xl border border-slate-800 h-64 flex items-center justify-center overflow-hidden">
+                            <img id="originalPreview" class="max-h-full max-w-full object-contain rounded-xl" />
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-center">
+                        <span class="text-xs text-indigo-400 font-bold">النتيجة المعالجة</span>
+                        <div class="bg-slate-950 p-2 rounded-2xl border border-slate-800 h-64 flex items-center justify-center overflow-hidden">
+                            <canvas id="outputCanvas" class="max-h-full max-w-full object-contain rounded-xl"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Download Buttons -->
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <button onclick="document.getElementById('imageInput').click()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-6 py-3 rounded-2xl transition-all">تغيير الصورة 🔄</button>
+                    <button id="downloadBtn" onclick="downloadResult()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm px-8 py-3 rounded-2xl shadow-lg shadow-indigo-600/30 transition-all">تحميل الصورة الآن ⬇️</button>
+                </div>
             </div>
         </div>
     </main>
 
+    <!-- Footer -->
     <footer class="border-t border-slate-800 py-6 text-center text-sm text-slate-500">
         <p>© 2026 Pixel Tools. جميع الحقوق محفوظة.</p>
     </footer>
 
+    <!-- Interactive JS Core -->
     <script>
         let currentImage = new Image();
-        let selectedAction = '';
+        let activeTool = '';
+        let targetFormat = 'png';
 
-        function selectTool(toolType) {
-            selectedAction = toolType;
-            document.getElementById('imageInput').click();
+        function openTool(toolKey, title, desc) {
+            activeTool = toolKey;
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('toolSection').classList.remove('hidden');
+            document.getElementById('currentToolTitle').innerText = title;
+            document.getElementById('currentToolDesc').innerText = desc;
+            
+            // Reset Workspace State
+            document.getElementById('resultWorkspace').classList.add('hidden');
+            document.getElementById('uploadBox').classList.remove('hidden');
+
+            if (toolKey === 'convert') {
+                document.getElementById('formatOptions').classList.remove('hidden');
+            } else {
+                document.getElementById('formatOptions').classList.add('hidden');
+            }
+        }
+
+        function resetToHome() {
+            document.getElementById('toolSection').classList.add('hidden');
+            document.getElementById('homeSection').classList.remove('hidden');
+            document.getElementById('imageInput').value = '';
+        }
+
+        function changeFormat(fmt) {
+            targetFormat = fmt;
+            ['png', 'jpg', 'webp'].forEach(f => {
+                const btn = document.getElementById(`btn-${f}`);
+                if (f === fmt) {
+                    btn.className = 'bg-indigo-600 px-4 py-2 rounded-xl text-xs font-bold';
+                } else {
+                    btn.className = 'bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold';
+                }
+            });
+            if (currentImage.src) applyProcessing();
         }
 
         function handleImageUpload(event) {
@@ -110,50 +189,57 @@
                 currentImage.src = e.target.result;
                 currentImage.onload = function() {
                     document.getElementById('originalPreview').src = e.target.result;
-                    document.getElementById('editorSection').classList.remove('hidden');
-                    applySelectedTool();
+                    document.getElementById('resultWorkspace').classList.remove('hidden');
+                    applyProcessing();
                 }
             }
             reader.readAsDataURL(file);
         }
 
-        function applySelectedTool() {
+        function applyProcessing() {
             const canvas = document.getElementById('outputCanvas');
             const ctx = canvas.getContext('2d');
 
-            if (selectedAction === 'resize') {
-                canvas.width = currentImage.width * 0.5;
-                canvas.height = currentImage.height * 0.5;
-                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
-            } else {
-                canvas.width = currentImage.width;
-                canvas.height = currentImage.height;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(currentImage, 0, 0);
+            canvas.width = currentImage.width;
+            canvas.height = currentImage.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                if (selectedAction === 'grayscale') {
-                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    const data = imgData.data;
-                    for (let i = 0; i < data.length; i += 4) {
-                        const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                        data[i] = avg;
-                        data[i + 1] = avg;
-                        data[i + 2] = avg;
-                    }
-                    ctx.putImageData(imgData, 0, 0);
-                }
+            if (activeTool === 'compress') {
+                canvas.width = currentImage.width * 0.6;
+                canvas.height = currentImage.height * 0.6;
+                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+            } else if (activeTool === 'watermark') {
+                ctx.drawImage(currentImage, 0, 0);
+                ctx.font = `${Math.floor(canvas.width / 15)}px Tajawal`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.textAlign = 'center';
+                ctx.fillText('Pixel Tools', canvas.width / 2, canvas.height - 30);
+            } else if (activeTool === 'crop') {
+                const size = Math.min(currentImage.width, currentImage.height);
+                canvas.width = size;
+                canvas.height = size;
+                ctx.drawImage(currentImage, (currentImage.width - size)/2, (currentImage.height - size)/2, size, size, 0, 0, size, size);
+            } else {
+                ctx.drawImage(currentImage, 0, 0);
             }
         }
 
         function downloadResult() {
             const canvas = document.getElementById('outputCanvas');
             const link = document.createElement('a');
-            const ext = selectedAction === 'jpg' ? 'jpg' : 'png';
-            const mime = selectedAction === 'jpg' ? 'image/jpeg' : 'image/png';
-            link.download = `pixel-tools-result.${ext}`;
-            link.href = canvas.toDataURL(mime);
+            
+            let mime = 'image/png';
+            let ext = 'png';
+
+            if (activeTool === 'convert') {
+                mime = targetFormat === 'jpg' ? 'image/jpeg' : (targetFormat === 'webp' ? 'image/webp' : 'image/png');
+                ext = targetFormat;
+            }
+
+            link.download = `pixel-tools-${activeTool}.${ext}`;
+            link.href = canvas.toDataURL(mime, 0.85);
             link.click();
         }
     </script>
 </body>
-</html>
+                    </html>
