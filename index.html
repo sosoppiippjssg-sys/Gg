@@ -1,438 +1,980 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="google-site-verification" content="PUT_YOUR_CODE_HERE" />
-<meta name="description" content="Pixel Tool: أدوات صور مجانية تعمل في المتصفح: إزالة الخلفية، ضغط الصور، تحويل الصيغ، القص، والعلامة المائية.">
-<title>Pixel Tool – أدوات الصور</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Tool - أدوات الصور</title>
+
 <style>
-:root{--bg:#f6f5fb;--card:#fff;--tx:#1c1a2e;--mut:#6b6882;--ac:#6c5ce7;--ac2:#00b894;--bd:#e4e1f2;--ok:#0a9a6d;--bad:#d63c3c;--k1:#d9d6e8;--k2:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12111c;--card:#1b1a2a;--tx:#f0eefc;--mut:#9a97b3;--ac:#8b7dff;--bd:#2d2b44;--ok:#35d6a2;--bad:#ff7a7a;--k1:#2a2840;--k2:#35335040}}
-:root[data-theme="dark"]{--bg:#12111c;--card:#1b1a2a;--tx:#f0eefc;--mut:#9a97b3;--ac:#8b7dff;--bd:#2d2b44;--ok:#35d6a2;--bad:#ff7a7a;--k1:#2a2840;--k2:#35335040}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 Cairo,Tahoma,system-ui,sans-serif}
-.wrap{max-width:860px;margin:0 auto;padding:20px 16px 60px}
-header{display:flex;align-items:center;gap:12px;margin-bottom:4px}
-.logo{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:38px;height:38px}
-.logo i{border-radius:3px;background:var(--ac)}.logo i:nth-child(2){background:var(--ac2)}.logo i:nth-child(3){opacity:.45}
-h1{margin:0;font-size:26px;letter-spacing:.3px}
-.sub{color:var(--mut);margin:0 0 18px;font-size:14px}
-nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
-nav button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:600 14px Cairo,Tahoma,sans-serif;padding:9px 14px;border-radius:999px;cursor:pointer}
-nav button.on{background:var(--ac);border-color:var(--ac);color:#fff}
-.panel{display:none;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:20px}
-.panel.on{display:block}
-h2{margin:0 0 4px;font-size:20px}
-.hint{color:var(--mut);font-size:13px;margin:4px 0 12px}
-.drop{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:2px dashed var(--bd);border-radius:14px;padding:26px 12px;cursor:pointer;transition:.15s}
-.drop:hover,.drop.hov{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,transparent)}
-.drop small{color:var(--mut)}
-.drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
-.cv{position:relative;display:inline-block;line-height:0;max-width:100%}
-.cv #o1{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
-.seg button.alt{flex:none}
-.att{margin-top:8px;color:var(--ok);font-weight:700;font-size:14px;word-break:break-all}
-.stage{margin:14px auto;border-radius:12px;overflow:hidden;display:flex;justify-content:center;border:1px solid var(--bd)}
-.ck{background:repeating-conic-gradient(var(--k1) 0 25%,var(--k2) 0 50%) 0 0/16px 16px}
-canvas{max-width:100%;height:auto;display:block}
-#c1{cursor:crosshair}#c4{cursor:grab;touch-action:none;width:100%;max-width:360px}
-.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
-.ctl label{display:flex;flex-direction:column;gap:4px;font-size:14px;font-weight:600}
-.ctl label.chk{flex-direction:row;align-items:center;gap:8px}
-.ctl output{color:var(--mut);font-weight:400;font-size:12px}
-input[type=range]{width:100%;accent-color:var(--ac)}
-select,input[type=text]{width:100%;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
-input[type=color]{width:100%;height:38px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);padding:2px}
-.btn{border:0;background:var(--ac);color:#fff;font:700 15px Cairo,Tahoma,sans-serif;padding:11px 20px;border-radius:12px;cursor:pointer}
-.btn.sm{padding:5px 12px;font-size:13px;border-radius:9px}
-.btn.alt{background:transparent;color:var(--ac);border:1px solid var(--ac)}
-.btn:hover{filter:brightness(1.08)}
-.seg{display:flex;gap:8px;margin:12px 0}
-.seg button{flex:1}.seg button:not(.on){background:transparent;color:var(--tx);border:1px solid var(--bd)}
-.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:14px}
-.row .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:right}
-.row .sz{color:var(--mut);direction:ltr;font-size:12px}
-.ok{color:var(--ok)}.bad{color:var(--bad)}
-.res{margin-top:14px}.res .btn.alt{margin-top:12px}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9;max-width:90%}
-#toast.on{opacity:1;transform:translate(-50%,0)}
-footer{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #080b14;
+    --card: #111624;
+    --card2: #171d2e;
+    --text: #f7f8fc;
+    --muted: #9299ad;
+    --primary: #7c5cff;
+    --primary2: #9d7cff;
+    --border: rgba(255,255,255,.08);
+    --success: #36d399;
+}
+
+body {
+    font-family: Tahoma, Arial, sans-serif;
+    background:
+        radial-gradient(circle at 20% 0%, rgba(124,92,255,.16), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(0,200,255,.08), transparent 25%),
+        var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    height: 76px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    backdrop-filter: blur(20px);
+    background: rgba(8,11,20,.75);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--primary2);
+}
+
+.header-badge {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 80px 20px 45px;
+}
+
+.hero .badge {
+    display: inline-block;
+    background: rgba(124,92,255,.12);
+    border: 1px solid rgba(124,92,255,.3);
+    color: #b7a7ff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 7vw, 72px);
+    line-height: 1;
+    margin-bottom: 20px;
+    letter-spacing: -3px;
+}
+
+.gradient {
+    background: linear-gradient(90deg, #9b7cff, #56d6ff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    color: var(--muted);
+    max-width: 650px;
+    margin: auto;
+    line-height: 1.9;
+    font-size: 17px;
+}
+
+/* Tools */
+.tools {
+    max-width: 1200px;
+    margin: 25px auto 80px;
+    padding: 0 20px;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+}
+
+.tool-card {
+    background: linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px 18px;
+    cursor: pointer;
+    transition: .25s;
+    min-height: 185px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tool-card::before {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: var(--primary);
+    filter: blur(70px);
+    opacity: .12;
+    top: -30px;
+    right: -30px;
+}
+
+.tool-card:hover,
+.tool-card.active {
+    transform: translateY(-5px);
+    border-color: rgba(124,92,255,.55);
+    background: linear-gradient(145deg, rgba(124,92,255,.13), rgba(255,255,255,.035));
+}
+
+.icon {
+    width: 52px;
+    height: 52px;
+    background: rgba(124,92,255,.14);
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+    margin-bottom: 18px;
+}
+
+.tool-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.tool-card p {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--muted);
+}
+
+/* Workspace */
+.workspace {
+    max-width: 900px;
+    margin: auto;
+    padding: 0 20px 100px;
+}
+
+.editor {
+    background: rgba(17,22,36,.88);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 30px;
+    box-shadow: 0 25px 80px rgba(0,0,0,.25);
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.editor-header h2 {
+    font-size: 22px;
+}
+
+.close-btn {
+    background: rgba(255,255,255,.06);
+    border: 0;
+    color: white;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Upload */
+.dropzone {
+    border: 2px dashed rgba(255,255,255,.13);
+    border-radius: 20px;
+    min-height: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.dropzone:hover,
+.dropzone.drag {
+    border-color: var(--primary);
+    background: rgba(124,92,255,.05);
+}
+
+.upload-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.dropzone h3 {
+    margin-bottom: 8px;
+}
+
+.dropzone p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.upload-btn,
+.action-btn {
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--primary2));
+    color: white;
+    padding: 12px 22px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(124,92,255,.2);
+}
+
+.action-btn {
+    margin-top: 20px;
+    width: 100%;
+    font-size: 15px;
+}
+
+.action-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+/* Preview */
+.preview-area {
+    display: none;
+    margin-top: 25px;
+}
+
+.preview-area img {
+    display: block;
+    max-width: 100%;
+    max-height: 450px;
+    margin: auto;
+    border-radius: 15px;
+    object-fit: contain;
+    background:
+        linear-gradient(45deg,#ddd 25%,transparent 25%),
+        linear-gradient(-45deg,#ddd 25%,transparent 25%),
+        linear-gradient(45deg,transparent 75%,#ddd 75%),
+        linear-gradient(-45deg,transparent 75%,#ddd 75%);
+    background-size: 20px 20px;
+    background-position: 0 0,0 10px,10px -10px,-10px 0;
+}
+
+/* Controls */
+.controls {
+    display: none;
+    margin-top: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.control {
+    flex: 1;
+    min-width: 180px;
+}
+
+.control label {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.control input,
+.control select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card2);
+    color: white;
+    outline: none;
+}
+
+.range-value {
+    text-align: center;
+    color: var(--primary2);
+    margin-top: 5px;
+    font-size: 13px;
+}
+
+.result {
+    display: none;
+    margin-top: 25px;
+    padding: 18px;
+    border-radius: 15px;
+    background: rgba(54,211,153,.07);
+    border: 1px solid rgba(54,211,153,.2);
+    text-align: center;
+}
+
+.download {
+    display: inline-block;
+    margin-top: 12px;
+    color: white;
+    background: var(--success);
+    padding: 11px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    padding: 30px;
+    font-size: 13px;
+}
+
+/* Responsive */
+@media(max-width: 900px) {
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 550px) {
+    header {
+        padding: 0 20px;
+    }
+
+    .header-badge {
+        display: none;
+    }
+
+    .hero {
+        padding-top: 55px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2px;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .editor {
+        padding: 20px;
+    }
+}
 </style>
 </head>
+
 <body>
-<div class="wrap">
-<header><div class="logo"><i></i><i></i><i></i><i></i></div><h1>Pixel Tool</h1></header>
-<p class="sub">أدوات صور سريعة تعمل داخل متصفحك فقط، صورك لا تُرفع لأي خادم.</p>
-<nav>
-<button class="on" data-t="bg">إزالة الخلفية</button>
-<button data-t="cmp">ضغط الحجم</button>
-<button data-t="cnv">تحويل الصيغ</button>
-<button data-t="crp">قص مربع / دائري</button>
-<button data-t="wm">علامة مائية</button>
-</nav>
 
-<section class="panel on" id="p-bg">
-<h2>إزالة الخلفية</h2>
-<p class="hint">إزالة تلقائية بالذكاء الاصطناعي مع فرشاة للتصحيح.</p>
-<label class="drop" id="d1"><input type="file" accept="image/*"><b>اسحب الصورة هنا أو اضغط للاختيار</b><small>PNG · JPG · WEBP</small></label>
-<div id="w1" hidden>
-<p class="hint" id="st1"></p>
-<div class="seg"><button class="btn on" data-md="keep">🟢 احتفظ</button><button class="btn" data-md="remove">🔴 أزل</button><button class="btn alt" id="clr">مسح العلامات</button></div>
-<div class="stage ck"><div class="cv"><canvas id="c1"></canvas><canvas id="o1"></canvas></div></div>
-<p class="hint">تُزال الخلفية تلقائياً بالذكاء الاصطناعي. لتصحيح النتيجة ارسم بالأخضر 🟢 على ما تريد استعادته، وبالأحمر 🔴 على ما تريد إزالته.</p>
-<div class="ctl">
-<label>التسامح مع الألوان (للوضع اليدوي)<input type="range" id="tol" min="1" max="100" value="50"><output></output></label>
-<label>نعومة الحواف<input type="range" id="fea" min="0" max="6" value="1"><output></output></label>
-<label>حجم الفرشاة<input type="range" id="br" min="1" max="10" value="4"><output></output></label>
-</div>
-<button class="btn" id="dl1">تحميل PNG شفاف</button>
-</div>
+<header>
+    <div class="logo">Pixel <span>Tool</span></div>
+    <div class="header-badge">أدوات صور مجانية ⚡</div>
+</header>
+
+<section class="hero">
+    <div class="badge">كل أدوات الصور في مكان واحد</div>
+    <h1>حرّر صورك مع <span class="gradient">Pixel Tool</span></h1>
+    <p>
+        أدوات سريعة وسهلة لمعالجة الصور، ضغطها، تحويل صيغها،
+        إزالة الخلفية وإضافة العلامات المائية.
+    </p>
 </section>
 
-<section class="panel" id="p-cmp">
-<h2>ضغط الحجم</h2>
-<p class="hint">الصور تُضغط بجودة تختارها، وأي ملف آخر يُضغط داخل ZIP.</p>
-<label class="drop" id="d2"><input type="file"><b>اسحب الملفات هنا أو اضغط للاختيار</b><small>صور أو أي ملفات، عدة ملفات دفعة واحدة</small></label>
-<p class="hint" id="i2"></p>
-<div class="ctl">
-<label>صيغة الصور<select id="f2"><option value="image/webp">WEBP (أصغر حجماً)</option><option value="image/jpeg">JPG</option></select></label>
-<label>الجودة<input type="range" id="q2" min="10" max="100" value="75" data-u="%"><output></output></label>
-<label>أقصى عرض<select id="m2"><option value="0">الأصلي</option><option value="3840">3840 px</option><option value="1920">1920 px</option><option value="1280">1280 px</option><option value="800">800 px</option></select></label>
-</div>
-<button class="btn" id="go2">ضغط</button>
-<div class="res" id="r2"></div>
+<section class="tools">
+    <div class="tools-grid">
+
+        <div class="tool-card" onclick="selectTool('remove-bg', this)">
+            <div class="icon">🪄</div>
+            <h3>إزالة الخلفية</h3>
+            <p>احذف خلفية الصورة واجعلها شفافة.</p>
+        </div>
+
+        <div class="tool-card" onclick="selectTool('compress', this)">
+            <div class="icon">📦</div>
+            <h3>ضغط الصور</h3>
+            <p>قلل حجم الصورة مع الحفاظ على الجودة.</p>
+        </div>
+
+        <div class="tool-card" onclick="selectTool('convert', this)">
+            <div class="icon">🔄</div>
+            <h3>تحويل الصيغ</h3>
+            <p>حوّل صورك بين PNG و JPG و WEBP.</p>
+        </div>
+
+        <div class="tool-card" onclick="selectTool('crop', this)">
+            <div class="icon">⭕</div>
+            <h3>قص الصورة</h3>
+            <p>حوّل صورتك إلى مربع أو دائرة.</p>
+        </div>
+
+        <div class="tool-card" onclick="selectTool('watermark', this)">
+            <div class="icon">💧</div>
+            <h3>العلامة المائية</h3>
+            <p>أضف نصاً أو علامة مائية على الصورة.</p>
+        </div>
+
+    </div>
 </section>
 
-<section class="panel" id="p-cnv">
-<h2>تحويل صيغ الصور</h2>
-<p class="hint">حوّل بين PNG وJPG وWEBP. يقبل أيضاً GIF وBMP وSVG كمدخلات.</p>
-<label class="drop" id="d3"><input type="file" accept="image/*"><b>اسحب الصور هنا أو اضغط للاختيار</b><small>يمكن اختيار عدة صور</small></label>
-<p class="hint" id="i3"></p>
-<div class="ctl">
-<label>التحويل إلى<select id="f3"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WEBP</option></select></label>
-<label>الجودة<input type="range" id="q3" min="10" max="100" value="92" data-u="%"><output></output></label>
-</div>
-<button class="btn" id="go3">تحويل</button>
-<div class="res" id="r3"></div>
+<section class="workspace" id="workspace">
+
+    <div class="editor">
+
+        <div class="editor-header">
+            <h2 id="toolTitle">اختر أداة للبدء</h2>
+            <button class="close-btn" onclick="resetTool()">×</button>
+        </div>
+
+        <div class="dropzone" id="dropzone">
+            <div>
+                <div class="upload-icon">☁️</div>
+                <h3>اسحب الصورة هنا</h3>
+                <p>أو اختر صورة من جهازك</p>
+
+                <label class="upload-btn">
+                    اختيار الصورة
+                    <input type="file" id="fileInput" accept="image/*">
+                </label>
+            </div>
+        </div>
+
+        <div class="preview-area" id="previewArea">
+            <img id="preview">
+        </div>
+
+        <div class="controls" id="controls">
+
+            <div class="control compress-control">
+                <label>جودة الضغط</label>
+                <input type="range" id="quality" min="10" max="100" value="70"
+                    oninput="document.getElementById('qualityValue').textContent=this.value+'%'">
+                <div class="range-value" id="qualityValue">70%</div>
+            </div>
+
+            <div class="control convert-control">
+                <label>الصيغة الجديدة</label>
+                <select id="format">
+                    <option value="image/png">PNG</option>
+                    <option value="image/jpeg">JPG</option>
+                    <option value="image/webp">WEBP</option>
+                </select>
+            </div>
+
+            <div class="control crop-control">
+                <label>شكل الصورة</label>
+                <select id="cropShape">
+                    <option value="square">مربع</option>
+                    <option value="circle">دائرة</option>
+                </select>
+            </div>
+
+            <div class="control watermark-control">
+                <label>نص العلامة المائية</label>
+                <input type="text" id="watermarkText" placeholder="Pixel Tool">
+            </div>
+
+            <div class="control watermark-control">
+                <label>شفافية العلامة</label>
+                <input type="range" id="watermarkOpacity" min="10" max="100" value="50">
+            </div>
+
+        </div>
+
+        <button class="action-btn" id="actionBtn" disabled>
+            ارفع صورة أولاً
+        </button>
+
+        <div class="result" id="result">
+            <strong>تمت معالجة الصورة بنجاح ✅</strong>
+            <br>
+            <a class="download" id="download" download="pixel-tool-result.png">
+                تحميل النتيجة
+            </a>
+        </div>
+
+    </div>
+
 </section>
 
-<section class="panel" id="p-crp">
-<h2>قص الصورة</h2>
-<p class="hint">اسحب الصورة داخل الإطار لتحديد الجزء المطلوب، وكبّر بالشريط.</p>
-<label class="drop" id="d4"><input type="file" accept="image/*"><b>اسحب الصورة هنا أو اضغط للاختيار</b></label>
-<div id="w4" hidden>
-<div class="seg"><button class="btn on" data-sh="circle">دائري</button><button class="btn" data-sh="square">مربع</button></div>
-<div class="stage ck"><canvas id="c4" width="640" height="640"></canvas></div>
-<div class="ctl">
-<label>التكبير<input type="range" id="zm" min="100" max="300" value="100" data-u="%"><output></output></label>
-<label>الحجم<select id="z4"><option value="512">512 px</option><option value="1024" selected>1024 px</option><option value="2048">2048 px</option></select></label>
-<label>الصيغة<select id="f4"><option value="image/png">PNG (شفاف للدائري)</option><option value="image/jpeg">JPG</option></select></label>
-</div>
-<button class="btn" id="dl4">تحميل الصورة</button>
-</div>
-</section>
+<footer>
+    © 2026 Pixel Tool — جميع الحقوق محفوظة
+</footer>
 
-<section class="panel" id="p-wm">
-<h2>العلامة المائية</h2>
-<p class="hint">أضف نصاً أو شعاراً فوق صورتك بالموضع والشفافية التي تريد.</p>
-<label class="drop" id="d5"><input type="file" accept="image/*"><b>اسحب الصورة هنا أو اضغط للاختيار</b></label>
-<div id="w5" hidden>
-<div class="stage ck"><canvas id="c5"></canvas></div>
-<div class="ctl">
-<label>نص العلامة<input type="text" id="t5" value="Pixel Tool"></label>
-<label>أو شعار (صورة)<input type="file" id="l5" accept="image/*"></label>
-<label>اللون<input type="color" id="k5" value="#ffffff"></label>
-<label>الحجم<input type="range" id="s5" min="5" max="80" value="28" data-u="%"><output></output></label>
-<label>الشفافية<input type="range" id="o5" min="5" max="100" value="55" data-u="%"><output></output></label>
-<label>الدوران<input type="range" id="a5" min="-90" max="90" value="0" data-u="°"><output></output></label>
-<label>الموضع<select id="p5"><option value="br">أسفل اليمين</option><option value="bl">أسفل اليسار</option><option value="bc">أسفل المنتصف</option><option value="mc">المنتصف</option><option value="tr">أعلى اليمين</option><option value="tl">أعلى اليسار</option><option value="tc">أعلى المنتصف</option><option value="tile">تكرار على كل الصورة</option></select></label>
-<label>الصيغة<select id="f5"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option></select></label>
-</div>
-<button class="btn" id="dl5">تحميل الصورة</button> <button class="btn alt" id="rl5" hidden>إزالة الشعار</button>
-</div>
-</section>
-<footer>Pixel Tool · كل المعالجة تتم على جهازك</footer>
-</div>
-<div id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const fmt=n=>n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(2)+" MB";
-const base=n=>n.replace(/\.[^.]+$/,"");
-const blob=(c,t,q)=>new Promise(r=>c.toBlob(r,t,q));
-const ext=b=>({"image/jpeg":"jpg","image/webp":"webp"})[b.type]||"png";
-function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),2800)}
-function loadImg(f){return new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=URL.createObjectURL(f)})}
-let DL=null;
-(async()=>{try{if(window.claude&&claude.use)DL=await claude.use("downloads")}catch(e){}})();
-async function saveBlob(name,b){
-  try{
-    if(DL){await DL.save({filename:name,data:b})}
-    else{const a=document.createElement("a"),u=URL.createObjectURL(b);a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
-    toast("تم الحفظ ✓");
-  }catch(e){if(!e||e.code!=="declined")toast("تعذر حفظ الملف")}
-}
-$$("input[type=range]").forEach(r=>{const o=r.nextElementSibling,u=()=>o.textContent=r.value+(r.dataset.u||"");r.addEventListener("input",u);u()});
-$$("nav button").forEach(b=>b.onclick=()=>{$$("nav button").forEach(x=>x.classList.toggle("on",x===b));$$(".panel").forEach(p=>p.classList.toggle("on",p.id==="p-"+b.dataset.t))});
-function drop(el,multi,cb){
-  const inp=el.querySelector("input"),note=document.createElement("div");inp.multiple=multi;note.className="att";note.hidden=true;el.append(note);
-  const go=f=>{note.hidden=false;note.textContent="✅ تم إرفاق: "+(f.length===1?f[0].name+" ("+fmt(f[0].size)+")":f.length+" ملفات ("+fmt(f.reduce((a,b)=>a+b.size,0))+")");toast("تم إرفاق الملف ✓");cb(f)};
-  inp.onchange=()=>{const f=[...inp.files];inp.value="";if(f.length)go(f)};
-  ["dragover","dragenter"].forEach(e=>el.addEventListener(e,v=>{v.preventDefault();el.classList.add("hov")}));
-  ["dragleave","drop"].forEach(e=>el.addEventListener(e,v=>{v.preventDefault();el.classList.remove("hov")}));
-  el.addEventListener("drop",v=>{const f=[...v.dataTransfer.files];if(f.length)go(multi?f:[f[0]])});
-}
-function results(box,items){
-  box.innerHTML="";
-  items.forEach(it=>{
-    const r=document.createElement("div");r.className="row";
-    const sv=it.orig?Math.round((1-it.blob.size/it.orig)*100):null;
-    r.innerHTML='<span class="nm"></span><span class="sz">'+(it.orig?fmt(it.orig)+" → ":"")+fmt(it.blob.size)+"</span>"+(sv!==null?'<b class="'+(sv>=0?"ok":"bad")+'">'+(sv>=0?"-"+sv:"+"+(-sv))+"%</b>":"")+'<button class="btn sm">تحميل</button>';
-    r.querySelector(".nm").textContent=it.name;
-    r.querySelector("button").onclick=()=>saveBlob(it.name,it.blob);
-    box.append(r);
-  });
-  if(items.length>1){
-    const z=document.createElement("button");z.className="btn alt";z.textContent="تحميل الكل (ZIP)";
-    z.onclick=async()=>{const zip=new JSZip();items.forEach(it=>zip.file(it.name,it.blob));saveBlob("pixel-tool.zip",await zip.generateAsync({type:"blob"}))};
-    box.append(z);
-  }
-}
-async function enc(f,o){
-  const i=await loadImg(f);let w=i.naturalWidth,h=i.naturalHeight;
-  if(o.maxW&&w>o.maxW){h=Math.round(h*o.maxW/w);w=o.maxW}
-  const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");
-  if(o.type==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,w,h)}
-  x.drawImage(i,0,0,w,h);
-  return blob(c,o.type,o.q);
+let currentTool = null;
+let currentFile = null;
+let originalImage = null;
+let resultURL = null;
+
+const fileInput = document.getElementById("fileInput");
+const dropzone = document.getElementById("dropzone");
+const preview = document.getElementById("preview");
+const previewArea = document.getElementById("previewArea");
+const controls = document.getElementById("controls");
+const actionBtn = document.getElementById("actionBtn");
+const result = document.getElementById("result");
+const download = document.getElementById("download");
+
+const titles = {
+    "remove-bg": "🪄 إزالة الخلفية",
+    "compress": "📦 ضغط الصورة",
+    "convert": "🔄 تحويل صيغة الصورة",
+    "crop": "⭕ قص الصورة",
+    "watermark": "💧 إضافة علامة مائية"
+};
+
+function selectTool(tool, element) {
+
+    currentTool = tool;
+
+    document.querySelectorAll(".tool-card")
+        .forEach(card => card.classList.remove("active"));
+
+    element.classList.add("active");
+
+    document.getElementById("toolTitle").textContent = titles[tool];
+
+    document.querySelectorAll(".compress-control, .convert-control, .crop-control, .watermark-control")
+        .forEach(el => el.style.display = "none");
+
+    if (tool === "compress")
+        document.querySelector(".compress-control").style.display = "block";
+
+    if (tool === "convert")
+        document.querySelector(".convert-control").style.display = "block";
+
+    if (tool === "crop")
+        document.querySelector(".crop-control").style.display = "block";
+
+    if (tool === "watermark")
+        document.querySelectorAll(".watermark-control")
+            .forEach(el => el.style.display = "block");
+
+    controls.style.display = "flex";
+
+    actionBtn.textContent = "ارفع صورة أولاً";
+    actionBtn.disabled = true;
+
+    document.getElementById("workspace")
+        .scrollIntoView({behavior:"smooth"});
 }
 
-/* 1 — إزالة الخلفية */
-const bg={mode:"keep"};
-function blur(a,w,h,r){
-  if(!r)return a;
-  const t=new Float32Array(a.length),o=new Float32Array(a.length),k=2*r+1,cl=(v,m)=>Math.min(m,Math.max(0,v));
-  for(let y=0;y<h;y++){let s=0;for(let x=-r;x<=r;x++)s+=a[y*w+cl(x,w-1)];for(let x=0;x<w;x++){t[y*w+x]=s/k;s+=a[y*w+cl(x+r+1,w-1)]-a[y*w+cl(x-r,w-1)]}}
-  for(let x=0;x<w;x++){let s=0;for(let y=-r;y<=r;y++)s+=t[cl(y,h-1)*w+x];for(let y=0;y<h;y++){o[y*w+x]=s/k;s+=t[cl(y+r+1,h-1)*w+x]-t[cl(y-r,h-1)*w+x]}}
-  return o;
+function resetTool() {
+    currentTool = null;
+    currentFile = null;
+    originalImage = null;
+
+    previewArea.style.display = "none";
+    controls.style.display = "none";
+    result.style.display = "none";
+
+    actionBtn.disabled = true;
+    actionBtn.textContent = "ارفع صورة أولاً";
+
+    document.querySelectorAll(".tool-card")
+        .forEach(card => card.classList.remove("active"));
+
+    document.getElementById("toolTitle").textContent = "اختر أداة للبدء";
 }
-function kmeans(S,K,mf){
-  if(!S.length)return[];
-  K=Math.min(K,S.length);
-  let C=Array.from({length:K},(_,i)=>S[Math.floor(i*S.length/K)].slice());
-  let A;
-  for(let it=0;it<8;it++){
-    A=C.map(()=>[0,0,0,0]);
-    for(const p of S){let b=0,bd=1e9;for(let k=0;k<K;k++){const c=C[k],e=(p[0]-c[0])**2+(p[1]-c[1])**2+(p[2]-c[2])**2;if(e<bd){bd=e;b=k}}const a=A[b];a[0]+=p[0];a[1]+=p[1];a[2]+=p[2];a[3]++}
-    C=C.map((c,k)=>A[k][3]?[A[k][0]/A[k][3],A[k][1]/A[k][3],A[k][2]/A[k][3]]:c);
-  }
-  return C.filter((c,k)=>A[k][3]>=(mf||0)*S.length);
-}
-function flood(m,v,starts){
-  const n=m.length,w=bg.w,h=bg.h,R=new Uint8Array(n),st=new Int32Array(n);let sp=0;
-  for(const p of starts)if(m[p]===v&&!R[p]){R[p]=1;st[sp++]=p}
-  while(sp){
-    const p=st[--sp],x=p%w,y=(p/w)|0;
-    if(x>0&&!R[p-1]&&m[p-1]===v){R[p-1]=1;st[sp++]=p-1}
-    if(x<w-1&&!R[p+1]&&m[p+1]===v){R[p+1]=1;st[sp++]=p+1}
-    if(y>0&&!R[p-w]&&m[p-w]===v){R[p-w]=1;st[sp++]=p-w}
-    if(y<h-1&&!R[p+w]&&m[p+w]===v){R[p+w]=1;st[sp++]=p+w}
-  }
-  return R;
-}
-function runBg(){
-  const {w,h,src,U}=bg,d=src.data,n=w*h,SF=[],SB=[],ctx=$("#c1").getContext("2d");
-  if(bg.ai){const A0=Float32Array.from(bg.ai);for(let p=0;p<n;p++)if(U[p])A0[p]=U[p]===1?1:0;const A=blur(A0,w,h,+$("#fea").value),out=new ImageData(new Uint8ClampedArray(d),w,h);for(let p=0;p<n;p++)out.data[p*4+3]=Math.round(d[p*4+3]*A[p]);ctx.putImageData(out,0,0);return}
-  for(let p=0;p<n;p++){if(U[p]===1)SF.push(p);else if(U[p]===2)SB.push(p)}
-  if(!SF.length){ctx.putImageData(src,0,0);return}
-  const pick=L=>{const st=Math.max(1,Math.floor(L.length/4000)),o=[];for(let i=0;i<L.length;i+=st){const q=L[i]*4;o.push([d[q],d[q+1],d[q+2]])}return o};
-  const CF=kmeans(pick(SF),8),CB=SB.length?kmeans(pick(SB),6):[],T=10+(+$("#tol").value)*.6;
-  let P=new Float32Array(n);
-  for(let p=0;p<n;p++){
-    const i=p*4,r=d[i],g=d[i+1],b=d[i+2];let a=1e9,c=1e9;
-    for(const q of CF){const e=(r-q[0])**2+(g-q[1])**2+(b-q[2])**2;if(e<a)a=e}
-    for(const q of CB){const e=(r-q[0])**2+(g-q[1])**2+(b-q[2])**2;if(e<c)c=e}
-    a=Math.sqrt(a);let v=1/(1+Math.exp((a-T)/(.15*T+1)));
-    if(CB.length)v*=Math.min(1,(Math.sqrt(c)+8)/(a+8));
-    P[p]=v;
-  }
-  const rs=Math.max(1,Math.round(w/320));
-  for(let it=0;it<2;it++){
-    for(let p=0;p<n;p++)if(U[p])P[p]=U[p]===1?1:0;
-    P=blur(P,w,h,rs);
-  }
-  let m=new Uint8Array(n);
-  for(let p=0;p<n;p++)m[p]=U[p]?(U[p]===1?1:0):(P[p]>.5?1:0);
-  m=flood(m,1,SF);
-  const E=SB.slice();
-  for(let x=0;x<w;x++)E.push(x,(h-1)*w+x);
-  for(let y=0;y<h;y++)E.push(y*w,y*w+w-1);
-  const B=flood(m,0,E);
-  for(let p=0;p<n;p++)if(!m[p]&&!B[p])m[p]=1;
-  const A=blur(Float32Array.from(m),w,h,+$("#fea").value),out=new ImageData(new Uint8ClampedArray(d),w,h),od=out.data;
-  for(let p=0;p<n;p++)od[p*4+3]=Math.round(d[p*4+3]*A[p]);
-  ctx.putImageData(out,0,0);
-}
-const st1=m=>{$("#st1").textContent=m};
-let AIM=null;
-async function aiRemove(f,seq){
-  const urls=["https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm","https://esm.sh/@imgly/background-removal@1.5.5"];
-  if(!AIM){for(const u of urls){try{AIM=await import(u);break}catch(e){}}}
-  const fn=AIM&&(AIM.removeBackground||(AIM.default&&AIM.default.removeBackground)||AIM.default);
-  if(typeof fn!=="function")throw 0;
-  const out=await fn(f,{output:{format:"image/png"},progress:(k,c,t)=>{if(seq===bg.seq&&t)st1((String(k).startsWith("fetch")?"جاري تحميل النموذج (أول مرة فقط)... ":"جاري إزالة الخلفية... ")+Math.round(100*c/t)+"%")}});
-  const im=await loadImg(out),c=document.createElement("canvas");c.width=bg.w;c.height=bg.h;
-  const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(im,0,0,bg.w,bg.h);
-  const d=x.getImageData(0,0,bg.w,bg.h).data,A=new Float32Array(bg.w*bg.h);
-  for(let p=0;p<A.length;p++)A[p]=d[p*4+3]/255;
-  return A;
-}
-drop($("#d1"),false,async([f])=>{
-  try{
-    const i=await loadImg(f),s=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),w=Math.round(i.naturalWidth*s),h=Math.round(i.naturalHeight*s),c=document.createElement("canvas");
-    c.width=w;c.height=h;const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(i,0,0,w,h);
-    Object.assign(bg,{w,h,src:x.getImageData(0,0,w,h),name:base(f.name),U:new Uint8Array(w*h),ai:null,seq:(bg.seq||0)+1});
-    for(const id of ["#c1","#o1"]){$(id).width=w;$(id).height=h}
-    $("#o1").getContext("2d").clearRect(0,0,w,h);$("#w1").hidden=false;runBg();
-  }catch(e){return toast("تعذر فتح الصورة")}
-  const q=bg.seq;st1("جاري تجهيز الذكاء الاصطناعي...");
-  try{
-    const A=await aiRemove(f,q);if(q!==bg.seq)return;
-    bg.ai=A;runBg();st1("تمت إزالة الخلفية تلقائياً ✓ يمكنك تصحيح النتيجة بالفرشاة.");
-  }catch(e){
-    if(q===bg.seq)st1("تعذر تشغيل الذكاء الاصطناعي (يحتاج اتصالاً بالإنترنت وموقعاً على https). استخدم الفرشاة الخضراء لتحديد ما تريد إبقاءه والباقي يُحذف.");
-  }
+
+fileInput.addEventListener("change", function() {
+    if (this.files[0]) loadFile(this.files[0]);
 });
-let tm;const rerun=()=>{if(!bg.src)return;clearTimeout(tm);tm=setTimeout(runBg,100)};
-["#tol","#fea"].forEach(s=>$(s).addEventListener("input",rerun));
-$$("[data-md]").forEach(b=>b.onclick=()=>{bg.mode=b.dataset.md;$$("[data-md]").forEach(y=>y.classList.toggle("on",y===b))});
-$("#clr").onclick=()=>{if(!bg.src)return;bg.U.fill(0);$("#o1").getContext("2d").clearRect(0,0,bg.w,bg.h);runBg()};
-const ov=$("#o1");let pen=null;
-function stamp(x,y){
-  const R=Math.max(3,Math.round(bg.w*(+$("#br").value)/150)),k=bg.mode==="keep"?1:2,w=bg.w,h=bg.h,X=ov.getContext("2d");
-  X.fillStyle=k===1?"rgba(0,200,90,.55)":"rgba(255,50,50,.55)";X.beginPath();X.arc(x,y,R,0,7);X.fill();
-  for(let j=Math.max(0,Math.floor(y-R));j<=Math.min(h-1,Math.ceil(y+R));j++)for(let i=Math.max(0,Math.floor(x-R));i<=Math.min(w-1,Math.ceil(x+R));i++)if((i-x)**2+(j-y)**2<=R*R)bg.U[j*w+i]=k;
-}
-const pt=e=>{const r=ov.getBoundingClientRect();return[(e.clientX-r.left)/r.width*bg.w,(e.clientY-r.top)/r.height*bg.h]};
-ov.onpointerdown=e=>{if(!bg.src)return;ov.setPointerCapture(e.pointerId);pen=pt(e);stamp(pen[0],pen[1])};
-ov.onpointermove=e=>{if(!pen)return;const q=pt(e),dx=q[0]-pen[0],dy=q[1]-pen[1],st=Math.max(1,Math.ceil(Math.hypot(dx,dy)/3));for(let s=1;s<=st;s++)stamp(pen[0]+dx*s/st,pen[1]+dy*s/st);pen=q};
-ov.onpointerup=ov.onpointercancel=()=>{if(pen){pen=null;rerun()}};
-$("#dl1").onclick=async()=>{if(bg.src)saveBlob(bg.name+"-nobg.png",await blob($("#c1"),"image/png"))};
 
-/* 2 — ضغط */
-let F2=[];
-drop($("#d2"),true,f=>{F2=f;$("#i2").textContent=f.length+" ملف · "+fmt(f.reduce((a,b)=>a+b.size,0));$("#r2").innerHTML=""});
-$("#go2").onclick=async()=>{
-  if(!F2.length)return toast("اختر ملفات أولاً");
-  const btn=$("#go2");btn.disabled=true;btn.textContent="جاري الضغط...";const out=[];
-  for(const f of F2){
-    try{
-      if(/^image\/(png|jpeg|webp|bmp)$/.test(f.type)){
-        const b=await enc(f,{type:$("#f2").value,q:+$("#q2").value/100,maxW:+$("#m2").value});
-        out.push({name:base(f.name)+"."+ext(b),blob:b,orig:f.size});
-      }else{
-        const z=new JSZip();z.file(f.name,f);
-        out.push({name:f.name+".zip",blob:await z.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:9}}),orig:f.size});
-      }
-    }catch(e){toast("فشل ضغط: "+f.name)}
-  }
-  btn.disabled=false;btn.textContent="ضغط";results($("#r2"),out);
-};
-
-/* 3 — تحويل */
-let F3=[];
-drop($("#d3"),true,f=>{F3=f;$("#i3").textContent=f.length+" صورة جاهزة للتحويل";$("#r3").innerHTML=""});
-$("#f3").onchange=()=>{$("#q3").disabled=$("#f3").value==="image/png"};
-$("#go3").onclick=async()=>{
-  if(!F3.length)return toast("اختر صوراً أولاً");
-  const btn=$("#go3");btn.disabled=true;btn.textContent="جاري التحويل...";const out=[];
-  for(const f of F3){
-    try{const b=await enc(f,{type:$("#f3").value,q:+$("#q3").value/100,maxW:0});out.push({name:base(f.name)+"."+ext(b),blob:b,orig:f.size})}
-    catch(e){toast("تعذر تحويل: "+f.name)}
-  }
-  btn.disabled=false;btn.textContent="تحويل";results($("#r3"),out);
-};
-
-/* 4 — قص */
-const cr={img:null,z:1,x:0,y:0,shape:"circle"};
-function r4(x,S,ov){
-  const k=S/640,i=cr.img,s0=Math.max(640/i.naturalWidth,640/i.naturalHeight)*cr.z;
-  const mx=(i.naturalWidth*s0-640)/2,my=(i.naturalHeight*s0-640)/2;
-  cr.x=Math.min(mx,Math.max(-mx,cr.x));cr.y=Math.min(my,Math.max(-my,cr.y));
-  const w=i.naturalWidth*s0*k,h=i.naturalHeight*s0*k;
-  if(ov){
-    x.clearRect(0,0,S,S);x.drawImage(i,S/2-w/2+cr.x*k,S/2-h/2+cr.y*k,w,h);
-    x.beginPath();x.rect(0,0,S,S);
-    if(cr.shape==="circle")x.arc(S/2,S/2,S/2-6,0,7);else x.rect(6,6,S-12,S-12);
-    x.fillStyle="rgba(0,0,0,.55)";x.fill("evenodd");
-    x.beginPath();if(cr.shape==="circle")x.arc(S/2,S/2,S/2-6,0,7);else x.rect(6,6,S-12,S-12);
-    x.strokeStyle="#fff";x.lineWidth=3;x.stroke();
-  }else{
-    x.save();x.beginPath();if(cr.shape==="circle")x.arc(S/2,S/2,S/2,0,7);else x.rect(0,0,S,S);x.clip();
-    x.drawImage(i,S/2-w/2+cr.x*k,S/2-h/2+cr.y*k,w,h);x.restore();
-  }
-}
-const d4=()=>r4($("#c4").getContext("2d"),640,true);
-drop($("#d4"),false,async([f])=>{
-  try{cr.img=await loadImg(f);cr.x=cr.y=0;cr.z=1;$("#zm").value=100;$("#zm").dispatchEvent(new Event("input"));$("#w4").hidden=false;d4()}
-  catch(e){toast("تعذر فتح الصورة")}
+dropzone.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropzone.classList.add("drag");
 });
-$("#zm").addEventListener("input",()=>{cr.z=$("#zm").value/100;if(cr.img)d4()});
-$$("[data-sh]").forEach(b=>b.onclick=()=>{cr.shape=b.dataset.sh;$$("[data-sh]").forEach(y=>y.classList.toggle("on",y===b));if(cr.img)d4()});
-let dr=null;const c4=$("#c4");
-c4.onpointerdown=e=>{dr=[e.clientX,e.clientY];c4.setPointerCapture(e.pointerId)};
-c4.onpointermove=e=>{if(!dr||!cr.img)return;const k=640/c4.getBoundingClientRect().width;cr.x+=(e.clientX-dr[0])*k;cr.y+=(e.clientY-dr[1])*k;dr=[e.clientX,e.clientY];d4()};
-c4.onpointerup=c4.onpointercancel=()=>dr=null;
-$("#dl4").onclick=async()=>{
-  if(!cr.img)return;const S=+$("#z4").value,t=$("#f4").value,c=document.createElement("canvas");c.width=c.height=S;
-  const x=c.getContext("2d");if(t==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,S,S)}
-  r4(x,S,false);const b=await blob(c,t,.95);saveBlob("pixel-"+cr.shape+"."+ext(b),b);
-};
 
-/* 5 — علامة مائية */
-const wm={img:null,logo:null};
-function mark(w){
-  const W=Math.max(20,Math.round(w*(+$("#s5").value)/100)),c=document.createElement("canvas");
-  if(wm.logo){c.width=W;c.height=Math.max(1,Math.round(W*wm.logo.naturalHeight/wm.logo.naturalWidth));c.getContext("2d").drawImage(wm.logo,0,0,c.width,c.height);return c}
-  const t=$("#t5").value||"Pixel Tool",x=c.getContext("2d");
-  x.font="700 100px Cairo,Tahoma,sans-serif";const fs=100*W/Math.max(1,x.measureText(t).width);
-  c.width=W;c.height=Math.ceil(fs*1.4);
-  x.font="700 "+fs+"px Cairo,Tahoma,sans-serif";x.fillStyle=$("#k5").value;x.textAlign="center";x.textBaseline="middle";
-  x.shadowColor="rgba(0,0,0,.35)";x.shadowBlur=fs*.05;x.fillText(t,W/2,c.height/2);
-  return c;
+dropzone.addEventListener("dragleave", () => {
+    dropzone.classList.remove("drag");
+});
+
+dropzone.addEventListener("drop", e => {
+    e.preventDefault();
+    dropzone.classList.remove("drag");
+
+    if (e.dataTransfer.files[0])
+        loadFile(e.dataTransfer.files[0]);
+});
+
+function loadFile(file) {
+
+    if (!file.type.startsWith("image/")) {
+        alert("يرجى اختيار ملف صورة.");
+        return;
+    }
+
+    currentFile = file;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        preview.src = e.target.result;
+        previewArea.style.display = "block";
+
+        originalImage = new Image();
+
+        originalImage.onload = function() {
+            actionBtn.disabled = false;
+            actionBtn.textContent = getButtonText();
+        };
+
+        originalImage.src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+
+    result.style.display = "none";
 }
-function r5(x,w,h){
-  x.drawImage(wm.img,0,0,w,h);
-  const m=mark(w),p=$("#p5").value,rot=+$("#a5").value*Math.PI/180,g=w*.03;
-  x.globalAlpha=+$("#o5").value/100;
-  const put=(cx,cy)=>{x.save();x.translate(cx,cy);x.rotate(rot);x.drawImage(m,-m.width/2,-m.height/2);x.restore()};
-  if(p==="tile"){
-    const sx=m.width*1.6,sy=m.height*3;
-    for(let r=0,y=sy/2;y<h+sy;y+=sy,r++)for(let xx=r%2?sx/2:0;xx<w+sx;xx+=sx)put(xx,y);
-  }else{
-    const v=p[0],hh=p[1];
-    put(hh==="l"?m.width/2+g:hh==="r"?w-m.width/2-g:w/2,v==="t"?m.height/2+g:v==="b"?h-m.height/2-g:h/2);
-  }
-  x.globalAlpha=1;
+
+function getButtonText() {
+
+    switch(currentTool) {
+        case "remove-bg":
+            return "إزالة الخلفية";
+        case "compress":
+            return "ضغط الصورة";
+        case "convert":
+            return "تحويل الصورة";
+        case "crop":
+            return "قص الصورة";
+        case "watermark":
+            return "إضافة العلامة المائية";
+        default:
+            return "معالجة الصورة";
+    }
 }
-function d5(){
-  if(!wm.img)return;const w=Math.min(wm.img.naturalWidth,900),h=Math.round(w*wm.img.naturalHeight/wm.img.naturalWidth),c=$("#c5");
-  c.width=w;c.height=h;r5(c.getContext("2d"),w,h);
+
+actionBtn.addEventListener("click", processImage);
+
+async function processImage() {
+
+    if (!originalImage || !currentTool) return;
+
+    actionBtn.disabled = true;
+    actionBtn.textContent = "جاري المعالجة...";
+
+    try {
+
+        if (currentTool === "remove-bg") {
+            await removeBackground();
+        }
+
+        if (currentTool === "compress") {
+            compressImage();
+        }
+
+        if (currentTool === "convert") {
+            convertImage();
+        }
+
+        if (currentTool === "crop") {
+            cropImage();
+        }
+
+        if (currentTool === "watermark") {
+            watermarkImage();
+        }
+
+    } catch(error) {
+        console.error(error);
+        alert("حدث خطأ أثناء معالجة الصورة.");
+    }
+
+    actionBtn.disabled = false;
+    actionBtn.textContent = getButtonText();
 }
-drop($("#d5"),false,async([f])=>{try{wm.img=await loadImg(f);$("#w5").hidden=false;d5()}catch(e){toast("تعذر فتح الصورة")}});
-["#t5","#k5","#s5","#o5","#a5","#p5"].forEach(s=>$(s).addEventListener("input",d5));
-$("#l5").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{wm.logo=await loadImg(f);$("#rl5").hidden=false;d5()}catch(x){toast("تعذر فتح الشعار")}};
-$("#rl5").onclick=()=>{wm.logo=null;$("#l5").value="";$("#rl5").hidden=true;d5()};
-$("#dl5").onclick=async()=>{
-  if(!wm.img)return;const t=$("#f5").value,w=wm.img.naturalWidth,h=wm.img.naturalHeight,c=document.createElement("canvas");
-  c.width=w;c.height=h;const x=c.getContext("2d");if(t==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,w,h)}
-  r5(x,w,h);const b=await blob(c,t,.95);saveBlob("pixel-watermark."+ext(b),b);
-};
+
+
+/* =========================
+   إزالة الخلفية
+========================= */
+
+async function removeBackground() {
+
+    /*
+      هذه النسخة تستخدم مكتبة إزالة الخلفية
+      من المتصفح.
+    */
+
+    if (!window.imgly) {
+        alert(
+            "لإزالة الخلفية تلقائياً، أضف مكتبة @imgly/background-removal للمشروع."
+        );
+
+        return;
+    }
+
+    const blob = await imgly.removeBackground(currentFile);
+
+    resultURL = URL.createObjectURL(blob);
+
+    preview.src = resultURL;
+
+    showResult(resultURL, "pixel-tool-no-background.png");
+}
+
+
+/* =========================
+   ضغط الصورة
+========================= */
+
+function compressImage() {
+
+    const quality =
+        Number(document.getElementById("quality").value) / 100;
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = originalImage.width;
+    canvas.height = originalImage.height;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(originalImage, 0, 0);
+
+    canvas.toBlob(blob => {
+
+        resultURL = URL.createObjectURL(blob);
+
+        showResult(
+            resultURL,
+            "pixel-tool-compressed.jpg"
+        );
+
+    }, "image/jpeg", quality);
+}
+
+
+/* =========================
+   تحويل الصيغة
+========================= */
+
+function convertImage() {
+
+    const format = document.getElementById("format").value;
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = originalImage.width;
+    canvas.height = originalImage.height;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(originalImage, 0, 0);
+
+    canvas.toBlob(blob => {
+
+        resultURL = URL.createObjectURL(blob);
+
+        let extension = "png";
+
+        if (format === "image/jpeg")
+            extension = "jpg";
+
+        if (format === "image/webp")
+            extension = "webp";
+
+        showResult(
+            resultURL,
+            "pixel-tool-converted." + extension
+        );
+
+    }, format, .92);
+}
+
+
+/* =========================
+   القص مربع / دائرة
+========================= */
+
+function cropImage() {
+
+    const shape = document.getElementById("cropShape").value;
+
+    const size = Math.min(
+        originalImage.width,
+        originalImage.height
+    );
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = size;
+    canvas.height = size;
+
+    const ctx = canvas.getContext("2d");
+
+    if (shape === "circle") {
+
+        ctx.beginPath();
+
+        ctx.arc(
+            size / 2,
+            size / 2,
+            size / 2,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.clip();
+    }
+
+    const sx =
+        (originalImage.width - size) / 2;
+
+    const sy =
+        (originalImage.height - size) / 2;
+
+    ctx.drawImage(
+        originalImage,
+        sx,
+        sy,
+        size,
+        size,
+        0,
+        0,
+        size,
+        size
+    );
+
+    canvas.toBlob(blob => {
+
+        resultURL = URL.createObjectURL(blob);
+
+        showResult(
+            resultURL,
+            shape === "circle"
+                ? "pixel-tool-circle.png"
+                : "pixel-tool-square.png"
+        );
+
+    }, "image/png");
+}
+
+
+/* =========================
+   العلامة المائية
+========================= */
+
+function watermarkImage() {
+
+    const text =
+        document.getElementById("watermarkText").value
+        || "Pixel Tool";
+
+    const opacity =
+        Number(document.getElementById("watermarkOpacity").value) / 100;
+
+    const canvas = document.createElement("canvas");
+
+    canvas.width = originalImage.width;
+    canvas.height = originalImage.height;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(
+        originalImage,
+        0,
+        0
+    );
+
+    const fontSize =
+        Math.max(
+            25,
+            Math.floor(canvas.width * .045)
+        );
+
+    ctx.font = `bold ${fontSize}px Arial`;
+
+    ctx.textAlign = "right";
+    ctx.textBaseline = "bottom";
+
+    ctx.globalAlpha = opacity;
+
+    ctx.fillStyle = "#ffffff";
+
+    ctx.shadowColor = "#000000";
+    ctx.shadowBlur = 8;
+
+    ctx.fillText(
+        text,
+        canvas.width - 30,
+        canvas.height - 30
+    );
+
+    ctx.globalAlpha = 1;
+
+    canvas.toBlob(blob => {
+
+        resultURL = URL.createObjectURL(blob);
+
+        showResult(
+            resultURL,
+            "pixel-tool-watermark.png"
+        );
+
+    }, "image/png");
+}
+
+
+/* =========================
+   النتيجة
+========================= */
+
+function showResult(url, filename) {
+
+    result.style.display = "block";
+
+    download.href = url;
+    download.download = filename;
+
+    preview.src = url;
+
+    result.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
 </script>
+
+<!--
+  مكتبة إزالة الخلفية:
+  أضف مكتبة @imgly/background-removal
+  للمشروع لتفعيل إزالة الخلفية التلقائية.
+-->
+
 </body>
 </html>
