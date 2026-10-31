@@ -1,128 +1,24 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixel Tools - استوديو الصور الذكي</title>
-    <meta name="description" content="مجموعة أدوات متكاملة لمعالجة الصور محلياً داخل المتصفح: إزالة الخلفية، ضغط الحجم، تحويل الصيغ، والقص." />
-    
-    <!-- كود إثبات ملكية Google Search Console -->
-    <meta name="google-site-verification" content="Md2tc493Laa5qpvwHf5J_AsHgpDsAb6NYVPiDnurBbA" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-    <style>
-        body { font-family: 'Tajawal', sans-serif; }
-    </style>
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-600 selection:text-white">
-
-    <!-- Navbar -->
-    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="resetToHome()">
-                <div class="bg-indigo-600 p-2 rounded-xl text-white font-black text-xl shadow-lg shadow-indigo-500/30">PT</div>
-                <span class="text-xl font-black tracking-wide bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent">Pixel Tools</span>
-            </div>
-            <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-3 py-1 rounded-full font-medium">معالجة فورية 100%</span>
-        </div>
-    </header>
-
-    <!-- Main Workspace -->
-    <main class="flex-grow max-w-5xl mx-auto px-4 py-8 w-full space-y-8">
-        
-        <!-- SECTION 1: HOME PAGE -->
-        <div id="homeSection" class="space-y-8">
-            <div class="text-center space-y-3">
-                <h1 class="text-3xl sm:text-4xl font-black tracking-tight">اختر الأداة المطلوبة للبدء</h1>
-                <p class="text-slate-400 text-sm">اضغط على أي أداة للانتقال لصفحة معالجة الصورة وتحميلها مباشرة</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Tool 1: BG Remove -->
-                <button onclick="openTool('bg-remove', 'إزالة الخلفية الذكية', 'تفريغ الخلفية البيضاء أو الفاتحة تلقائياً')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
-                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">✨</div>
-                    <div class="text-lg font-bold text-slate-100">إزالة الخلفية</div>
-                    <div class="text-xs text-slate-400 mt-1">تفريغ خلفية الصور جعلها شفافة</div>
-                </button>
-
-                <!-- Tool 2: Format Convert -->
-                <button onclick="openTool('convert', 'تحويل صيغ الصور', 'تحويل بين صيغ PNG, JPG, WEBP بنقرة زر')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
-                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">🔄</div>
-                    <div class="text-lg font-bold text-slate-100">تحويل الصيغ</div>
-                    <div class="text-xs text-slate-400 mt-1">تغيير صيغة الملف وحفظه</div>
-                </button>
-
-                <!-- Tool 3: Compress -->
-                <button onclick="openTool('compress', 'ضغط حجم الصور', 'تقليل أبعاد وحجم الصور لسهولة التخزين')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
-                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">📦</div>
-                    <div class="text-lg font-bold text-slate-100">ضغط الحجم</div>
-                    <div class="text-xs text-slate-400 mt-1">تصغير أبعاد الصورة إلى النصّف</div>
-                </button>
-
-                <!-- Tool 4: Crop -->
-                <button onclick="openTool('crop', 'القص والتأطير الدائري', 'قص الصورة بشكل دائري مخصص للبروفايل')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
-                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">✂️</div>
-                    <div class="text-lg font-bold text-slate-100">القص الدائري</div>
-                    <div class="text-xs text-slate-400 mt-1">تحويل الصورة إلى إطار دائري ممتاز</div>
-                </button>
-
-                <!-- Tool 5: Watermark -->
-                <button onclick="openTool('watermark', 'العلامة المائية', 'إضافة ختم Pixel Tools على الصورة لحمايتها')" class="bg-slate-900/90 hover:bg-indigo-600/20 border border-slate-800 hover:border-indigo-500 p-6 rounded-3xl text-right transition-all group">
-                    <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">🔒</div>
-                    <div class="text-lg font-bold text-slate-100">العلامة المائية</div>
-                    <div class="text-xs text-slate-400 mt-1">كتابة اسم حقوقك على الصورة</div>
-                </button>
-            </div>
-        </div>
-
-        <!-- SECTION 2: TOOL WORKSPACE -->
-        <div id="toolSection" class="hidden space-y-6">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div>
-                    <h2 id="currentToolTitle" class="text-2xl font-black text-indigo-400">اسم الأداة</h2>
-                    <p id="currentToolDesc" class="text-xs text-slate-400">وصف الأداة</p>
-                </div>
-                <button onclick="resetToHome()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold border border-slate-800">العودة للأدوات 🔙</button>
-            </div>
-
-            <!-- Upload Box -->
-            <div id="uploadBox" class="bg-slate-900/80 border-2 border-dashed border-slate-700 hover:border-indigo-500 transition-all rounded-3xl p-10 text-center cursor-pointer" onclick="document.getElementById('imageInput').click()">
-                <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
-                <div class="space-y-3">
-                    <div class="w-16 h-16 bg-indigo-600/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto text-3xl">📁</div>
-                    <p class="text-lg font-bold text-slate-200">اضغط هنا لتحميل الصورة</p>
-                    <p class="text-xs text-slate-500">اختر صورة من جهازك لتطبيق الأداة عليها فوراً</p>
-                </div>
-            </div>
-
-            <!-- Convert Tool Format Selector -->
-            <div id="formatOptions" class="hidden bg-slate-900/60 p-4 border border-slate-800 rounded-2xl flex items-center justify-center gap-3">
-                <span class="text-xs font-bold text-slate-400">اختر صيغة التصدير:</span>
-                <button onclick="changeFormat('png')" id="btn-png" class="bg-indigo-600 px-4 py-2 rounded-xl text-xs font-bold">PNG</button>
-                <button onclick="changeFormat('jpg')" id="btn-jpg" class="bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold">JPG</button>
-                <button onclick="changeFormat('webp')" id="btn-webp" class="bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold">WEBP</button>
-            </div>
-
-            <!-- Preview Workspace -->
-            <div id="resultWorkspace" class="hidden space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-900/60 p-6 border border-slate-800 rounded-3xl">
-                    <div class="space-y-2 text-center">
-                        <span class="text-xs text-slate-400 font-bold">الصورة الأصلية</span>
-                        <div class="bg-slate-950 p-2 rounded-2xl border border-slate-800 h-64 flex items-center justify-center overflow-hidden">
-                            <img id="originalPreview" class="max-h-full max-w-full object-contain rounded-xl" />
-                        </div>
-                    </div>
-                    <div class="space-y-2 text-center">
-                        <span class="text-xs text-indigo-400 font-bold">النتيجة المعالجة</span>
-                        <div class="bg-slate-950 p-2 rounded-2xl border border-slate-800 h-64 flex items-center justify-center overflow-hidden bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px]">
-                            <canvas id="outputCanvas" class="max-h-full max-w-full object-contain rounded-xl"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Download Actions -->
-                <div class="flex flex-wrap items-center justify-center gap-4">
-                    <button onclick="document.getElementById('imageInput').click()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-6 py-3 rounded-2xl transition-all">تغيير الصورة 🔄</button>
-                    <button id="downloadBtn" onclick="downloadResult()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm px-8 py-3 rounded-2xl shadow-lg shadow-indigo-600/30 transition-all
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Pixel Tool: أدوات صور مجانية تعمل في المتصفح: إزالة الخلفية، ضغط الصور، تحويل الصيغ، القص، والعلامة المائية.">
+<title>Pixel Tool – أدوات الصور</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#f6f5fb;--card:#fff;--tx:#1c1a2e;--mut:#6b6882;--ac:#6c5ce7;--ac2:#00b894;--bd:#e4e1f2;--ok:#0a9a6d;--bad:#d63c3c;--k1:#d9d6e8;--k2:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12111c;--card:#1b1a2a;--tx:#f0eefc;--mut:#9a97b3;--ac:#8b7dff;--bd:#2d2b44;--ok:#35d6a2;--bad:#ff7a7a;--k1:#2a2840;--k2:#35335040}}
+:root[data-theme="dark"]{--bg:#12111c;--card:#1b1a2a;--tx:#f0eefc;--mut:#9a97b3;--ac:#8b7dff;--bd:#2d2b44;--ok:#35d6a2;--bad:#ff7a7a;--k1:#2a2840;--k2:#35335040}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 Cairo,Tahoma,system-ui,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.logo{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:38px;height:38px}
+.logo i{border-radius:3px;background:var(--ac)}.logo i:nth-child(2){background:var(--ac2)}.logo i:nth-child(3){opacity:.45}
+h1{margin:0;font-size:26px;letter-spacing:.3px}
+.sub{color:var(--mut);margin:0 0 18px;font-size:14px}
+nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
+nav button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:600 14px Cairo,Tahoma,sans-serif;padding:9px 14px;border-radius:999px;cursor:pointer}
