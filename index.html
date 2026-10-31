@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="PUT_YOUR_CODE_HERE" />
 <meta name="description" content="Pixel Tool: أدوات صور مجانية تعمل في المتصفح: إزالة الخلفية، ضغط الصور، تحويل الصيغ، القص، والعلامة المائية.">
 <title>Pixel Tool – أدوات الصور</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">
@@ -27,9 +28,13 @@ nav button.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .panel.on{display:block}
 h2{margin:0 0 4px;font-size:20px}
 .hint{color:var(--mut);font-size:13px;margin:4px 0 12px}
-.drop{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:2px dashed var(--bd);border-radius:14px;padding:26px 12px;cursor:pointer;transition:.15s}
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:2px dashed var(--bd);border-radius:14px;padding:26px 12px;cursor:pointer;transition:.15s}
 .drop:hover,.drop.hov{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,transparent)}
 .drop small{color:var(--mut)}
+.drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.cv{position:relative;display:inline-block;line-height:0;max-width:100%}
+.cv #o1{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.seg button.alt{flex:none}
 .stage{margin:14px auto;border-radius:12px;overflow:hidden;display:flex;justify-content:center;border:1px solid var(--bd)}
 .ck{background:repeating-conic-gradient(var(--k1) 0 25%,var(--k2) 0 50%) 0 0/16px 16px}
 canvas{max-width:100%;height:auto;display:block}
@@ -71,15 +76,16 @@ footer{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
 
 <section class="panel on" id="p-bg">
 <h2>إزالة الخلفية</h2>
-<p class="hint">تعتمد على لون الخلفية، وتعمل بشكل ممتاز مع الخلفيات الموحدة (استوديو، أبيض، سماء...).</p>
-<label class="drop" id="d1"><input type="file" accept="image/*" hidden><b>اسحب الصورة هنا أو اضغط للاختيار</b><small>PNG · JPG · WEBP</small></label>
+<p class="hint">تحليل ذكي للألوان يفصل الشخص أو الجسم في وسط الصورة عن الخلفية، ويمكنك تصحيح النتيجة بالفرشاة.</p>
+<label class="drop" id="d1"><input type="file" accept="image/*"><b>اسحب الصورة هنا أو اضغط للاختيار</b><small>PNG · JPG · WEBP</small></label>
 <div id="w1" hidden>
-<div class="stage ck"><canvas id="c1"></canvas></div>
-<p class="hint">اضغط على الصورة لاختيار لون الخلفية المراد إزالته (الافتراضي: لون الأطراف).</p>
+<div class="seg"><button class="btn on" data-md="keep">🟢 احتفظ</button><button class="btn" data-md="remove">🔴 أزل</button><button class="btn alt" id="clr">مسح العلامات</button></div>
+<div class="stage ck"><div class="cv"><canvas id="c1"></canvas><canvas id="o1"></canvas></div></div>
+<p class="hint">النتيجة تظهر تلقائياً. إذا أخطأت، ارسم بالأخضر فوق الشخص أو الجسم لإبقائه، وبالأحمر فوق الخلفية لإزالتها.</p>
 <div class="ctl">
-<label>الحساسية<input type="range" id="tol" min="1" max="100" value="30"><output></output></label>
+<label>قوة الإزالة<input type="range" id="tol" min="1" max="100" value="50"><output></output></label>
 <label>نعومة الحواف<input type="range" id="fea" min="0" max="6" value="1"><output></output></label>
-<label class="chk"><input type="checkbox" id="all"> إزالة اللون من كل الصورة (حتى الداخل)</label>
+<label>حجم الفرشاة<input type="range" id="br" min="1" max="10" value="4"><output></output></label>
 </div>
 <button class="btn" id="dl1">تحميل PNG شفاف</button>
 </div>
@@ -88,7 +94,7 @@ footer{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
 <section class="panel" id="p-cmp">
 <h2>ضغط الحجم</h2>
 <p class="hint">الصور تُضغط بجودة تختارها، وأي ملف آخر يُضغط داخل ZIP.</p>
-<label class="drop" id="d2"><input type="file" hidden><b>اسحب الملفات هنا أو اضغط للاختيار</b><small>صور أو أي ملفات، عدة ملفات دفعة واحدة</small></label>
+<label class="drop" id="d2"><input type="file"><b>اسحب الملفات هنا أو اضغط للاختيار</b><small>صور أو أي ملفات، عدة ملفات دفعة واحدة</small></label>
 <p class="hint" id="i2"></p>
 <div class="ctl">
 <label>صيغة الصور<select id="f2"><option value="image/webp">WEBP (أصغر حجماً)</option><option value="image/jpeg">JPG</option></select></label>
@@ -102,7 +108,7 @@ footer{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
 <section class="panel" id="p-cnv">
 <h2>تحويل صيغ الصور</h2>
 <p class="hint">حوّل بين PNG وJPG وWEBP. يقبل أيضاً GIF وBMP وSVG كمدخلات.</p>
-<label class="drop" id="d3"><input type="file" accept="image/*" hidden><b>اسحب الصور هنا أو اضغط للاختيار</b><small>يمكن اختيار عدة صور</small></label>
+<label class="drop" id="d3"><input type="file" accept="image/*"><b>اسحب الصور هنا أو اضغط للاختيار</b><small>يمكن اختيار عدة صور</small></label>
 <p class="hint" id="i3"></p>
 <div class="ctl">
 <label>التحويل إلى<select id="f3"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WEBP</option></select></label>
@@ -115,7 +121,7 @@ footer{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
 <section class="panel" id="p-crp">
 <h2>قص الصورة</h2>
 <p class="hint">اسحب الصورة داخل الإطار لتحديد الجزء المطلوب، وكبّر بالشريط.</p>
-<label class="drop" id="d4"><input type="file" accept="image/*" hidden><b>اسحب الصورة هنا أو اضغط للاختيار</b></label>
+<label class="drop" id="d4"><input type="file" accept="image/*"><b>اسحب الصورة هنا أو اضغط للاختيار</b></label>
 <div id="w4" hidden>
 <div class="seg"><button class="btn on" data-sh="circle">دائري</button><button class="btn" data-sh="square">مربع</button></div>
 <div class="stage ck"><canvas id="c4" width="640" height="640"></canvas></div>
@@ -131,7 +137,7 @@ footer{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
 <section class="panel" id="p-wm">
 <h2>العلامة المائية</h2>
 <p class="hint">أضف نصاً أو شعاراً فوق صورتك بالموضع والشفافية التي تريد.</p>
-<label class="drop" id="d5"><input type="file" accept="image/*" hidden><b>اسحب الصورة هنا أو اضغط للاختيار</b></label>
+<label class="drop" id="d5"><input type="file" accept="image/*"><b>اسحب الصورة هنا أو اضغط للاختيار</b></label>
 <div id="w5" hidden>
 <div class="stage ck"><canvas id="c5"></canvas></div>
 <div class="ctl">
@@ -204,17 +210,7 @@ async function enc(f,o){
 }
 
 /* 1 — إزالة الخلفية */
-const bg={};
-drop($("#d1"),false,async([f])=>{
-  try{
-    const i=await loadImg(f),s=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight));
-    bg.w=Math.round(i.naturalWidth*s);bg.h=Math.round(i.naturalHeight*s);
-    const c=document.createElement("canvas");c.width=bg.w;c.height=bg.h;
-    const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(i,0,0,bg.w,bg.h);
-    bg.src=x.getImageData(0,0,bg.w,bg.h);bg.name=base(f.name);bg.pick=null;
-    $("#w1").hidden=false;runBg();
-  }catch(e){toast("تعذر فتح الصورة")}
-});
+const bg={mode:"keep"};
 function blur(a,w,h,r){
   if(!r)return a;
   const t=new Float32Array(a.length),o=new Float32Array(a.length),k=2*r+1,cl=(v,m)=>Math.min(m,Math.max(0,v));
@@ -222,31 +218,98 @@ function blur(a,w,h,r){
   for(let x=0;x<w;x++){let s=0;for(let y=-r;y<=r;y++)s+=t[cl(y,h-1)*w+x];for(let y=0;y<h;y++){o[y*w+x]=s/k;s+=t[cl(y+r+1,h-1)*w+x]-t[cl(y-r,h-1)*w+x]}}
   return o;
 }
-function runBg(){
-  const {w,h,src}=bg,d=src.data,n=w*h;
-  let col=bg.pick;
-  if(!col){const P=(x,y)=>{const i=(y*w+x)*4;return[d[i],d[i+1],d[i+2]]},cs=[P(0,0),P(w-1,0),P(0,h-1),P(w-1,h-1)];col=[0,1,2].map(k=>cs.reduce((a,c)=>a+c[k],0)/4)}
-  const T=+$("#tol").value*2.5,T2=T*T,m=new Uint8Array(n);
-  const near=p=>{const i=p*4,a=d[i]-col[0],b=d[i+1]-col[1],c=d[i+2]-col[2];return a*a+b*b+c*c<=T2};
-  if($("#all").checked){for(let p=0;p<n;p++)m[p]=near(p)?1:0}
-  else{
-    const st=new Int32Array(n);let sp=0;
-    const push=p=>{if(!m[p]&&near(p)){m[p]=1;st[sp++]=p}};
-    for(let x=0;x<w;x++){push(x);push((h-1)*w+x)}
-    for(let y=0;y<h;y++){push(y*w);push(y*w+w-1)}
-    while(sp){const p=st[--sp],x=p%w,y=(p/w)|0;if(x>0)push(p-1);if(x<w-1)push(p+1);if(y>0)push(p-w);if(y<h-1)push(p+w)}
+function kmeans(S,K,mf){
+  if(!S.length)return[];
+  K=Math.min(K,S.length);
+  let C=Array.from({length:K},(_,i)=>S[Math.floor(i*S.length/K)].slice());
+  let A;
+  for(let it=0;it<8;it++){
+    A=C.map(()=>[0,0,0,0]);
+    for(const p of S){let b=0,bd=1e9;for(let k=0;k<K;k++){const c=C[k],e=(p[0]-c[0])**2+(p[1]-c[1])**2+(p[2]-c[2])**2;if(e<bd){bd=e;b=k}}const a=A[b];a[0]+=p[0];a[1]+=p[1];a[2]+=p[2];a[3]++}
+    C=C.map((c,k)=>A[k][3]?[A[k][0]/A[k][3],A[k][1]/A[k][3],A[k][2]/A[k][3]]:c);
   }
-  const al=blur(Float32Array.from(m),w,h,+$("#fea").value),out=new ImageData(new Uint8ClampedArray(d),w,h);
-  for(let p=0;p<n;p++)out.data[p*4+3]=Math.round(d[p*4+3]*(1-al[p]));
-  const c=$("#c1");c.width=w;c.height=h;c.getContext("2d").putImageData(out,0,0);
+  return C.filter((c,k)=>A[k][3]>=(mf||0)*S.length);
 }
-let tm;const rerun=()=>{if(!bg.src)return;clearTimeout(tm);tm=setTimeout(runBg,120)};
-["#tol","#fea","#all"].forEach(s=>$(s).addEventListener("input",rerun));
-$("#c1").onclick=e=>{
-  if(!bg.src)return;const r=e.target.getBoundingClientRect();
-  const x=Math.min(bg.w-1,Math.max(0,Math.floor((e.clientX-r.left)/r.width*bg.w))),y=Math.min(bg.h-1,Math.max(0,Math.floor((e.clientY-r.top)/r.height*bg.h))),i=(y*bg.w+x)*4;
-  bg.pick=[bg.src.data[i],bg.src.data[i+1],bg.src.data[i+2]];runBg();
-};
+function flood(m,v,starts){
+  const n=m.length,w=bg.w,h=bg.h,R=new Uint8Array(n),st=new Int32Array(n);let sp=0;
+  for(const p of starts)if(m[p]===v&&!R[p]){R[p]=1;st[sp++]=p}
+  while(sp){
+    const p=st[--sp],x=p%w,y=(p/w)|0;
+    if(x>0&&!R[p-1]&&m[p-1]===v){R[p-1]=1;st[sp++]=p-1}
+    if(x<w-1&&!R[p+1]&&m[p+1]===v){R[p+1]=1;st[sp++]=p+1}
+    if(y>0&&!R[p-w]&&m[p-w]===v){R[p-w]=1;st[sp++]=p-w}
+    if(y<h-1&&!R[p+w]&&m[p+w]===v){R[p+w]=1;st[sp++]=p+w}
+  }
+  return R;
+}
+function runBg(){
+  const {w,h,src,U}=bg,d=src.data,n=w*h;
+  let hasK=0,hasR=0;
+  for(let p=0;p<n;p++){if(U[p]===1)hasK=1;else if(U[p]===2)hasR=1}
+  const t=Math.max(2,Math.round(Math.min(w,h)*.02)),ex=w*.2,ey=h*.2,SF=[],SB=[];
+  for(let p=0;p<n;p++){
+    let l=U[p];
+    if(!l){
+      const x=p%w,y=(p/w)|0;
+      if(!hasR&&(x<t||y<t||x>=w-t||y>=h-t)&&(y<h*.7||x<w*.15||x>=w*.85))l=2;
+      else if(!hasK&&((x-w/2)/ex)**2+((y-h/2)/ey)**2<1)l=1;
+    }
+    if(l===1)SF.push(p);else if(l===2)SB.push(p);
+  }
+  if(!SF.length||!SB.length)return;
+  const pick=L=>{const st=Math.max(1,Math.floor(L.length/4000)),o=[];for(let i=0;i<L.length;i+=st){const q=L[i]*4;o.push([d[q],d[q+1],d[q+2]])}return o};
+  const near=(C,q)=>{let a=1e9;for(const c of C){const e=(q[0]-c[0])**2+(q[1]-c[1])**2+(q[2]-c[2])**2;if(e<a)a=e}return Math.sqrt(a)};
+  const CB=kmeans(pick(SB),6,hasR?0:.1);let sf=pick(SF);
+  if(!hasK){const f=sf.filter(q=>near(CB,q)>40);if(f.length>20)sf=f}
+  const CF=kmeans(sf,6);
+  let P=new Float32Array(n);
+  for(let p=0;p<n;p++){
+    const i=p*4,r=d[i],g=d[i+1],b=d[i+2];let a=1e9,c=1e9;
+    for(const q of CF){const e=(r-q[0])**2+(g-q[1])**2+(b-q[2])**2;if(e<a)a=e}
+    for(const q of CB){const e=(r-q[0])**2+(g-q[1])**2+(b-q[2])**2;if(e<c)c=e}
+    a=Math.sqrt(a);c=Math.sqrt(c);P[p]=(c+8)/(a+c+16);
+  }
+  const rs=Math.max(1,Math.round(w/320));
+  for(let it=0;it<2;it++){
+    for(let p=0;p<n;p++)if(U[p])P[p]=U[p]===1?1:0;
+    P=blur(P,w,h,rs);
+  }
+  const thr=.25+.5*(+$("#tol").value)/100;let m=new Uint8Array(n);
+  for(let p=0;p<n;p++)m[p]=U[p]?(U[p]===1?1:0):(P[p]>thr?1:0);
+  const R=flood(m,1,SF);let cnt=0;for(let p=0;p<n;p++)cnt+=R[p];
+  if(cnt)m=R;
+  const E=SB.slice();
+  for(let x=0;x<w;x++)E.push(x,(h-1)*w+x);
+  for(let y=0;y<h;y++)E.push(y*w,y*w+w-1);
+  const B=flood(m,0,E);
+  for(let p=0;p<n;p++)if(!m[p]&&!B[p])m[p]=1;
+  const A=blur(Float32Array.from(m),w,h,+$("#fea").value),out=new ImageData(new Uint8ClampedArray(d),w,h),od=out.data;
+  for(let p=0;p<n;p++)od[p*4+3]=Math.round(d[p*4+3]*A[p]);
+  $("#c1").getContext("2d").putImageData(out,0,0);
+}
+drop($("#d1"),false,async([f])=>{
+  try{
+    const i=await loadImg(f),s=Math.min(1,1280/Math.max(i.naturalWidth,i.naturalHeight)),w=Math.round(i.naturalWidth*s),h=Math.round(i.naturalHeight*s),c=document.createElement("canvas");
+    c.width=w;c.height=h;const x=c.getContext("2d",{willReadFrequently:true});x.drawImage(i,0,0,w,h);
+    Object.assign(bg,{w,h,src:x.getImageData(0,0,w,h),name:base(f.name),U:new Uint8Array(w*h)});
+    for(const id of ["#c1","#o1"]){$(id).width=w;$(id).height=h}
+    $("#w1").hidden=false;runBg();
+  }catch(e){toast("تعذر فتح الصورة")}
+});
+let tm;const rerun=()=>{if(!bg.src)return;clearTimeout(tm);tm=setTimeout(runBg,100)};
+["#tol","#fea"].forEach(s=>$(s).addEventListener("input",rerun));
+$$("[data-md]").forEach(b=>b.onclick=()=>{bg.mode=b.dataset.md;$$("[data-md]").forEach(y=>y.classList.toggle("on",y===b))});
+$("#clr").onclick=()=>{if(!bg.src)return;bg.U.fill(0);$("#o1").getContext("2d").clearRect(0,0,bg.w,bg.h);runBg()};
+const ov=$("#o1");let pen=null;
+function stamp(x,y){
+  const R=Math.max(3,Math.round(bg.w*(+$("#br").value)/150)),k=bg.mode==="keep"?1:2,w=bg.w,h=bg.h,X=ov.getContext("2d");
+  X.fillStyle=k===1?"rgba(0,200,90,.55)":"rgba(255,50,50,.55)";X.beginPath();X.arc(x,y,R,0,7);X.fill();
+  for(let j=Math.max(0,Math.floor(y-R));j<=Math.min(h-1,Math.ceil(y+R));j++)for(let i=Math.max(0,Math.floor(x-R));i<=Math.min(w-1,Math.ceil(x+R));i++)if((i-x)**2+(j-y)**2<=R*R)bg.U[j*w+i]=k;
+}
+const pt=e=>{const r=ov.getBoundingClientRect();return[(e.clientX-r.left)/r.width*bg.w,(e.clientY-r.top)/r.height*bg.h]};
+ov.onpointerdown=e=>{if(!bg.src)return;ov.setPointerCapture(e.pointerId);pen=pt(e);stamp(pen[0],pen[1])};
+ov.onpointermove=e=>{if(!pen)return;const q=pt(e),dx=q[0]-pen[0],dy=q[1]-pen[1],st=Math.max(1,Math.ceil(Math.hypot(dx,dy)/3));for(let s=1;s<=st;s++)stamp(pen[0]+dx*s/st,pen[1]+dy*s/st);pen=q};
+ov.onpointerup=ov.onpointercancel=()=>{if(pen){pen=null;rerun()}};
 $("#dl1").onclick=async()=>{if(bg.src)saveBlob(bg.name+"-nobg.png",await blob($("#c1"),"image/png"))};
 
 /* 2 — ضغط */
