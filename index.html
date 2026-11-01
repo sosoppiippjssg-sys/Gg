@@ -2,8 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c1020">
   <title>Pixel Tool — أدوات الصور</title>
+
   <style>
     :root {
       --bg: #0c1020;
@@ -14,7 +16,9 @@
       --accent: #8b7cff;
       --accent2: #42d8c2;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -24,341 +28,1127 @@
       color: var(--text);
       font-family: system-ui, Tahoma, sans-serif;
     }
-    header {
-      max-width: 1100px;
-      margin: auto;
-      padding: 28px 20px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+
+    header, main {
+      width: min(100% - 28px, 1050px);
+      margin-inline: auto;
+    }
+
+    header { padding: 24px 0 12px; }
+
+    .brand {
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .brand span { color: var(--accent2); }
+
+    header p, .description {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 5px 0 0;
+    }
+
+    main { padding: 14px 0 30px; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 225px minmax(0, 1fr);
       gap: 16px;
     }
-    .brand { font-size: 25px; font-weight: 800; letter-spacing: -.5px; }
-    .brand span { color: var(--accent2); }
-    header p { color: var(--muted); margin: 4px 0 0; font-size: 14px; }
-    main { max-width: 1100px; margin: auto; padding: 20px; }
-    .layout { display: grid; grid-template-columns: 230px 1fr; gap: 20px; }
+
     .sidebar, .workspace {
-      background: rgba(21,27,46,.92);
+      background: rgba(21, 27, 46, .95);
       border: 1px solid #29314b;
-      border-radius: 18px;
-      padding: 16px;
+      border-radius: 17px;
+      padding: 15px;
     }
+
     .tool-btn {
       width: 100%;
       border: 0;
       color: var(--muted);
       background: transparent;
       text-align: right;
-      padding: 13px 12px;
-      border-radius: 11px;
+      padding: 12px;
+      border-radius: 10px;
       cursor: pointer;
       font: inherit;
       margin: 3px 0;
     }
-    .tool-btn:hover, .tool-btn.active { background: var(--panel2); color: white; }
+
+    .tool-btn:hover, .tool-btn.active {
+      background: var(--panel2);
+      color: white;
+    }
+
     .tool-btn.active { box-shadow: inset -3px 0 var(--accent); }
-    .workspace h1 { margin: 2px 0 5px; font-size: 23px; }
-    .description { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
+
+    h1 { font-size: 22px; margin: 2px 0 5px; }
+
     .drop {
       border: 1px dashed #596485;
       background: #11172a;
-      border-radius: 15px;
-      min-height: 175px;
+      border-radius: 14px;
+      min-height: 150px;
       display: grid;
       place-items: center;
       text-align: center;
-      padding: 22px;
+      padding: 20px;
       color: var(--muted);
       cursor: pointer;
+      margin-top: 18px;
     }
-    .drop strong { display: block; color: var(--text); font-size: 17px; margin-bottom: 6px; }
-    input[type=file] { display: none; }
-    .controls { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 17px; align-items: end; }
-    .field { display: grid; gap: 7px; color: var(--muted); font-size: 13px; }
-    input[type=text], select, input[type=range] {
+
+    .drop strong {
+      display: block;
+      color: var(--text);
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    input[type="file"] { display: none; }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: end;
+      margin-top: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    input[type="text"], select {
+      min-height: 42px;
       border: 1px solid #343e5d;
       background: #101629;
       color: white;
       border-radius: 9px;
-      padding: 10px;
+      padding: 9px 10px;
       font: inherit;
+      max-width: 100%;
     }
-    input[type=text] { min-width: 190px; }
+
+    input[type="range"] { accent-color: var(--accent); }
+
     .btn {
+      min-height: 42px;
       border: 0;
       border-radius: 10px;
       background: var(--accent);
       color: white;
-      padding: 11px 16px;
+      padding: 10px 16px;
       font: inherit;
       font-weight: 700;
       cursor: pointer;
     }
-    .btn.secondary { background: #29324e; }
-    .btn:disabled { opacity: .5; cursor: wait; }
-    .preview-wrap { margin-top: 18px; display: none; }
-    .preview-wrap img {
-      max-width: 100%;
-      max-height: 360px;
+
+    .btn:disabled { opacity: .55; cursor: wait; }
+
+    #status {
+      color: var(--accent2);
+      min-height: 24px;
+      margin-top: 13px;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .preview-wrap {
+      display: none;
+      margin-top: 15px;
+    }
+
+    #preview {
       display: block;
+      max-width: 100%;
+      max-height: 340px;
       margin: 0 auto;
       border-radius: 10px;
-      background-color: #f1f1f1;
-      background-image: linear-gradient(45deg,#ddd 25%,transparent 25%),linear-gradient(-45deg,#ddd 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#ddd 75%),linear-gradient(-45deg,transparent 75%,#ddd 75%);
+      background-color: #eee;
+      background-image:
+        linear-gradient(45deg,#ddd 25%,transparent 25%),
+        linear-gradient(-45deg,#ddd 25%,transparent 25%),
+        linear-gradient(45deg,transparent 75%,#ddd 75%),
+        linear-gradient(-45deg,transparent 75%,#ddd 75%);
       background-size: 18px 18px;
-      background-position: 0 0,0 9px,9px -9px,-9px 0;
+      background-position: 0 0, 0 9px, 9px -9px, -9px 0;
     }
-    #status { color: var(--accent2); min-height: 24px; margin-top: 14px; font-size: 14px; }
-    .note { color: var(--muted); font-size: 12px; line-height: 1.7; margin-top: 16px; }
-    @media(max-width:700px) {
+
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 680px) {
       .layout { grid-template-columns: 1fr; }
       .sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
-      .tool-btn { font-size: 13px; }
-      header { align-items: flex-start; flex-direction: column; }
+      .tool-btn { font-size: 13px; padding: 10px 8px; }
+      .workspace { padding: 13px; }
+      .controls > * { flex: 1 1 130px; }
+      .btn { flex-grow: 1; }
     }
   </style>
 </head>
+
 <body>
   <header>
-    <div>
-      <div class="brand">pixel <span>Tool</span></div>
-      <p>أدوات صور سهلة وسريعة — تتم المعالجة داخل متصفحك</p>
-    </div>
+    <div class="brand">pixel <span>Tool</span></div>
+    <p>أدوات صور سهلة وسريعة</p>
   </header>
 
   <main>
     <div class="layout">
-      <nav class="sidebar" aria-label="الأدوات">
+      <nav class="sidebar" aria-label="أدوات الصور">
         <button class="tool-btn active" data-tool="remove">إزالة الخلفية</button>
-        <button class="tool-btn" data-tool="compress">ضغط حجم الصورة</button>
-        <button class="tool-btn" data-tool="convert">تحويل صيغة الصورة</button>
+        <button class="tool-btn" data-tool="compress">ضغط الصورة</button>
+        <button class="tool-btn" data-tool="convert">تحويل الصيغة</button>
         <button class="tool-btn" data-tool="crop">قص مربع أو دائري</button>
-        <button class="tool-btn" data-tool="watermark">إضافة علامة مائية</button>
+        <button class="tool-btn" data-tool="watermark">علامة مائية</button>
       </nav>
 
       <section class="workspace">
         <h1 id="toolTitle">إزالة الخلفية</h1>
-        <p class="description" id="toolDescription">ارفع صورة لإزالة خلفيتها وتنزيلها بصيغة PNG.</p>
+        <p class="description" id="toolDescription">
+          اختر صورة لإزالة خلفيتها وتنزيلها بصيغة PNG.
+        </p>
 
         <label class="drop" for="fileInput">
-          <span><strong>اضغط لاختيار صورة</strong>أو اسحبها وأفلتها هنا<br>PNG، JPG، WebP</span>
+          <span>
+            <strong>اضغط لاختيار صورة</strong>
+            أو اسحب الصورة وأفلتها هنا<br>
+            PNG أو JPG أو WebP
+          </span>
         </label>
+
         <input id="fileInput" type="file" accept="image/*">
 
         <div id="controls" class="controls"></div>
-        <div id="status" role="status"></div>
+        <div id="status" role="status" aria-live="polite"></div>
 
         <div class="preview-wrap" id="previewWrap">
           <img id="preview" alt="معاينة الصورة">
         </div>
 
         <p class="note">
-          ملاحظة: لا ترفع ملفات حساسة إلى مواقع خارجية. إزالة الخلفية هنا تعتمد على مكتبة خارجية تُحمّل عند الطلب.
+          إزالة الخلفية تحمّل نموذجًا من الإنترنت وقد تكون ثقيلة على بعض الهواتف.
+          لا تغلق الصفحة أثناء المعالجة.
         </p>
       </section>
     </div>
   </main>
 
-<script type="module">
-  const $ = (s) => document.querySelector(s);
-  const fileInput = $("#fileInput");
-  const controls = $("#controls");
-  const status = $("#status");
-  const preview = $("#preview");
-  const previewWrap = $("#previewWrap");
+  <script type="module">
+    const $ = selector => document.querySelector(selector);
 
-  let selectedFile = null;
-  let currentTool = "remove";
-  let previewUrl = null;
+    const fileInput = $("#fileInput");
+    const controls = $("#controls");
+    const status = $("#status");
+    const preview = $("#preview");
+    const previewWrap = $("#previewWrap");
+    const dropArea = document.querySelector(".drop");
 
-  const toolInfo = {
-    remove: ["إزالة الخلفية", "ارفع صورة لإزالة خلفيتها وتنزيلها بصيغة PNG."],
-    compress: ["ضغط حجم الصورة", "قلّل حجم الصورة بتعديل الجودة أو الأبعاد."],
-    convert: ["تحويل صيغة الصورة", "حوّل الصورة إلى PNG أو JPEG أو WebP."],
-    crop: ["قص الصورة", "أنشئ نسخة مربعة أو دائرية من الصورة."],
-    watermark: ["إضافة علامة مائية", "أضف نصًا فوق الصورة ثم نزّلها."]
-  };
+    let selectedFile = null;
+    let currentTool = "remove";
+    let previewUrl = null;
 
-  document.querySelectorAll(".tool-btn").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelector(".tool-btn.active")?.classList.remove("active");
-      button.classList.add("active");
-      currentTool = button.dataset.tool;
-      $("#toolTitle").textContent = toolInfo[currentTool][0];
-      $("#toolDescription").textContent = toolInfo[currentTool][1];
-      status.textContent = "";
-      renderControls();
+    const descriptions = {
+      remove: ["إزالة الخلفية", "اختر صورة لإزالة خلفيتها وتنزيلها بصيغة PNG."],
+      compress: ["ضغط الصورة", "قلّل حجم الصورة بتعديل الجودة والعرض الأقصى."],
+      convert: ["تحويل الصيغة", "حوّل الصورة إلى PNG أو JPEG أو WebP."],
+      crop: ["قص الصورة", "أنشئ نسخة مربعة أو دائرية من الصورة."],
+      watermark: ["علامة مائية", "أضف نصًا فوق الصورة ثم نزّلها."]
+    };
+
+    document.querySelectorAll(".tool-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelector(".tool-btn.active")?.classList.remove("active");
+        button.classList.add("active");
+
+        currentTool = button.dataset.tool;
+        $("#toolTitle").textContent = descriptions[currentTool][0];
+        $("#toolDescription").textContent = descriptions[currentTool][1];
+        status.textContent = "";
+        renderControls();
+      });
     });
-  });
 
-  fileInput.addEventListener("change", () => {
-    selectedFile = fileInput.files[0] || null;
-    showPreview();
-    status.textContent = selectedFile ? `تم اختيار: ${selectedFile.name}` : "";
-  });
-
-  const drop = document.querySelector(".drop");
-  drop.addEventListener("dragover", e => { e.preventDefault(); drop.style.borderColor = "#8b7cff"; });
-  drop.addEventListener("dragleave", () => drop.style.borderColor = "");
-  drop.addEventListener("drop", e => {
-    e.preventDefault();
-    drop.style.borderColor = "";
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith("image/")) {
-      selectedFile = file;
-      showPreview();
-      status.textContent = `تم اختيار: ${file.name}`;
-    } else status.textContent = "الرجاء اختيار ملف صورة.";
-  });
-
-  function renderControls() {
-    const common = `<button class="btn" id="runBtn">تنفيذ وتنزيل</button>`;
-    if (currentTool === "compress") {
-      controls.innerHTML = `
-        <label class="field">الجودة: <span id="qualityText">75%</span>
-          <input id="quality" type="range" min="10" max="100" value="75">
-        </label>
-        <label class="field">أقصى عرض (بكسل)
-          <input id="maxWidth" type="text" inputmode="numeric" value="1600">
-        </label>${common}`;
-      $("#quality").oninput = e => $("#qualityText").textContent = e.target.value + "%";
-    } else if (currentTool === "convert") {
-      controls.innerHTML = `
-        <label class="field">الصيغة
-          <select id="format"><option value="image/png">PNG</option><option value="image/jpeg">JPEG</option><option value="image/webp">WebP</option></select>
-        </label>${common}`;
-    } else if (currentTool === "crop") {
-      controls.innerHTML = `
-        <label class="field">شكل القص
-          <select id="cropShape"><option value="square">مربع</option><option value="circle">دائري</option></select>
-        </label>${common}`;
-    } else if (currentTool === "watermark") {
-      controls.innerHTML = `
-        <label class="field">نص العلامة المائية
-          <input id="watermarkText" type="text" placeholder="مثال: Pixel Tool">
-        </label>
-        <label class="field">الحجم
-          <select id="watermarkSize"><option value="24">صغير</option><option value="40" selected>متوسط</option><option value="64">كبير</option></select>
-        </label>${common}`;
-    } else {
-      controls.innerHTML = common;
-    }
-    $("#runBtn").onclick = runTool;
-  }
-  renderControls();
-
-  function showPreview() {
-    if (!selectedFile) return;
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    previewUrl = URL.createObjectURL(selectedFile);
-    preview.src = previewUrl;
-    previewWrap.style.display = "block";
-  }
-
-  function loadImage(file) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error("تعذّر قراءة الصورة."));
-      img.src = URL.createObjectURL(file);
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files?.[0];
+      if (file) chooseFile(file);
     });
-  }
 
-  function downloadBlob(blob, name) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = name;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
+    dropArea.addEventListener("dragover", event => {
+      event.preventDefault();
+      dropArea.style.borderColor = "#8b7cff";
+    });
 
-  function canvasBlob(canvas, type = "image/png", quality = .9) {
-    return new Promise(resolve => canvas.toBlob(resolve, type, quality));
-  }
+    dropArea.addEventListener("dragleave", () => {
+      dropArea.style.borderColor = "";
+    });
 
-  async function runTool() {
-    if (!selectedFile) { status.textContent = "اختر صورة أولًا."; return; }
-    const button = $("#runBtn");
-    button.disabled = true;
-    status.textContent = "جارٍ تجهيز الصورة…";
+    dropArea.addEventListener("drop", event => {
+      event.preventDefault();
+      dropArea.style.borderColor = "";
+      const file = event.dataTransfer.files?.[0];
 
-    try {
-      if (currentTool === "remove") {
-        // مكتبة إزالة الخلفية تعمل في المتصفح وتحمّل نموذجها عند أول استخدام.
-        const { removeBackground } = await import("https://esm.sh/@imgly/background-removal");
-        status.textContent = "جارٍ إزالة الخلفية… قد يستغرق ذلك بعض الوقت في أول مرة.";
-        const result = await removeBackground(selectedFile);
-        downloadBlob(result, "pixel-tool-background-removed.png");
-        status.textContent = "تمت إزالة الخلفية وتنزيل الصورة.";
+      if (file && file.type.startsWith("image/")) {
+        chooseFile(file);
+      } else {
+        status.textContent = "الرجاء اختيار ملف صورة.";
+      }
+    });
+
+    function chooseFile(file) {
+      if (!file.type.startsWith("image/")) {
+        status.textContent = "الملف المختار ليس صورة.";
         return;
       }
 
-      const img = await loadImage(selectedFile);
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      let type = "image/png";
-      let quality = .9;
+      selectedFile = file;
+
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(file);
+      preview.src = previewUrl;
+      previewWrap.style.display = "block";
+      status.textContent = `تم اختيار الصورة: ${file.name}`;
+    }
+
+    function renderControls() {
+      const runButton = `<button class="btn" id="runBtn">تنفيذ وتنزيل</button>`;
 
       if (currentTool === "compress") {
-        const maxWidth = Math.max(1, Number($("#maxWidth").value) || 1600);
-        const scale = Math.min(1, maxWidth / img.width);
-        canvas.width = Math.round(img.width * scale);
-        canvas.height = Math.round(img.height * scale);
-        type = "image/jpeg";
-        quality = Number($("#quality").value) / 100;
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        controls.innerHTML = `
+          <label class="field">الجودة: <span id="qualityText">75%</span>
+            <input id="quality" type="range" min="10" max="100" value="75">
+          </label>
+          <label class="field">أقصى عرض بالبكسل
+            <input id="maxWidth" type="number" min="100" max="10000" value="1600">
+          </label>
+          ${runButton}`;
+        $("#quality").addEventListener("input", event => {
+          $("#qualityText").textContent = event.target.value + "%";
+        });
       } else if (currentTool === "convert") {
-        type = $("#format").value;
-        canvas.width = img.width;
-        canvas.height = img.height;
-        if (type === "image/jpeg") {
-          ctx.fillStyle = "#fff";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-        ctx.drawImage(img, 0, 0);
+        controls.innerHTML = `
+          <label class="field">اختر الصيغة
+            <select id="format">
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </label>
+          ${runButton}`;
       } else if (currentTool === "crop") {
-        const size = Math.min(img.width, img.height);
-        canvas.width = size;
-        canvas.height = size;
-        if ($("#cropShape").value === "circle") {
-          ctx.beginPath();
-          ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
-          ctx.clip();
-        }
-        ctx.drawImage(img, (img.width - size) / 2, (img.height - size) / 2, size, size, 0, 0, size, size);
+        controls.innerHTML = `
+          <label class="field">شكل القص
+            <select id="cropShape">
+              <option value="square">مربع</option>
+              <option value="circle">دائري</option>
+            </select>
+          </label>
+          ${runButton}`;
       } else if (currentTool === "watermark") {
-        const text = $("#watermarkText").value.trim();
-        if (!text) throw new Error("اكتب نص العلامة المائية أولًا.");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-        const fontSize = Number($("#watermarkSize").value);
-        ctx.font = `bold ${fontSize}px sans-serif`;
-        ctx.textAlign = "left";
-        ctx.textBaseline = "bottom";
-        ctx.lineWidth = Math.max(2, fontSize / 12);
-        ctx.strokeStyle = "rgba(0,0,0,.55)";
-        ctx.fillStyle = "rgba(255,255,255,.85)";
-        const x = 20, y = canvas.height - 20;
-        ctx.strokeText(text, x, y);
-        ctx.fillText(text, x, y);
+        controls.innerHTML = `
+          <label class="field">نص العلامة المائية
+            <input id="watermarkText" type="text" placeholder="مثال: Pixel Tool">
+          </label>
+          <label class="field">حجم النص
+            <select id="watermarkSize">
+              <option value="24">صغير</option>
+              <option value="40" selected>متوسط</option>
+              <option value="64">كبير</option>
+            </select>
+          </label>
+          ${runButton}`;
+      } else {
+        controls.innerHTML = runButton;
       }
 
-      const blob = await canvasBlob(canvas, type, quality);
-      if (!blob) throw new Error("تعذّر إنشاء الصورة الناتجة.");
-      const ext = type.split("/")[1].replace("jpeg", "jpg");
-      downloadBlob(blob, `pixel-tool.${ext}`);
-      status.textContent = `تم بنجاح. الحجم الناتج: ${(blob.size / 1024).toFixed(1)} كيلوبايت.`;
-    } catch (error) {
-      status.textContent = error.message || "حدث خطأ أثناء معالجة الصورة.";
-    } finally {
-      button.disabled = false;
+      $("#runBtn").addEventListener("click", runTool);
     }
-  }
-</script>
+
+    function loadImage(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const image = new Image();
+
+        image.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(image);
+        };
+
+        image.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error("تعذّر فتح الصورة."));
+        };
+
+        image.src = url;
+      });
+    }
+
+    function canvasToBlob(canvas, type, quality) {
+      return new Promise(resolve => canvas.toBlob(resolve, type, quality));
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
+
+    async function removeBackgroundForMobile() {
+      status.textContent = "جارٍ تجهيز الصورة لتناسب الهاتف…";
+
+      const original = await loadImage(selectedFile);
+
+      // تصغير الصورة الكبيرة لتقليل استهلاك الذاكرة على الهاتف
+      const maxSide = 1200;
+      const scale = Math.min(
+        1,
+        maxSide / Math.max(original.naturalWidth, original.naturalHeight)
+      );
+
+      const smallCanvas = document.createElement("canvas");
+      smallCanvas.width = Math.max(1, Math.round(original.naturalWidth * scale));
+      smallCanvas.height = Math.max(1, Math.round(original.naturalHeight * scale));
+
+      const context = smallCanvas.getContext("2d");
+      context.drawImage(original, 0, 0, smallCanvas.width, smallCanvas.height);
+
+      const smallerImage = await canvasToBlob(smallCanvas, "image/jpeg", 0.85);
+      if (!smallerImage) throw new Error("تعذّر تجهيز الصورة.");
+
+      status.textContent = "جارٍ تحميل أداة إزالة الخلفية. انتظر حتى يكتمل التحميل…";
+
+      const { removeBackground } =
+        await import("https://esm.sh/@imgly/background-removal");
+
+      const result = await removeBackground(smallerImage, {
+        progress: (key, current, total) => {
+          if (total > 0) {
+            const percent = Math.round((current / total) * 100);
+            status.textContent = `جارٍ تحميل النموذج: ${percent}%`;
+          } else {
+            status.textContent = "جارٍ معالجة الصورة…";
+          }
+        }
+      });
+
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(result);
+      preview.src = previewUrl;
+      previewWrap.style.display = "block";
+
+      downloadBlob(result, "pixel-tool-background-removed.png");
+      status.textContent = "اكتملت إزالة الخلفية وتم تنزيل الصورة.";
+    }
+
+    async function runTool() {
+      if (!selectedFile) {
+        status.textContent = "اختر صورة أولًا.";
+        return;
+      }
+
+      const button = $("#runBtn");
+      button.disabled = true;
+
+      try {
+        if (currentTool === "remove") {
+          await removeBackgroundForMobile();
+          return;
+        }
+
+        status.textContent = "جارٍ معالجة الصورة…";
+
+        const image = await loadImage(selectedFile);
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        let mimeType = "image/png";
+        let quality = 0.9;
+
+        if (currentTool === "compress") {
+          const maxWidth = Math.max(100, Number($("#maxWidth").value) || 1600);
+          const scale = Math.min(1, maxWidth / image.naturalWidth);
+
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          mimeType = "image/jpeg";
+          quality = Number($("#quality").value) / 100;
+
+          context.fillStyle = "#fff";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        }
+
+        if (currentTool === "convert") {
+          mimeType = $("#format").value;
+          canvas.width = image.naturalWidth;
+          canvas.height = image.naturalHeight;
+
+          if (mimeType === "image/jpeg") {
+            context.fillStyle = "#fff";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+          }
+
+          context.drawImage(image, 0, 0);
+        }
+
+        if (currentTool === "crop") {
+          const size = Math.min(image.naturalWidth, image.naturalHeight);
+          canvas.width = size;
+          canvas.height = size;
+
+          if ($("#cropShape").value === "circle") {
+            context.beginPath();
+            context.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+            context.clip();
+          }
+
+          const sx = (image.naturalWidth - size) / 2;
+          const sy = (image.naturalHeight - size) / 2;
+
+          context.drawImage(
+            image,
+            sx, sy, size, size,
+            0, 0, size, size
+          );
+        }
+
+        if (currentTool === "watermark") {
+          const text = $("#watermarkText").value.trim();
+          if (!text) throw new Error("اكتب نص العلامة المائية أولًا.");
+
+          canvas.width = image.naturalWidth;
+          canvas.height = image.naturalHeight;
+          context.drawImage(image, 0, 0);
+
+          const fontSize = Number($("#watermarkSize").value);
+          const margin = Math.max(16, Math.round(canvas.width * 0.02));
+
+          context.font = `bold ${fontSize}px sans-serif`;
+          context.textAlign = "left";
+          context.textBaseline = "bottom";
+          context.lineWidth = Math.max(2, fontSize / 12);
+          context.strokeStyle = "rgba(0,0,0,.65)";
+          context.fillStyle = "rgba(255,255,255,.9)";
+
+          const x = margin;
+          const y = canvas.height - margin;
+          context.strokeText(text, x, y);
+          context.fillText(text, x, y);
+        }
+
+        const output = await canvasToBlob(canvas, mimeType, quality);
+        if (!output) throw new Error("تعذّر إنشاء الصورة الناتجة.");
+
+        const extension = mimeType.split("/")[1].replace("jpeg", "jpg");
+        downloadBlob(output, `pixel-tool.${extension}`);
+
+        status.textContent =
+          `تم بنجاح. حجم الصورة الناتجة: ${(output.size / 1024).toFixed(1)} كيلوبايت.`;
+      } catch (error) {
+        console.error(error);
+        status.textContent =
+          error?.message || "حدث خطأ أثناء المعالجة. جرّب صورة أصغر.";
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    renderControls();
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c1020">
+  <title>Pixel Tool — أدوات الصور</title>
+
+  <style>
+    :root {
+      --bg: #0c1020;
+      --panel: #151b2e;
+      --panel2: #1c243b;
+      --text: #f3f5ff;
+      --muted: #aab3cc;
+      --accent: #8b7cff;
+      --accent2: #42d8c2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 10% 0%, #292452 0, transparent 38%),
+        var(--bg);
+      color: var(--text);
+      font-family: system-ui, Tahoma, sans-serif;
+    }
+
+    header, main {
+      width: min(100% - 28px, 1050px);
+      margin-inline: auto;
+    }
+
+    header { padding: 24px 0 12px; }
+
+    .brand {
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .brand span { color: var(--accent2); }
+
+    header p, .description {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 5px 0 0;
+    }
+
+    main { padding: 14px 0 30px; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 225px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .sidebar, .workspace {
+      background: rgba(21, 27, 46, .95);
+      border: 1px solid #29314b;
+      border-radius: 17px;
+      padding: 15px;
+    }
+
+    .tool-btn {
+      width: 100%;
+      border: 0;
+      color: var(--muted);
+      background: transparent;
+      text-align: right;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font: inherit;
+      margin: 3px 0;
+    }
+
+    .tool-btn:hover, .tool-btn.active {
+      background: var(--panel2);
+      color: white;
+    }
+
+    .tool-btn.active { box-shadow: inset -3px 0 var(--accent); }
+
+    h1 { font-size: 22px; margin: 2px 0 5px; }
+
+    .drop {
+      border: 1px dashed #596485;
+      background: #11172a;
+      border-radius: 14px;
+      min-height: 150px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      cursor: pointer;
+      margin-top: 18px;
+    }
+
+    .drop strong {
+      display: block;
+      color: var(--text);
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    input[type="file"] { display: none; }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: end;
+      margin-top: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    input[type="text"], select {
+      min-height: 42px;
+      border: 1px solid #343e5d;
+      background: #101629;
+      color: white;
+      border-radius: 9px;
+      padding: 9px 10px;
+      font: inherit;
+      max-width: 100%;
+    }
+
+    input[type="range"] { accent-color: var(--accent); }
+
+    .btn {
+      min-height: 42px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--accent);
+      color: white;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn:disabled { opacity: .55; cursor: wait; }
+
+    #status {
+      color: var(--accent2);
+      min-height: 24px;
+      margin-top: 13px;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .preview-wrap {
+      display: none;
+      margin-top: 15px;
+    }
+
+    #preview {
+      display: block;
+      max-width: 100%;
+      max-height: 340px;
+      margin: 0 auto;
+      border-radius: 10px;
+      background-color: #eee;
+      background-image:
+        linear-gradient(45deg,#ddd 25%,transparent 25%),
+        linear-gradient(-45deg,#ddd 25%,transparent 25%),
+        linear-gradient(45deg,transparent 75%,#ddd 75%),
+        linear-gradient(-45deg,transparent 75%,#ddd 75%);
+      background-size: 18px 18px;
+      background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 680px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+      .tool-btn { font-size: 13px; padding: 10px 8px; }
+      .workspace { padding: 13px; }
+      .controls > * { flex: 1 1 130px; }
+      .btn { flex-grow: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand">pixel <span>Tool</span></div>
+    <p>أدوات صور سهلة وسريعة</p>
+  </header>
+
+  <main>
+    <div class="layout">
+      <nav class="sidebar" aria-label="أدوات الصور">
+        <button class="tool-btn active" data-tool="remove">إزالة الخلفية</button>
+        <button class="tool-btn" data-tool="compress">ضغط الصورة</button>
+        <button class="tool-btn" data-tool="convert">تحويل الصيغة</button>
+        <button class="tool-btn" data-tool="crop">قص مربع أو دائري</button>
+        <button class="tool-btn" data-tool="watermark">علامة مائية</button>
+      </nav>
+
+      <section class="workspace">
+        <h1 id="toolTitle">إزالة الخلفية</h1>
+        <p class="description" id="toolDescription">
+          اختر صورة لإزالة خلفيتها وتنزيلها بصيغة PNG.
+        </p>
+
+        <label class="drop" for="fileInput">
+          <span>
+            <strong>اضغط لاختيار صورة</strong>
+            أو اسحب الصورة وأفلتها هنا<br>
+            PNG أو JPG أو WebP
+          </span>
+        </label>
+
+        <input id="fileInput" type="file" accept="image/*">
+
+        <div id="controls" class="controls"></div>
+        <div id="status" role="status" aria-live="polite"></div>
+
+        <div class="preview-wrap" id="previewWrap">
+          <img id="preview" alt="معاينة الصورة">
+        </div>
+
+        <p class="note">
+          إزالة الخلفية تحمّل نموذجًا من الإنترنت وقد تكون ثقيلة على بعض الهواتف.
+          لا تغلق الصفحة أثناء المعالجة.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <script type="module">
+    const $ = selector => document.querySelector(selector);
+
+    const fileInput = $("#fileInput");
+    const controls = $("#controls");
+    const status = $("#status");
+    const preview = $("#preview");
+    const previewWrap = $("#previewWrap");
+    const dropArea = document.querySelector(".drop");
+
+    let selectedFile = null;
+    let currentTool = "remove";
+    let previewUrl = null;
+
+    const descriptions = {
+      remove: ["إزالة الخلفية", "اختر صورة لإزالة خلفيتها وتنزيلها بصيغة PNG."],
+      compress: ["ضغط الصورة", "قلّل حجم الصورة بتعديل الجودة والعرض الأقصى."],
+      convert: ["تحويل الصيغة", "حوّل الصورة إلى PNG أو JPEG أو WebP."],
+      crop: ["قص الصورة", "أنشئ نسخة مربعة أو دائرية من الصورة."],
+      watermark: ["علامة مائية", "أضف نصًا فوق الصورة ثم نزّلها."]
+    };
+
+    document.querySelectorAll(".tool-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelector(".tool-btn.active")?.classList.remove("active");
+        button.classList.add("active");
+
+        currentTool = button.dataset.tool;
+        $("#toolTitle").textContent = descriptions[currentTool][0];
+        $("#toolDescription").textContent = descriptions[currentTool][1];
+        status.textContent = "";
+        renderControls();
+      });
+    });
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files?.[0];
+      if (file) chooseFile(file);
+    });
+
+    dropArea.addEventListener("dragover", event => {
+      event.preventDefault();
+      dropArea.style.borderColor = "#8b7cff";
+    });
+
+    dropArea.addEventListener("dragleave", () => {
+      dropArea.style.borderColor = "";
+    });
+
+    dropArea.addEventListener("drop", event => {
+      event.preventDefault();
+      dropArea.style.borderColor = "";
+      const file = event.dataTransfer.files?.[0];
+
+      if (file && file.type.startsWith("image/")) {
+        chooseFile(file);
+      } else {
+        status.textContent = "الرجاء اختيار ملف صورة.";
+      }
+    });
+
+    function chooseFile(file) {
+      if (!file.type.startsWith("image/")) {
+        status.textContent = "الملف المختار ليس صورة.";
+        return;
+      }
+
+      selectedFile = file;
+
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(file);
+      preview.src = previewUrl;
+      previewWrap.style.display = "block";
+      status.textContent = `تم اختيار الصورة: ${file.name}`;
+    }
+
+    function renderControls() {
+      const runButton = `<button class="btn" id="runBtn">تنفيذ وتنزيل</button>`;
+
+      if (currentTool === "compress") {
+        controls.innerHTML = `
+          <label class="field">الجودة: <span id="qualityText">75%</span>
+            <input id="quality" type="range" min="10" max="100" value="75">
+          </label>
+          <label class="field">أقصى عرض بالبكسل
+            <input id="maxWidth" type="number" min="100" max="10000" value="1600">
+          </label>
+          ${runButton}`;
+        $("#quality").addEventListener("input", event => {
+          $("#qualityText").textContent = event.target.value + "%";
+        });
+      } else if (currentTool === "convert") {
+        controls.innerHTML = `
+          <label class="field">اختر الصيغة
+            <select id="format">
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </label>
+          ${runButton}`;
+      } else if (currentTool === "crop") {
+        controls.innerHTML = `
+          <label class="field">شكل القص
+            <select id="cropShape">
+              <option value="square">مربع</option>
+              <option value="circle">دائري</option>
+            </select>
+          </label>
+          ${runButton}`;
+      } else if (currentTool === "watermark") {
+        controls.innerHTML = `
+          <label class="field">نص العلامة المائية
+            <input id="watermarkText" type="text" placeholder="مثال: Pixel Tool">
+          </label>
+          <label class="field">حجم النص
+            <select id="watermarkSize">
+              <option value="24">صغير</option>
+              <option value="40" selected>متوسط</option>
+              <option value="64">كبير</option>
+            </select>
+          </label>
+          ${runButton}`;
+      } else {
+        controls.innerHTML = runButton;
+      }
+
+      $("#runBtn").addEventListener("click", runTool);
+    }
+
+    function loadImage(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const image = new Image();
+
+        image.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(image);
+        };
+
+        image.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error("تعذّر فتح الصورة."));
+        };
+
+        image.src = url;
+      });
+    }
+
+    function canvasToBlob(canvas, type, quality) {
+      return new Promise(resolve => canvas.toBlob(resolve, type, quality));
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
+
+    async function removeBackgroundForMobile() {
+      status.textContent = "جارٍ تجهيز الصورة لتناسب الهاتف…";
+
+      const original = await loadImage(selectedFile);
+
+      // تصغير الصورة الكبيرة لتقليل استهلاك الذاكرة على الهاتف
+      const maxSide = 1200;
+      const scale = Math.min(
+        1,
+        maxSide / Math.max(original.naturalWidth, original.naturalHeight)
+      );
+
+      const smallCanvas = document.createElement("canvas");
+      smallCanvas.width = Math.max(1, Math.round(original.naturalWidth * scale));
+      smallCanvas.height = Math.max(1, Math.round(original.naturalHeight * scale));
+
+      const context = smallCanvas.getContext("2d");
+      context.drawImage(original, 0, 0, smallCanvas.width, smallCanvas.height);
+
+      const smallerImage = await canvasToBlob(smallCanvas, "image/jpeg", 0.85);
+      if (!smallerImage) throw new Error("تعذّر تجهيز الصورة.");
+
+      status.textContent = "جارٍ تحميل أداة إزالة الخلفية. انتظر حتى يكتمل التحميل…";
+
+      const { removeBackground } =
+        await import("https://esm.sh/@imgly/background-removal");
+
+      const result = await removeBackground(smallerImage, {
+        progress: (key, current, total) => {
+          if (total > 0) {
+            const percent = Math.round((current / total) * 100);
+            status.textContent = `جارٍ تحميل النموذج: ${percent}%`;
+          } else {
+            status.textContent = "جارٍ معالجة الصورة…";
+          }
+        }
+      });
+
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(result);
+      preview.src = previewUrl;
+      previewWrap.style.display = "block";
+
+      downloadBlob(result, "pixel-tool-background-removed.png");
+      status.textContent = "اكتملت إزالة الخلفية وتم تنزيل الصورة.";
+    }
+
+    async function runTool() {
+      if (!selectedFile) {
+        status.textContent = "اختر صورة أولًا.";
+        return;
+      }
+
+      const button = $("#runBtn");
+      button.disabled = true;
+
+      try {
+        if (currentTool === "remove") {
+          await removeBackgroundForMobile();
+          return;
+        }
+
+        status.textContent = "جارٍ معالجة الصورة…";
+
+        const image = await loadImage(selectedFile);
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        let mimeType = "image/png";
+        let quality = 0.9;
+
+        if (currentTool === "compress") {
+          const maxWidth = Math.max(100, Number($("#maxWidth").value) || 1600);
+          const scale = Math.min(1, maxWidth / image.naturalWidth);
+
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          mimeType = "image/jpeg";
+          quality = Number($("#quality").value) / 100;
+
+          context.fillStyle = "#fff";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        }
+
+        if (currentTool === "convert") {
+          mimeType = $("#format").value;
+          canvas.width = image.naturalWidth;
+          canvas.height = image.naturalHeight;
+
+          if (mimeType === "image/jpeg") {
+            context.fillStyle = "#fff";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+          }
+
+          context.drawImage(image, 0, 0);
+        }
+
+        if (currentTool === "crop") {
+          const size = Math.min(image.naturalWidth, image.naturalHeight);
+          canvas.width = size;
+          canvas.height = size;
+
+          if ($("#cropShape").value === "circle") {
+            context.beginPath();
+            context.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+            context.clip();
+          }
+
+          const sx = (image.naturalWidth - size) / 2;
+          const sy = (image.naturalHeight - size) / 2;
+
+          context.drawImage(
+            image,
+            sx, sy, size, size,
+            0, 0, size, size
+          );
+        }
+
+        if (currentTool === "watermark") {
+          const text = $("#watermarkText").value.trim();
+          if (!text) throw new Error("اكتب نص العلامة المائية أولًا.");
+
+          canvas.width = image.naturalWidth;
+          canvas.height = image.naturalHeight;
+          context.drawImage(image, 0, 0);
+
+          const fontSize = Number($("#watermarkSize").value);
+          const margin = Math.max(16, Math.round(canvas.width * 0.02));
+
+          context.font = `bold ${fontSize}px sans-serif`;
+          context.textAlign = "left";
+          context.textBaseline = "bottom";
+          context.lineWidth = Math.max(2, fontSize / 12);
+          context.strokeStyle = "rgba(0,0,0,.65)";
+          context.fillStyle = "rgba(255,255,255,.9)";
+
+          const x = margin;
+          const y = canvas.height - margin;
+          context.strokeText(text, x, y);
+          context.fillText(text, x, y);
+        }
+
+        const output = await canvasToBlob(canvas, mimeType, quality);
+        if (!output) throw new Error("تعذّر إنشاء الصورة الناتجة.");
+
+        const extension = mimeType.split("/")[1].replace("jpeg", "jpg");
+        downloadBlob(output, `pixel-tool.${extension}`);
+
+        status.textContent =
+          `تم بنجاح. حجم الصورة الناتجة: ${(output.size / 1024).toFixed(1)} كيلوبايت.`;
+      } catch (error) {
+        console.error(error);
+        status.textContent =
+          error?.message || "حدث خطأ أثناء المعالجة. جرّب صورة أصغر.";
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    renderControls();
+  </script>
 </body>
 </html>
